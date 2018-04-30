@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Mobile - Event</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+    <style>
+        li {
+            cursor: pointer;
+        }
+
+        .description {
+            display: none;
+        }
+
+        .btn-sm {
+            float: right;
+        }
+
+        .jumbotron {
+            height: 30vh;
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="event-tab" data-toggle="tab" href="#event" role="tab" aria-controls="event" aria-selected="true">Event</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="qa-tab" data-toggle="tab" href="#qa" role="tab" aria-controls="qa" aria-selected="false">Questions</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="poll-tab" data-toggle="tab" href="#poll" role="tab" aria-controls="poll" aria-selected="false">Polls</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="event" role="tabpanel" aria-labelledby="event-tab">
+            <p>Description: Event description</p>
+            <p>Location: Hong Kong</p>
+            <p>Speaker: Speaker Name</p>
+        </div>
+        <div class="tab-pane fade" id="qa" role="tabpanel" aria-labelledby="qa-tab">
+            <h2>Ask the speaker</h2>
+            <input class="form-control" id="question" type="text" placeholder="Type your question" autocomplete="off">
+            <div class="d-flex">
+                <input class="form-control" id="name" type="text" placeholder="Name">
+                <div class="ml-auto justify-content-end">
+                    <input class="btn btn-primary float-right" id="submit" type="submit" value="Send">
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="poll" role="tabpanel" aria-labelledby="poll-tab">
+            <h2>Live poll</h2>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script>
+        $('.event').click(function () {
+            $(this).next().toggle();
+        });
+    </script>
+</body>
+
+</html>
