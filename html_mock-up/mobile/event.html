@@ -7,56 +7,166 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
     <style>
-        li {
-            cursor: pointer;
+        .fa-thumbs-up {
+            color: gray;
+            width: 38px;
+            text-align: center;
         }
 
-        .description {
-            display: none;
-        }
-
-        .btn-sm {
-            float: right;
-        }
-
-        .jumbotron {
-            height: 30vh;
-            margin-bottom: 0;
+        .liked {
+            color: #007bff;
         }
     </style>
 </head>
 
 <body>
 
+
+    <div class="d-flex">
+        <div class="mr-auto justify-content-begin">
+            <a href="/logout" alt="Exit event">
+                <i class="fas fa-sign-out-alt fa-2x"></i>
+            </a>
+        </div>
+        <h2>Name of the event</h2>
+        <div class="ml-auto justify-content-end">
+            <a href="/logout" alt="Edit user">
+                <i class="fas fa-user fa-2x"></i>
+            </a>
+        </div>
+    </div>
     <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" id="event-tab" data-toggle="tab" href="#event" role="tab" aria-controls="event" aria-selected="true">Event</a>
+            <a class="nav-link active" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">Info</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" id="qa-tab" data-toggle="tab" href="#qa" role="tab" aria-controls="qa" aria-selected="false">Questions</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="poll-tab" data-toggle="tab" href="#poll" role="tab" aria-controls="poll" aria-selected="false">Polls</a>
+            <a class="nav-link" id="poll-tab" data-toggle="tab" href="#poll" role="tab" aria-controls="poll" aria-selected="false">Polls
+                <span class="badge badge-danger badge-pill">!</span>
+            </a>
         </li>
     </ul>
     <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="event" role="tabpanel" aria-labelledby="event-tab">
-            <p>Description: Event description</p>
-            <p>Location: Hong Kong</p>
-            <p>Speaker: Speaker Name</p>
-        </div>
-        <div class="tab-pane fade" id="qa" role="tabpanel" aria-labelledby="qa-tab">
-            <h2>Ask the speaker</h2>
-            <input class="form-control" id="question" type="text" placeholder="Type your question" autocomplete="off">
-            <div class="d-flex">
-                <input class="form-control" id="name" type="text" placeholder="Name">
-                <div class="ml-auto justify-content-end">
-                    <input class="btn btn-primary float-right" id="submit" type="submit" value="Send">
+        <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
+            <div class="container">
+                <p>Description: Event description</p>
+                <p>Location: Hong Kong</p>
+                <div class="text-center">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3691.7974310464824!2d114.14924791540757!3d22.28566198533119!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3404007c40b40001%3A0x959df826b8e21b02!2snaked+Hub+Bonham+Strand+Coworking+Space+Hong+Kong!5e0!3m2!1sen!2shk!4v1525244511538"
+                        width="400" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>
                 </div>
+                <p>Speaker: Speaker Name</p>
+                <p>
+                    <a href="mailto:email@domain.com">
+                        <i class="fas fa-envelope fa-lg"></i> email@domain.com
+                    </a>
+                </p>
+                <p>
+                    <a href="tel:+85200000000">
+                        <i class="fas fa-phone fa-lg"></i> (+852) 0000 0000
+                    </a>
+                </p>
+                <p>
+                    <a href="contact.vcf">
+                        <i class="fas fa-download fa-lg"></i> Add contact to my phone
+                    </a>
+                </p>
             </div>
         </div>
+        <div class="tab-pane fade" id="qa" role="tabpanel" aria-labelledby="qa-tab">
+            <h3>Ask the speaker</h3>
+
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <div class="user">
+                        <i class="far fa-user"></i> username
+                    </div>
+                    <div class="question d-flex align-items-center justify-content-center">
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy
+                        text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make
+                        a type specimen book?
+                        <div class="ml-auto justify-content-end">
+                            <a href="#" alt="Like">
+                                <i class="fas fa-thumbs-up fa-lg liked">2</i>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="user">
+                        <i class="far fa-user"></i> username
+                    </div>
+                    <div class="question d-flex align-items-center justify-content-center">
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy
+                        text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make
+                        a type specimen book?
+                        <div class="ml-auto justify-content-end">
+                            <a href="#" alt="Like">
+                                <i class="fas fa-thumbs-up fa-lg">2</i>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="user">
+                        <i class="far fa-user"></i> username
+                    </div>
+                    <div class="question d-flex align-items-center justify-content-center">
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy
+                        text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make
+                        a type specimen book?
+                        <div class="ml-auto justify-content-end">
+                            <a href="#" alt="Like">
+                                <i class="fas fa-thumbs-up fa-lg"></i>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+            <form class="fixed-bottom" action="/api/question" method="POST">
+                <div class="d-flex">
+                    <input class="form-control" id="question" type="text" placeholder="Type your question" autocomplete="off">
+                    <div class="ml-auto justify-content-end">
+                        <input class="btn btn-primary float-right" id="submit" type="submit" value="Send">
+                    </div>
+                </div>
+            </form>
+        </div>
         <div class="tab-pane fade" id="poll" role="tabpanel" aria-labelledby="poll-tab">
-            <h2>Live poll</h2>
+            <h3>Live poll</h3>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <p>
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy
+                        text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make
+                        a type specimen book?
+                    </p>
+                </li>
+                <li class="list-group-item">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="customCheck1">
+                        <label class="custom-control-label" for="customCheck1">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="customCheck2">
+                        <label class="custom-control-label" for="customCheck2">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="customCheck3">
+                        <label class="custom-control-label" for="customCheck3">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="customCheck4">
+                        <label class="custom-control-label" for="customCheck4">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</label>
+                    </div>
+                    <div class="text-center">
+                        <input class="btn btn-primary" id="submit" type="submit" value="Submit">
+                    </div>
+                </li>
+            </ul>
         </div>
     </div>
 
@@ -66,6 +176,19 @@
     <script>
         $('.event').click(function () {
             $(this).next().toggle();
+        });
+        $('.fa-thumbs-up').click(function () {
+            console.log($(this).text());
+            var thumbs_up = ($(this).text() == '') ? 0 : parseInt($(this).text());
+            if ($(this).hasClass('liked') && thumbs_up === 1) {
+                $(this).text('');
+            } else if ($(this).hasClass('liked')) {
+                $(this).text(thumbs_up - 1);
+            } else {
+                $(this).text(thumbs_up + 1);
+            }
+            $(this).toggleClass('liked');
+
         });
     </script>
 </body>
