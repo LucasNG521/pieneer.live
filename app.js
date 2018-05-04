@@ -1,3 +1,5 @@
+#!/usr/bin/nodejs
+
 const express = require('express');
 const device = require('express-device');
 const bodyParser = require('body-parser');
