@@ -15,6 +15,8 @@ Live Presentation made Interactive and Easy
 ## Technology used
 
 - AWS EC2 for hosting
-- Node.js (express, passport, socket.io, redis, knex)
+- Node.js (express, passport, socket.io, redis, knex, ppt-png)
 - Bootstrap
 - JQuery
+- chartjs
+- zwibbler? (canvas painting)
