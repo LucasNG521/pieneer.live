@@ -1,11 +1,13 @@
-# node
-## Group 4 Week 1 Weekly assignment
+# pieneer.live
 
----
-### Group member
+Live Presentation made Interactive and Easy
+
+## Group member
+
 - Didier
 - Lucas
 - Ivan
 
-### Project Map and Note
+## Project Map and Notes
+
 [Trello Board](https://trello.com/b/8xI6rqJD/accelerator-cohort-module-2)

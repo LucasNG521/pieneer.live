@@ -1,29 +1,29 @@
 {
-  "name": "node",
+  "name": "pieneer.live",
   "version": "1.0.0",
-  "description": "Accelerator HK Full-stack cohort 6 Module 2 nodejs weekly assignment 1",
-  "main": "index.js",
+  "description": "Live Presentation made Interactive and Easy",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ivanoung/node.git"
+    "url": "git+https://github.com/didierkrux/node.git"
   },
   "keywords": [
-    "nodejs",
-    "server",
-    "file"
+    "live",
+    "presentation",
+    "interactive",
+    "easy"
   ],
-  "author": "Ivan",
-  "license": "MIT",
+  "author": "Didier Lucas Ivan",
+  "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ivanoung/node/issues"
+    "url": "https://github.com/didierkrux/node/issues"
   },
-  "homepage": "https://github.com/ivanoung/node#readme",
+  "homepage": "https://github.com/didierkrux/node#readme",
   "dependencies": {
-    "@types/express": "^4.11.1",
-    "@types/node": "^9.6.0",
+    "body-parser": "^1.18.2",
     "express": "^4.16.3"
   }
 }
