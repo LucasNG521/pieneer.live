@@ -8,10 +8,10 @@ const app = express();
 app.use(device.capture());
 app.use(express.static(__dirname + '/public'));
 app.get('/', function (req, res) {
-    if (req.device.type == 'desktop') {
-        res.redirect('html_mock-up/desktop/');
-    } else {
+    if (req.param('force') == 'mobile' || req.device.type != 'desktop') {
         res.redirect('html_mock-up/mobile/');
+    } else {
+        res.redirect('html_mock-up/desktop/');
     }
 });
 
