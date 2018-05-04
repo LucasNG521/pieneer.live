@@ -16,6 +16,7 @@
         .liked {
             color: #007bff;
         }
+
         .tab-pane.qa {
             padding-bottom: 38px;
         }
@@ -27,15 +28,17 @@
 
     <div class="d-flex">
         <div class="mr-auto justify-content-begin">
-            <a href="/logout" alt="Exit event">
-                <i class="fas fa-sign-out-alt fa-2x"></i>
+            <a href="/html_mock-up/mobile/" alt="Exit event">
+                <button type="button" class="btn btn-info">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
             </a>
         </div>
         <h2>Name of the event</h2>
         <div class="ml-auto justify-content-end">
-            <a href="/logout" alt="Edit user">
-                <i class="fas fa-user fa-2x"></i>
-            </a>
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">
+                <i class="fas fa-user"></i>
+            </button>
         </div>
     </div>
     <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
@@ -58,7 +61,7 @@
                 <p>Location: Hong Kong</p>
                 <div class="text-center">
                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3691.7974310464824!2d114.14924791540757!3d22.28566198533119!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3404007c40b40001%3A0x959df826b8e21b02!2snaked+Hub+Bonham+Strand+Coworking+Space+Hong+Kong!5e0!3m2!1sen!2shk!4v1525244511538"
-                     frameborder="0" style="border:0" allowfullscreen></iframe>
+                        frameborder="0" style="border:0" allowfullscreen></iframe>
                 </div>
                 <p>Speaker: Speaker Name</p>
                 <p>
@@ -173,12 +176,57 @@
         </div>
     </div>
 
+    <!-- Name Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit name</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="#" id="form-name">
+                        <label for="name">Name</label>
+                        <input type="text" name="name" id="name" value="">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary savename">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <script>
-        $('.event').click(function () {
-            $(this).next().toggle();
+        var name = (typeof $.cookie("name") == 'undefined') ? '' : $.cookie("name");
+        $('#myModal').on('show.bs.modal', function (e) {
+            $('#name').val(name);
+        });
+        $('#myModal').on('hide.bs.modal', function (e) {
+            if (name == '') {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                return false;
+            }
+        });
+        $('#form-name').submit(function (e) {
+            e.preventDefault();
+            $('.savename').click();
+            return false;
+        });
+        $('.savename').click(function () {
+            if ($('#name').val() != '') {
+                name = $('#name').val();
+                $.cookie("name", name, { expires: 365, path: '/' });
+                $('#myModal').modal('hide');
+            }
         });
         $('.questions').on('click', '.fa-thumbs-up', function (e) {
             e.preventDefault();
@@ -195,9 +243,10 @@
         $('#send_question').submit(function (e) {
             e.preventDefault();
             var question = $('#question').val();
-            var html_question=`<li class="list-group-item">
+            if (question != '') {
+                var html_question = `<li class="list-group-item">
                     <div class="user">
-                        <i class="far fa-user"></i> username
+                        <i class="far fa-user"></i> ${name}
                     </div>
                     <div class="question d-flex align-items-center justify-content-center">
                         ${question}
@@ -208,13 +257,16 @@
                         </div>
                     </div>
                 </li>`;
-            $('.questions').append(html_question);
-            $('#question').val('');
-            scrollDown();
+                $('.questions').append(html_question);
+                $('#question').val('');
+                scrollDown();
+            }
         });
         function scrollDown() {
             $('html, body').animate({ scrollTop: $('.questions')[0].scrollHeight }, 0);
         }
+        if (name == '')
+            $('#myModal').modal('show');
     </script>
 </body>
 
