@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/didierkrux/node.git"
+    "url": "git+https://github.com/didierkrux/pieneer.live.git"
   },
   "keywords": [
     "live",
@@ -16,12 +16,12 @@
     "interactive",
     "easy"
   ],
-  "author": "Didier Lucas Ivan",
+  "author": "Didier Krux, Ivan Oung, Lucas Ng",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/didierkrux/node/issues"
+    "url": "https://github.com/didierkrux/pieneer.live/issues"
   },
-  "homepage": "https://github.com/didierkrux/node#readme",
+  "homepage": "https://github.com/didierkrux/pieneer.live#readme",
   "dependencies": {
     "body-parser": "^1.18.2",
     "express": "^4.16.3"
