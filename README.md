@@ -4,7 +4,7 @@ Live Presentation made Interactive and Easy
 
 ## Group member
 
-- [Didier Krux](https://github.com/didierkrux/pieneer.live/community)
+- [Didier Krux](https://github.com/didierkrux)
 - [Ivan Oung](https://github.com/ivanoung)
 - [Lucas Ng](https://github.com/LucasNG521)
 
