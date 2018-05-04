@@ -11,3 +11,10 @@ Live Presentation made Interactive and Easy
 ## Project Map and Notes
 
 [Trello Board](https://trello.com/b/8xI6rqJD/accelerator-cohort-module-2)
+
+## Technology used
+
+- AWS EC2 for hosting
+- Node.js (express, passport, socket.io, redis, knex)
+- Bootstrap
+- JQuery
