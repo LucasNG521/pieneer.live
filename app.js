@@ -1,18 +1,19 @@
 #!/usr/bin/nodejs
 
-const express = require('express');
-const device = require('express-device');
-const bodyParser = require('body-parser');
+const express = require("express");
+const device = require("express-device");
+const bodyParser = require("body-parser");
 const app = express();
+const http = require("http").Server(app);
+
+const SocketIOConnection = require("./sockets/socket-connection");
+const socketIOConnection = new SocketIOConnection(http);
+socketIOConnection.router();
+
+const ViewRouter = require("./routes/viewRoutes.js");
 
 app.use(device.capture());
-app.use(express.static(__dirname + '/public'));
-app.get('/', function (req, res) {
-    if (req.param('force') == 'mobile' || req.device.type != 'desktop') {
-        res.redirect('html_mock-up/mobile/');
-    } else {
-        res.redirect('html_mock-up/desktop/');
-    }
-});
+app.use(express.static(__dirname + "/public"));
+app.use("/", new ViewRouter().router());
 
-app.listen(8181);
+app.listen(8181, () => console.log("App is running on 8181"));
