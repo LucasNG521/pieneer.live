@@ -24,6 +24,7 @@
   "homepage": "https://github.com/didierkrux/pieneer.live#readme",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "dotenv": "^5.0.1",
     "express": "^4.16.3",
     "express-device": "^0.4.2",
     "knex": "^0.14.6",
@@ -34,5 +35,6 @@
     "socket.io": "^2.1.0",
     "socket.io-client": "^2.1.0",
     "version": "^0.1.2"
-  }
+  },
+  "devDependencies": {}
 }

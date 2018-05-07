@@ -16,4 +16,4 @@ app.use(device.capture());
 app.use(express.static(__dirname + "/public"));
 app.use("/", new ViewRouter().router());
 
-app.listen(8181, () => console.log("App is running on 8181"));
+http.listen(8181, () => console.log("App is running on 8181"));
