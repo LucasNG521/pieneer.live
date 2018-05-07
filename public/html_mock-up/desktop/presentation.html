@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Desktop - Presentstion</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+    <style>
+        body {
+            background: black;
+        }
+
+        .slide {
+            display: none;
+            /* height: 100vh; */
+            text-align: center;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        .slide img {
+            /* .img-fluid */
+            max-width: 100%;
+            height: auto;
+        }
+
+        div.control {
+            position: absolute;
+            top: 10px;
+
+        }
+
+        div.presentation-control {
+            left: 60px;
+        }
+
+        div.drawing-control {
+            right: 60px;
+        }
+
+        i {
+            color: grey;
+        }
+
+        a:hover {
+            text-decoration: unset;
+        }
+
+        #drawing {
+            background: transparent;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100vw;
+            height: 100vh;
+        }
+        #drawing > canvas {
+            border-top:0 !important;
+            top: 50px !important;
+            /* height: 32px !important; */
+            left: calc(100vw - 300px) !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="presentation">
+        <div class="slide slide-1 slide-img active">
+            <img src="/html_mock-up/presentation-slide-example/slide-1.jpg">
+        </div>
+    </div>
+    <div id="drawing"></div>
+
+    <div class="control presentation-control">
+        <a href="#" class="previous-slide" data-shortcut="left">
+            <i class="fas fa-arrow-alt-circle-left fa-2x"></i>
+        </a>
+        <a href="#" class="next-slide" data-shortcut="right">
+            <i class="fas fa-arrow-alt-circle-right fa-2x"></i>
+        </a>
+    </div>
+    <div class="control drawing-control">
+        <a href="#" class="select" data-shortcut="s">
+            <i class="fas fa-mouse-pointer fa-2x"></i>
+        </a>
+        <a href="#" class="pencil" data-shortcut="p">
+            <i class="fas fa-pencil-alt fa-2x"></i>
+        </a>
+        <a href="#" class="rectangle" data-shortcut="r">
+            <i class="far fa-square fa-2x"></i>
+        </a>
+        <a href="#" class="circle" data-shortcut="c">
+            <i class="far fa-circle fa-2x"></i>
+        </a>
+        <a href="#" class="text" data-shortcut="t">
+            <i class="fas fa-font fa-2x"></i>
+        </a>
+        <a href="#" class="undo" data-shortcut="u">
+            <i class="fas fa-reply fa-2x"></i>
+        </a>
+        <a href="#" class="redo" data-shortcut="shift+u">
+            <i class="fas fa-share fa-2x"></i>
+        </a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery.hotkeys@0.1.0/jquery.hotkeys.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script src="/js/zwibbler2.js"></script>
+    <script>
+        // load slides
+        var nb_slides = 21;
+        var current_slide = 1;
+
+        // Shortcuts
+        $('[data-shortcut]').each(function () {
+            var element = $(this);
+            key = element.data('shortcut');
+
+            $(document).on('keyup', null, String(key), function () {
+                element.trigger('focus').trigger('click');
+            });
+        });
+
+        // drawing
+        var ctx = Zwibbler.create("drawing", {
+            showToolbar: false,
+            //showColourPanel: false
+        });
+        $('.select').click(function (e) {
+            e.preventDefault();
+            ctx.usePickTool();
+        });
+        $('.pencil').click(function (e) {
+            e.preventDefault();
+            ctx.useBrushTool({
+                lineWidth: 10, // optional
+            });
+        });
+        $('.rectangle').click(function (e) {
+            e.preventDefault();
+            ctx.useRectangleTool();
+        });
+        $('.circle').click(function (e) {
+            e.preventDefault();
+            ctx.useCircleTool();
+        });
+        $('.text').click(function (e) {
+            e.preventDefault();
+            ctx.useTextTool();
+        });
+        $('.undo').click(function (e) {
+            e.preventDefault();
+            ctx.undo();
+        });
+        $('.redo').click(function (e) {
+            e.preventDefault();
+            ctx.redo();
+        });
+        // default tool
+        $('.pencil').click();
+        $('#drawing > canvas').addClass('control');
+
+        // navigation
+        $('.previous-slide').click(function (e) {
+            e.preventDefault();
+            $('.slide.active').removeClass('active');
+            current_slide = (current_slide == 1) ? nb_slides : current_slide - 1;
+            $('.slide.slide-' + current_slide).addClass('active');
+            ctx.setCurrentPage(current_slide-1);
+        });
+        $('.next-slide').click(function (e) {
+            e.preventDefault();
+            $('.slide.active').removeClass('active');
+            current_slide = (current_slide == nb_slides) ? 1 : current_slide + 1;
+            $('.slide.slide-' + current_slide).addClass('active');
+            ctx.setCurrentPage(current_slide-1);
+        });
+        var fadeout = null;
+        $("html").mousemove(function () {
+            $(".control").stop().show();
+            if (fadeout != null) {
+                clearTimeout(fadeout);
+            }
+            fadeout = setTimeout(hide_control, 2000);
+        });
+        function hide_control() {
+            $(".control").stop().hide();
+            //$(".control").stop().fadeOut("slow");
+        }
+        $("html").mousemove();
+
+        for (let i = 2; i <= 21; i++) {
+            $('#presentation').append(`<div class="slide slide-${i} slide-img">
+            <img src="/html_mock-up/presentation-slide-example/slide-${i}.jpg">
+        </div>`);
+            ctx.addPage();
+        }
+    </script>
+</body>
+
+</html>

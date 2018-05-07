@@ -1,9 +1,9 @@
 
 exports.up = function(knex, Promise) {
-  return knex.schema.createTable('Q_A',(table)=>{
+  return knex.schema.createTable('q_a',(table)=>{
     table.increments();
-    table.integer('Presentation_id').unsigned();
-    table.foreign('Presentation_id').references('Presentation.id');
+    table.integer('presentation_id').unsigned();
+    table.foreign('presentation_id').references('presentation.id');
     table.string('question');
     table.string('username',100);
     table.integer('likes');
@@ -12,5 +12,5 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-  
+  return knex.schema.dropTable('q_a');
 };

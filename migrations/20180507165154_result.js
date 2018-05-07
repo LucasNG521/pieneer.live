@@ -1,9 +1,9 @@
 
 exports.up = function(knex, Promise) {
-  return knex.schema.createTable('Result',(table)=>{
+  return knex.schema.createTable('result',(table)=>{
     table.increments();
-    table.integer('Polls_id').unsigned();
-    table.foreign('Polls_id').references('Polls.id');
+    table.integer('polls_id').unsigned();
+    table.foreign('polls_id').references('polls.id');
     table.string('answer',1);
     table.string('username',100);
     table.timestamps(false,true);
@@ -11,5 +11,5 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-  
+  return knex.schema.dropTable('result');
 };

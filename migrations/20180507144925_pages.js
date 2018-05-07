@@ -1,9 +1,9 @@
 
 exports.up = function(knex, Promise) {
-  return knex.schema.createTable('Pages',(table)=>{
+  return knex.schema.createTable('pages',(table)=>{
     table.increments();
-    table.integer('Presentation_id').unsigned();
-    table.foreign('Presentation_id').references('Presentation.id');
+    table.integer('presentation_id').unsigned();
+    table.foreign('presentation_id').references('presentation.id');
     table.string('page_type');
     table.integer('order');
     table.timestamps(false,true);
@@ -11,5 +11,5 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-  
+  return knex.schema.dropTable('pages');
 };
