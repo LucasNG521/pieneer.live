@@ -117,6 +117,10 @@
             background-color: #7a5547;
         }
 
+        .color-grey div {
+            background-color: #ced4da;
+        }
+
         .color-white div {
             background-color: #ffffff;
         }
@@ -128,6 +132,10 @@
             left: 0px;
             width: 100vw;
             height: 100vh;
+        }
+
+        #drawing.white-background {
+            background: white;
         }
 
         #drawing>canvas {
@@ -181,6 +189,9 @@
             <a href="#" class="text" data-toggle="tooltip" data-placement="bottom" title="Text [t]" data-shortcut="t">
                 <img src="/img/text-tool.svg">
             </a>
+            <a href="#" class="background" data-toggle="tooltip" data-placement="bottom" title="White background [w]" data-shortcut="w">
+                <img src="/img/background-tool.svg">
+            </a>
             <a href="#" class="undo" data-toggle="tooltip" data-placement="bottom" title="Undo [u]" data-shortcut="u">
                 <img src="/img/undo-tool.svg">
             </a>
@@ -213,9 +224,12 @@
             <a href="#" class="color-brown" data-toggle="tooltip" data-placement="bottom" title="Brown [8]" data-shortcut="8">
                 <div></div>
             </a>
-            <a href="#" class="color-white" data-toggle="tooltip" data-placement="bottom" title="White [9]" data-shortcut="9">
+            <a href="#" class="color-grey" data-toggle="tooltip" data-placement="bottom" title="Grey [9]" data-shortcut="9">
                 <div></div>
             </a>
+            <a href="#" class="color-white" data-toggle="tooltip" data-placement="bottom" title="White [0]" data-shortcut="0">
+                    <div></div>
+                </a>
         </div>
     </div>
 
@@ -242,6 +256,7 @@
         // drawing
         var ctx = Zwibbler.create("drawing", {
             showToolbar: false,
+            // background: 'white',
             showColourPanel: false
         });
         $('.tools a').click(function (e) {
@@ -267,12 +282,14 @@
                     ctx.useCircleTool();
                 } else if (action == 'text') {
                     ctx.useTextTool();
+                } else if (action == 'background') {
+                    $('#drawing').toggleClass('white-background');
                 } else if (action == 'undo') {
                     ctx.undo();
                 } else if (action == 'redo') {
                     ctx.redo();
                 }
-                if (action != 'undo' && action != 'redo') {
+                if (action != 'background' && action != 'undo' && action != 'redo') {
                     $('.tools a.selected').removeClass('selected');
                     $(this).addClass('selected');
                 }
@@ -304,8 +321,7 @@
         $(function () {
             $('.pen').click();
             $('.color-black').click();
-        })
-        //$('#drawing > canvas').addClass('control');
+        });
 
         // navigation
         $('.previous-slide').click(function (e) {
@@ -314,6 +330,8 @@
             current_slide = (current_slide == 1) ? nb_slides : current_slide - 1;
             $('.slide.slide-' + current_slide).addClass('active');
             ctx.setCurrentPage(current_slide - 1);
+            $('#drawing').removeClass('white-background');
+            $(this).blur();
         });
         $('.next-slide').click(function (e) {
             e.preventDefault();
@@ -321,6 +339,8 @@
             current_slide = (current_slide == nb_slides) ? 1 : current_slide + 1;
             $('.slide.slide-' + current_slide).addClass('active');
             ctx.setCurrentPage(current_slide - 1);
+            $('#drawing').removeClass('white-background');
+            $(this).blur();
         });
         var fadeout = null;
         $("html").mousemove(function () {
