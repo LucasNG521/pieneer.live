@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Desktop - Presentstion</title>
+    <title>Desktop - Presentation</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
@@ -30,7 +30,27 @@
         div.control {
             position: absolute;
             top: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 7px;
+        }
 
+        div.control a {
+            width: 42px;
+            height: 42px;
+            padding: 5px;
+            text-align: center;
+            display: inline-block;
+            border-radius: 8px;
+        }
+
+        div.control a:hover {
+            background-color: #E3E3E3;
+        }
+
+        div.control a.selected {
+            background-color: #D6D6D6;
         }
 
         div.presentation-control {
@@ -49,6 +69,58 @@
             text-decoration: unset;
         }
 
+        div.tools {
+            height: 42px;
+        }
+
+        div.colors {
+            height: 42px;
+            margin-top: 4px;
+        }
+
+        .colors div {
+            width: 22px;
+            height: 22px;
+            border-radius: 11px;
+            margin: 5px;
+        }
+
+        .color-black div {
+            background-color: #000000;
+        }
+
+        .color-red div {
+            background-color: #f7412d;
+        }
+
+        .color-green div {
+            background-color: #47b04b;
+        }
+
+        .color-blue div {
+            background-color: #1194f6;
+        }
+
+        .color-yellow div {
+            background-color: #ffc200;
+        }
+
+        .color-purple div {
+            background-color: #9d1bb2;
+        }
+
+        .color-pink div {
+            background-color: #ec1561;
+        }
+
+        .color-brown div {
+            background-color: #7a5547;
+        }
+
+        .color-white div {
+            background-color: #ffffff;
+        }
+
         #drawing {
             background: transparent;
             position: absolute;
@@ -57,8 +129,9 @@
             width: 100vw;
             height: 100vh;
         }
-        #drawing > canvas {
-            border-top:0 !important;
+
+        #drawing>canvas {
+            border-top: 0 !important;
             top: 50px !important;
             /* height: 32px !important; */
             left: calc(100vw - 300px) !important;
@@ -75,39 +148,80 @@
     <div id="drawing"></div>
 
     <div class="control presentation-control">
-        <a href="#" class="previous-slide" data-shortcut="left">
+        <a href="#" class="previous-slide" data-toggle="tooltip" data-placement="bottom" title="Previous slide [left]" data-shortcut="left">
             <i class="fas fa-arrow-alt-circle-left fa-2x"></i>
         </a>
-        <a href="#" class="next-slide" data-shortcut="right">
+        <a data-toggle="tooltip" data-placement="bottom" title="Dashboard" href="/html_mock-up/desktop/dashboard.html">
+            <i class="fas fa-th fa-2x"></i>
+        </a>
+        <a href="#" class="next-slide" data-toggle="tooltip" data-placement="bottom" title="Next slide [right]" data-shortcut="right">
             <i class="fas fa-arrow-alt-circle-right fa-2x"></i>
         </a>
     </div>
     <div class="control drawing-control">
-        <a href="#" class="select" data-shortcut="s">
-            <i class="fas fa-mouse-pointer fa-2x"></i>
-        </a>
-        <a href="#" class="pencil" data-shortcut="p">
-            <i class="fas fa-pencil-alt fa-2x"></i>
-        </a>
-        <a href="#" class="rectangle" data-shortcut="r">
-            <i class="far fa-square fa-2x"></i>
-        </a>
-        <a href="#" class="circle" data-shortcut="c">
-            <i class="far fa-circle fa-2x"></i>
-        </a>
-        <a href="#" class="text" data-shortcut="t">
-            <i class="fas fa-font fa-2x"></i>
-        </a>
-        <a href="#" class="undo" data-shortcut="u">
-            <i class="fas fa-reply fa-2x"></i>
-        </a>
-        <a href="#" class="redo" data-shortcut="shift+u">
-            <i class="fas fa-share fa-2x"></i>
-        </a>
+        <div class="tools">
+            <a href="#" class="select" data-toggle="tooltip" data-placement="bottom" title="Select [v]" data-shortcut="v">
+                <img src="/img/select-tool.svg">
+            </a>
+            <a href="#" class="pen" data-toggle="tooltip" data-placement="bottom" title="Pen [p]" data-shortcut="p">
+                <img src="/img/pen-tool.svg">
+            </a>
+            <a href="#" class="eraser" data-toggle="tooltip" data-placement="bottom" title="Eraser [e]" data-shortcut="e">
+                <img src="/img/eraser-tool.svg">
+            </a>
+            <a href="#" class="rectangle" data-toggle="tooltip" data-placement="bottom" title="Rectangle [r]" data-shortcut="r">
+                <img src="/img/rectangle-tool.svg">
+            </a>
+            <a href="#" class="line" data-toggle="tooltip" data-placement="bottom" title="Line [l]" data-shortcut="l">
+                <img src="/img/line-tool.svg">
+            </a>
+            <a href="#" class="circle" data-toggle="tooltip" data-placement="bottom" title="Circle [c]" data-shortcut="c">
+                <img src="/img/circle-tool.svg">
+            </a>
+            <a href="#" class="text" data-toggle="tooltip" data-placement="bottom" title="Text [t]" data-shortcut="t">
+                <img src="/img/text-tool.svg">
+            </a>
+            <a href="#" class="undo" data-toggle="tooltip" data-placement="bottom" title="Undo [u]" data-shortcut="u">
+                <img src="/img/undo-tool.svg">
+            </a>
+            <a href="#" class="redo" data-toggle="tooltip" data-placement="bottom" title="Redo [U]" data-shortcut="shift+u">
+                <img src="/img/redo-tool.svg">
+            </a>
+        </div>
+        <div class="colors">
+            <a href="#" class="color-black" data-toggle="tooltip" data-placement="bottom" title="Black [1]" data-shortcut="1">
+                <div></div>
+            </a>
+            <a href="#" class="color-red" data-toggle="tooltip" data-placement="bottom" title="Red [2]" data-shortcut="2">
+                <div></div>
+            </a>
+            <a href="#" class="color-green" data-toggle="tooltip" data-placement="bottom" title="Green [3]" data-shortcut="3">
+                <div></div>
+            </a>
+            <a href="#" class="color-blue" data-toggle="tooltip" data-placement="bottom" title="Blue [4]" data-shortcut="4">
+                <div></div>
+            </a>
+            <a href="#" class="color-yellow" data-toggle="tooltip" data-placement="bottom" title="Yellow [5]" data-shortcut="5">
+                <div></div>
+            </a>
+            <a href="#" class="color-purple" data-toggle="tooltip" data-placement="bottom" title="Purple [6]" data-shortcut="6">
+                <div></div>
+            </a>
+            <a href="#" class="color-pink" data-toggle="tooltip" data-placement="bottom" title="Pink [7]" data-shortcut="7">
+                <div></div>
+            </a>
+            <a href="#" class="color-brown" data-toggle="tooltip" data-placement="bottom" title="Brown [8]" data-shortcut="8">
+                <div></div>
+            </a>
+            <a href="#" class="color-white" data-toggle="tooltip" data-placement="bottom" title="White [9]" data-shortcut="9">
+                <div></div>
+            </a>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery.hotkeys@0.1.0/jquery.hotkeys.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <script src="/js/zwibbler2.js"></script>
     <script>
@@ -128,41 +242,70 @@
         // drawing
         var ctx = Zwibbler.create("drawing", {
             showToolbar: false,
-            //showColourPanel: false
+            showColourPanel: false
         });
-        $('.select').click(function (e) {
+        $('.tools a').click(function (e) {
             e.preventDefault();
-            ctx.usePickTool();
+            if (!$(this).hasClass('selected')) {
+                var action = $(this).attr('class');
+                if (action == 'select') {
+                    ctx.usePickTool();
+                } else if (action == 'pen') {
+                    ctx.useBrushTool({
+                        lineWidth: 8,
+                    });
+                } else if (action == 'eraser') {
+                    ctx.useBrushTool({
+                        lineWidth: 8,
+                        strokeStyle: "erase"
+                    });
+                } else if (action == 'line') {
+                    ctx.useLineTool();
+                } else if (action == 'rectangle') {
+                    ctx.useRectangleTool();
+                } else if (action == 'circle') {
+                    ctx.useCircleTool();
+                } else if (action == 'text') {
+                    ctx.useTextTool();
+                } else if (action == 'undo') {
+                    ctx.undo();
+                } else if (action == 'redo') {
+                    ctx.redo();
+                }
+                if (action != 'undo' && action != 'redo') {
+                    $('.tools a.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            }
+            $(this).blur();
         });
-        $('.pencil').click(function (e) {
+        $('.colors a').click(function (e) {
             e.preventDefault();
-            ctx.useBrushTool({
-                lineWidth: 10, // optional
-            });
+            if (!$(this).hasClass('selected')) {
+                var color = $(this).find('div').css('background-color');
+                //console.log(color);
+                ctx.setColour(color, true);
+                $('.colors a.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+            $(this).blur();
         });
-        $('.rectangle').click(function (e) {
-            e.preventDefault();
-            ctx.useRectangleTool();
-        });
-        $('.circle').click(function (e) {
-            e.preventDefault();
-            ctx.useCircleTool();
-        });
-        $('.text').click(function (e) {
-            e.preventDefault();
-            ctx.useTextTool();
-        });
-        $('.undo').click(function (e) {
-            e.preventDefault();
-            ctx.undo();
-        });
-        $('.redo').click(function (e) {
-            e.preventDefault();
-            ctx.redo();
+
+        ctx.on("tool-changed", function (toolname) {
+            console.log(toolname);
+            if (toolname == 'pick') {
+                $('.tools a.selected').removeClass('selected');
+                $('.tools a.select').addClass('selected');
+            }
+            // $(".tool").removeClass("selected");
+            // $(".tool-" + toolname).addClass("selected");
         });
         // default tool
-        $('.pencil').click();
-        $('#drawing > canvas').addClass('control');
+        $(function () {
+            $('.pen').click();
+            $('.color-black').click();
+        })
+        //$('#drawing > canvas').addClass('control');
 
         // navigation
         $('.previous-slide').click(function (e) {
@@ -170,14 +313,14 @@
             $('.slide.active').removeClass('active');
             current_slide = (current_slide == 1) ? nb_slides : current_slide - 1;
             $('.slide.slide-' + current_slide).addClass('active');
-            ctx.setCurrentPage(current_slide-1);
+            ctx.setCurrentPage(current_slide - 1);
         });
         $('.next-slide').click(function (e) {
             e.preventDefault();
             $('.slide.active').removeClass('active');
             current_slide = (current_slide == nb_slides) ? 1 : current_slide + 1;
             $('.slide.slide-' + current_slide).addClass('active');
-            ctx.setCurrentPage(current_slide-1);
+            ctx.setCurrentPage(current_slide - 1);
         });
         var fadeout = null;
         $("html").mousemove(function () {
@@ -199,6 +342,10 @@
         </div>`);
             ctx.addPage();
         }
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
     </script>
 </body>
 
