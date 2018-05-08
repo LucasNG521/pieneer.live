@@ -52,9 +52,9 @@ Create table with knex
 
 - npm dotenv
 - migrations file 
-    -presenter
-    -presentation
-    -pages
-    -polls
-    -result
-    -q_a
+    - presenter
+    - presentation
+    - pages
+    - polls
+    - result
+    - q_a
