@@ -58,3 +58,22 @@ Create table with knex
     - polls
     - result
     - q_a
+
+## version 0.3 May 8, 2018 (Lucas)
+
+database chang and added seeds file
+
+### Added
+
+- seeds 
+    - all-table
+
+### Changed
+
+- migrations file (type)
+    - presenter
+    - presentation
+    - pages
+    - polls
+    - result
+    - q_a
