@@ -117,6 +117,10 @@
             background-color: #7a5547;
         }
 
+        .color-grey div {
+            background-color: #ced4da;
+        }
+
         .color-white div {
             background-color: #ffffff;
         }
@@ -128,6 +132,10 @@
             left: 0px;
             width: 100vw;
             height: 100vh;
+        }
+
+        #drawing.white-background {
+            background: white;
         }
 
         #drawing>canvas {
@@ -160,62 +168,68 @@
     </div>
     <div class="control drawing-control">
         <div class="tools">
-            <a href="#" class="select" data-toggle="tooltip" data-placement="bottom" title="Select [v]" data-shortcut="v">
+            <a href="#" class="select" data-toggle="tooltip" data-placement="bottom" title="Select [ v ]" data-shortcut="v">
                 <img src="/img/select-tool.svg">
             </a>
-            <a href="#" class="pen" data-toggle="tooltip" data-placement="bottom" title="Pen [p]" data-shortcut="p">
+            <a href="#" class="pen" data-toggle="tooltip" data-placement="bottom" title="Pen [ p ]" data-shortcut="p">
                 <img src="/img/pen-tool.svg">
             </a>
-            <a href="#" class="eraser" data-toggle="tooltip" data-placement="bottom" title="Eraser [e]" data-shortcut="e">
+            <a href="#" class="eraser" data-toggle="tooltip" data-placement="bottom" title="Eraser [ e ]" data-shortcut="e">
                 <img src="/img/eraser-tool.svg">
             </a>
-            <a href="#" class="rectangle" data-toggle="tooltip" data-placement="bottom" title="Rectangle [r]" data-shortcut="r">
+            <a href="#" class="rectangle" data-toggle="tooltip" data-placement="bottom" title="Rectangle [ r ]" data-shortcut="r">
                 <img src="/img/rectangle-tool.svg">
             </a>
-            <a href="#" class="line" data-toggle="tooltip" data-placement="bottom" title="Line [l]" data-shortcut="l">
+            <a href="#" class="line" data-toggle="tooltip" data-placement="bottom" title="Line(s) [ l ]" data-shortcut="l">
                 <img src="/img/line-tool.svg">
             </a>
-            <a href="#" class="circle" data-toggle="tooltip" data-placement="bottom" title="Circle [c]" data-shortcut="c">
+            <a href="#" class="circle" data-toggle="tooltip" data-placement="bottom" title="Circle [ c ]" data-shortcut="c">
                 <img src="/img/circle-tool.svg">
             </a>
-            <a href="#" class="text" data-toggle="tooltip" data-placement="bottom" title="Text [t]" data-shortcut="t">
+            <a href="#" class="text" data-toggle="tooltip" data-placement="bottom" title="Text [ t ]" data-shortcut="t">
                 <img src="/img/text-tool.svg">
             </a>
-            <a href="#" class="undo" data-toggle="tooltip" data-placement="bottom" title="Undo [u]" data-shortcut="u">
+            <a href="#" class="background" data-toggle="tooltip" data-placement="bottom" title="White background [ w ]" data-shortcut="w">
+                <img src="/img/background-tool.svg">
+            </a>
+            <a href="#" class="undo" data-toggle="tooltip" data-placement="bottom" title="Undo [ u ]" data-shortcut="u">
                 <img src="/img/undo-tool.svg">
             </a>
-            <a href="#" class="redo" data-toggle="tooltip" data-placement="bottom" title="Redo [U]" data-shortcut="shift+u">
+            <a href="#" class="redo" data-toggle="tooltip" data-placement="bottom" title="Redo [ U ]" data-shortcut="shift+u">
                 <img src="/img/redo-tool.svg">
             </a>
         </div>
         <div class="colors">
-            <a href="#" class="color-black" data-toggle="tooltip" data-placement="bottom" title="Black [1]" data-shortcut="1">
+            <a href="#" class="color-black" data-toggle="tooltip" data-placement="bottom" title="Black [ 1 ]" data-shortcut="1">
                 <div></div>
             </a>
-            <a href="#" class="color-red" data-toggle="tooltip" data-placement="bottom" title="Red [2]" data-shortcut="2">
+            <a href="#" class="color-red" data-toggle="tooltip" data-placement="bottom" title="Red [ 2 ]" data-shortcut="2">
                 <div></div>
             </a>
-            <a href="#" class="color-green" data-toggle="tooltip" data-placement="bottom" title="Green [3]" data-shortcut="3">
+            <a href="#" class="color-green" data-toggle="tooltip" data-placement="bottom" title="Green [ 3 ]" data-shortcut="3">
                 <div></div>
             </a>
-            <a href="#" class="color-blue" data-toggle="tooltip" data-placement="bottom" title="Blue [4]" data-shortcut="4">
+            <a href="#" class="color-blue" data-toggle="tooltip" data-placement="bottom" title="Blue [ 4 ]" data-shortcut="4">
                 <div></div>
             </a>
-            <a href="#" class="color-yellow" data-toggle="tooltip" data-placement="bottom" title="Yellow [5]" data-shortcut="5">
+            <a href="#" class="color-yellow" data-toggle="tooltip" data-placement="bottom" title="Yellow [ 5 ]" data-shortcut="5">
                 <div></div>
             </a>
-            <a href="#" class="color-purple" data-toggle="tooltip" data-placement="bottom" title="Purple [6]" data-shortcut="6">
+            <a href="#" class="color-purple" data-toggle="tooltip" data-placement="bottom" title="Purple [ 6 ]" data-shortcut="6">
                 <div></div>
             </a>
-            <a href="#" class="color-pink" data-toggle="tooltip" data-placement="bottom" title="Pink [7]" data-shortcut="7">
+            <a href="#" class="color-pink" data-toggle="tooltip" data-placement="bottom" title="Pink [ 7 ]" data-shortcut="7">
                 <div></div>
             </a>
-            <a href="#" class="color-brown" data-toggle="tooltip" data-placement="bottom" title="Brown [8]" data-shortcut="8">
+            <a href="#" class="color-brown" data-toggle="tooltip" data-placement="bottom" title="Brown [ 8 ]" data-shortcut="8">
                 <div></div>
             </a>
-            <a href="#" class="color-white" data-toggle="tooltip" data-placement="bottom" title="White [9]" data-shortcut="9">
+            <a href="#" class="color-grey" data-toggle="tooltip" data-placement="bottom" title="Grey [ 9 ]" data-shortcut="9">
                 <div></div>
             </a>
+            <a href="#" class="color-white" data-toggle="tooltip" data-placement="bottom" title="White [ 0 ]" data-shortcut="0">
+                    <div></div>
+                </a>
         </div>
     </div>
 
@@ -242,6 +256,7 @@
         // drawing
         var ctx = Zwibbler.create("drawing", {
             showToolbar: false,
+            // background: 'white',
             showColourPanel: false
         });
         $('.tools a').click(function (e) {
@@ -267,12 +282,14 @@
                     ctx.useCircleTool();
                 } else if (action == 'text') {
                     ctx.useTextTool();
+                } else if (action == 'background') {
+                    $('#drawing').toggleClass('white-background');
                 } else if (action == 'undo') {
                     ctx.undo();
                 } else if (action == 'redo') {
                     ctx.redo();
                 }
-                if (action != 'undo' && action != 'redo') {
+                if (action != 'background' && action != 'undo' && action != 'redo') {
                     $('.tools a.selected').removeClass('selected');
                     $(this).addClass('selected');
                 }
@@ -304,8 +321,7 @@
         $(function () {
             $('.pen').click();
             $('.color-black').click();
-        })
-        //$('#drawing > canvas').addClass('control');
+        });
 
         // navigation
         $('.previous-slide').click(function (e) {
@@ -314,6 +330,8 @@
             current_slide = (current_slide == 1) ? nb_slides : current_slide - 1;
             $('.slide.slide-' + current_slide).addClass('active');
             ctx.setCurrentPage(current_slide - 1);
+            $('#drawing').removeClass('white-background');
+            $(this).blur();
         });
         $('.next-slide').click(function (e) {
             e.preventDefault();
@@ -321,6 +339,8 @@
             current_slide = (current_slide == nb_slides) ? 1 : current_slide + 1;
             $('.slide.slide-' + current_slide).addClass('active');
             ctx.setCurrentPage(current_slide - 1);
+            $('#drawing').removeClass('white-background');
+            $(this).blur();
         });
         var fadeout = null;
         $("html").mousemove(function () {
