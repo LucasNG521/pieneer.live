@@ -42,3 +42,19 @@ Already ran a test on using socket.io to update poll options, which the only thi
 ### Changed
 
 - Rerouting with viewRouter
+
+
+## version 0.2 May 7, 2018 (Lucas)
+
+Create table with knex
+
+### Added
+
+- npm dotenv
+- migrations file 
+    - presenter
+    - presentation
+    - pages
+    - polls
+    - result
+    - q_a
