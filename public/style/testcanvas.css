@@ -1,0 +1,15 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    position: relative;
+}
+
+.chart-container {
+    position: relative;
+    height: 40vh;
+    width: 80vw;
+}

@@ -12,6 +12,11 @@ class ViewRouter {
       }
     });
 
+
+    router.get('/testcanvas', (req, res) => {
+      res.redirect('html_mock-up/testGround/');
+    })
+
     return router;
   }
 }

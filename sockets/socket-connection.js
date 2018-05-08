@@ -9,7 +9,7 @@ class SocketIOConnection {
     this.io.on("connection", socket => {
       console.log("a user connected to the socket");
       socket.on("upvote", incvalue => {
-        io.emit("upvote", incvalue);
+        this.io.emit("upvote", incvalue);
       });
     });
   }
