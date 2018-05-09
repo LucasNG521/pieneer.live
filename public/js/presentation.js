@@ -237,17 +237,21 @@ function display_chart(id) {
         }
     });
 
-    var socket = io();
+    // var socket = io();
 
-    $("#addone").click(() => {
+    $("#addone").click(function (e) {
+        e.preventDefault();
         console.log('clicked upvote');
-        socket.emit("upvote", 1);
-    });
-    socket.on("upvote", val => {
-        console.log('received upvote');
-        myChart.data.datasets[0].data[1] += val;
+        // socket.emit("upvote", 1);
+        myChart.data.datasets[0].data[1] += 1;
         myChart.update();
+        $(this).blur();
     });
+    // socket.on("upvote", val => {
+    //     console.log('received upvote');
+    //     myChart.data.datasets[0].data[1] += val;
+    //     myChart.update();
+    // });
 }
 function update_slide() {
     $('.slide.active').removeClass('active');
