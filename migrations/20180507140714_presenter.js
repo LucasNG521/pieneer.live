@@ -3,6 +3,7 @@ exports.up = function(knex, Promise) {
   return knex.schema.createTable('presenter',(table)=>{
     table.increments();
     table.string('name',100);
+    table.integer('password');
     table.string('email',100);
     table.integer('phone');
     table.string('company',100);
