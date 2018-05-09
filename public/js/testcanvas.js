@@ -1,15 +1,42 @@
 $(() => {
   const socket = io('/testroom');
 
+  const ctx = document.getElementById("myChart");
+  let myChart;
+
+  $.ajax({
+    dataType: 'json',
+    url: `http://localhost:8181/api/polls/1`,
+
+  }).then((json) => {
+    myChart = new Chart(ctx, {
+      type: json[0].style.type,
+      data: {
+        labels: json[0].style.labels,
+        datasets: [{
+          label: json[0].style.label,
+          data: [0, 0, 0, 0],
+          backgroundColor: json[0].style.bgc,
+          borderColor: json[0].style.bdc,
+          borderWidth: json[0].style.bdw
+        }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
+      }
+    });
+  })
+
   $("#addone").click(() => {
     console.log('clicked upvote');
     socket.emit("upvote", 1);
   });
-
-  // $(".vote-button").click(function () {
-  //   console.log("Mobile vote");
-  //   socket.emit("upvote", $(this).data('vote'));
-  // });
 
   socket.on("upvote", (val) => {
     console.log('received upvote');
@@ -24,44 +51,4 @@ $(() => {
   })
 
 
-});
-
-
-const ctx = document.getElementById("myChart");
-
-const myChart = new Chart(ctx, {
-  type: "bar",
-  data: {
-    labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-    datasets: [{
-      label: "# of Votes",
-      data: [12, 10, 4, 8, 12, 10],
-      backgroundColor: [
-        "rgba(255, 99, 132, 0.5)",
-        "rgba(54, 162, 235, 0.5)",
-        "rgba(255, 206, 86, 0.5)",
-        "rgba(75, 192, 192, 0.5)",
-        "rgba(153, 102, 255, 0.5)",
-        "rgba(255, 159, 64, 0.5)"
-      ],
-      borderColor: [
-        "rgba(255,99,132,1)",
-        "rgba(54, 162, 235, 1)",
-        "rgba(255, 206, 86, 1)",
-        "rgba(75, 192, 192, 1)",
-        "rgba(153, 102, 255, 1)",
-        "rgba(255, 159, 64, 1)"
-      ],
-      borderWidth: 1
-    }]
-  },
-  options: {
-    scales: {
-      yAxes: [{
-        ticks: {
-          beginAtZero: true
-        }
-      }]
-    }
-  }
 });
