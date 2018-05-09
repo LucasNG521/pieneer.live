@@ -38,61 +38,73 @@ class ApiRouter {
 
     // Presentation operations
     router.get("/presentations/:presentationid", (req, res) => {
-      const user = knex('presentation').select().where('id', req.params.userid)
+      const user = knex('presentation').select().where('id', req.params.presentationid)
         .then((arr) => {
           res.json(arr);
         })
         .catch(err => { res.status(500).send(err) })
     });
     router.post("/presentations/:presentationid", (req, res) => {
-      const user = knex('presentation').update().where('id', req.params.userid)
+      const user = knex('presentation').update().where('id', req.params.presentationid)
         .then((arr) => {
           res.json(arr);
         })
-        .catch(err => { res.status(500).send(err) })
+        .catch(err => { res.status(500).send(err) });
     });
     router.delete("/presentations/:presentationid", (req, res) => {
-      const user = knex('presenter').where('id', req.params.userid).delete()
+      const user = knex('presenter').where('id', req.params.presentationid).delete()
         .then(() => {
           console.log('deleted');
           res.status(200).end()
         })
-        .catch(err => { res.status(500).send(err) })
+        .catch(err => { res.status(500).send(err) });
     });
 
     // Slides operation
     router.get("/slides/:slideid", (req, res) => {
-      res.send('Retrive');
+      const user = knex('pages').select().where('id', req.params.slideid)
+        .then((arr) => {
+          res.json(arr);
+        })
+        .catch(err => { res.status(500).send(err) });
     });
     router.post("/slides/:slideid", (req, res) => {
-      res.send('Edit');
+      const user = knex('pages').update().where('id', req.params.slideid)
+        .then((err) => {
+          res.json(arr);
+        })
+        .catch(err => { res.status(500).send(err)});
     });
     router.delete("/slides/:slideid", (req, res) => {
-      res.send('Delete');
+      const user = knex('pages').where('id', req.params.slided).delete()
+      .then(() => {
+        res.status(200).end()
+      })
+      .catch(err => {res.status(500).send(err)});
     });
 
     // Polls operations
     router.get("/polls/:pollid", (req, res) => {
-      const user = knex('polls').select().where('id', req.params.userid)
+      const user = knex('polls').select().where('id', req.params.pollid)
         .then((arr) => {
           res.json(arr);
         })
-        .catch(err => { res.status(500).send(err) })
+        .catch(err => { res.status(500).send(err) });
     });
     router.post("/polls/:pollid", (req, res) => {
-      const user = knex('polls').update().where('id', req.params.userid)
+      const user = knex('polls').update().where('id', req.params.pollid)
         .then((arr) => {
           res.json(arr);
         })
-        .catch(err => { res.status(500).send(err) })
+        .catch(err => { res.status(500).send(err) });
     });
     router.delete("/polls/:pollid", (req, res) => {
-      const user = knex('polls').where('id', req.params.userid).delete()
+      const user = knex('polls').where('id', req.params.pollid).delete()
         .then(() => {
           console.log('deleted');
           res.status(200).end()
         })
-        .catch(err => { res.status(500).send(err) })
+        .catch(err => { res.status(500).send(err) });
     });
 
     return router;
