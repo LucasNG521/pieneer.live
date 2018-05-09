@@ -44,7 +44,7 @@ class ApiRouter {
 
         // Presentation operations
         router.get("/presentations/:presentationid", (req, res) => {
-            const user = knex('presentation').select().where('id', req.params.presentationid)
+            const presentation   = knex('presentation').select().where('id', req.params.presentationid)
                 .then((arr) => {
                     res.json(arr);
                 })
@@ -53,7 +53,7 @@ class ApiRouter {
                 })
         });
         router.post("/presentations/:presentationid", (req, res) => {
-            const user = knex('presentation').update().where('id', req.params.presentationid)
+            const presentation = knex('presentation').update().where('id', req.params.presentationid)
                 .then((arr) => {
                     res.json(arr);
                 })
@@ -62,7 +62,7 @@ class ApiRouter {
                 })
         });
         router.delete("/presentations/:presentationid", (req, res) => {
-            const user = knex('presenter').where('id', req.params.presentationid).delete()
+            const presentation = knex('presenter').where('id', req.params.presentationid).delete()
                 .then(() => {
                     console.log('deleted');
                     res.status(200).end()
@@ -85,7 +85,7 @@ class ApiRouter {
 
         // Polls operations
         router.get("/polls/:pollid", (req, res) => {
-            const user = knex('polls').select().where('id', req.params.pollid)
+            const poll = knex('polls').select().where('id', req.params.pollid)
                 .then((arr) => {
                     res.json(arr);
                 })
@@ -94,7 +94,7 @@ class ApiRouter {
                 })
         });
         router.post("/polls/:pollid", (req, res) => {
-            const user = knex('polls').update().where('id', req.params.pollid)
+            const poll = knex('polls').update().where('id', req.params.pollid)
                 .then((arr) => {
                     res.json(arr);
                 })
@@ -103,7 +103,7 @@ class ApiRouter {
                 })
         });
         router.delete("/polls/:pollid", (req, res) => {
-            const user = knex('polls').where('id', req.params.pollid).delete()
+            const poll = knex('polls').where('id', req.params.pollid).delete()
                 .then(() => {
                     res.status(200).end()
                 })
