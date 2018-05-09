@@ -96,3 +96,23 @@ Refactorized the layout of the canvas, finished the tool kit for live-presentati
 - Adding more information into the seed flie for a more thorough testing env.
 
 ### Removed
+
+## version 0.1 May 9, 2018 (Lucas)
+
+### Added
+- npm install
+    - passport-linkedin
+    - passport-google-oauth20
+
+- passport.js
+    - passport.use(facebook, google, linkedin)
+
+- viewRoures.js
+    -router passport (facebook, google, linkedin)
+
+- html 
+    - login
+    - signup
+
+### Problem
+- passport-facebook/linkedin didn't work

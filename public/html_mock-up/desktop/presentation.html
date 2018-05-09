@@ -13,8 +13,13 @@
 
         .slide {
             display: none;
-            /* height: 100vh; */
+            height: 100vh;
+            width: 100vw;
             text-align: center;
+        }
+
+        .slide-poll {
+            background: white;
         }
 
         .slide.active {
@@ -22,9 +27,9 @@
         }
 
         .slide img {
-            /* .img-fluid */
             max-width: 100%;
             height: auto;
+            max-height: 100%;
         }
 
         div.control {
@@ -51,6 +56,11 @@
 
         div.control a.selected {
             background-color: #D6D6D6;
+        }
+
+        #presentation {
+            width: 100vw;
+            height: 100vh;
         }
 
         div.presentation-control {
@@ -144,6 +154,38 @@
             /* height: 32px !important; */
             left: calc(100vw - 300px) !important;
         }
+
+        .question-container {
+            height: 40vh;
+            padding: 50px;
+        }
+
+        .question-container .list-group {
+            margin-top: 30px;
+            width: 80%;
+            margin: auto;
+        }
+
+        .chart-container {
+            height: 60vh;
+            padding: 0 100px 50px 100px;
+        }
+
+        .item-a {
+            background-color: #ffb3c2;
+        }
+
+        .item-b {
+            background-color: #aae0df;
+        }
+
+        .item-c {
+            background-color: #9fd0f6;
+        }
+
+        .item-d {
+            background-color: #ffe6ad;
+        }
     </style>
 </head>
 
@@ -151,6 +193,20 @@
     <div id="presentation">
         <div class="slide slide-1 slide-img active">
             <img src="/html_mock-up/presentation-slide-example/slide-1.jpg">
+        </div>
+        <div class="slide slide-2 slide-poll">
+            <div class="question-container">
+                <h1>Question?</h1>
+                <ul class="list-group">
+                    <li class="list-group-item item-a">A. response 1</li>
+                    <li class="list-group-item item-b">B. response 2</li>
+                    <li class="list-group-item item-c">C. response 3</li>
+                    <li class="list-group-item item-d">D. response 4</li>
+                </ul>
+            </div>
+            <div class="chart-container">
+                <canvas id="myChart"></canvas>
+            </div>
         </div>
     </div>
     <div id="drawing"></div>
@@ -162,8 +218,14 @@
         <a data-toggle="tooltip" data-placement="bottom" title="Dashboard" href="/html_mock-up/desktop/dashboard.html">
             <i class="fas fa-th fa-2x"></i>
         </a>
+        <a href="#" class="toggle-fullscreen" data-toggle="tooltip" data-placement="bottom" title="Toggle Fullscreen [ f ]" data-shortcut="f">
+            <i class="fas fa-desktop fa-2x"></i>
+        </a>
         <a href="#" class="next-slide" data-toggle="tooltip" data-placement="bottom" title="Next slide [right]" data-shortcut="right">
             <i class="fas fa-arrow-alt-circle-right fa-2x"></i>
+        </a>
+        <a href="#" id="addone" data-toggle="tooltip" data-placement="bottom" title="Up Vote [=]" data-shortcut="=">
+            <i class="fas fa-plus fa-2x"></i>
         </a>
     </div>
     <div class="control drawing-control">
@@ -228,8 +290,8 @@
                 <div></div>
             </a>
             <a href="#" class="color-white" data-toggle="tooltip" data-placement="bottom" title="White [ 0 ]" data-shortcut="0">
-                    <div></div>
-                </a>
+                <div></div>
+            </a>
         </div>
     </div>
 
@@ -238,6 +300,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <script src="/js/zwibbler2.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.slim.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+    <script src="../../js/testcanvas.js"></script>
     <script>
         // load slides
         var nb_slides = 21;
@@ -256,7 +321,6 @@
         // drawing
         var ctx = Zwibbler.create("drawing", {
             showToolbar: false,
-            // background: 'white',
             showColourPanel: false
         });
         $('.tools a').click(function (e) {
@@ -300,7 +364,6 @@
             e.preventDefault();
             if (!$(this).hasClass('selected')) {
                 var color = $(this).find('div').css('background-color');
-                //console.log(color);
                 ctx.setColour(color, true);
                 $('.colors a.selected').removeClass('selected');
                 $(this).addClass('selected');
@@ -314,8 +377,6 @@
                 $('.tools a.selected').removeClass('selected');
                 $('.tools a.select').addClass('selected');
             }
-            // $(".tool").removeClass("selected");
-            // $(".tool-" + toolname).addClass("selected");
         });
         // default tool
         $(function () {
@@ -352,17 +413,48 @@
         });
         function hide_control() {
             $(".control").stop().hide();
-            //$(".control").stop().fadeOut("slow");
         }
         $("html").mousemove();
 
-        for (let i = 2; i <= 21; i++) {
+        // fullscreen
+        $('.toggle-fullscreen').click(function (e) {
+            e.preventDefault();
+            toggleFullScreen();
+            $(this).blur();
+        });
+        function toggleFullScreen() {
+            if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                } else if (document.documentElement.msRequestFullscreen) {
+                    document.documentElement.msRequestFullscreen();
+                } else if (document.documentElement.mozRequestFullScreen) {
+                    document.documentElement.mozRequestFullScreen();
+                } else if (document.documentElement.webkitRequestFullscreen) {
+                    document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                }
+            }
+        }
+        
+        // adding fake slides
+        for (let i = 3; i <= 21; i++) {
             $('#presentation').append(`<div class="slide slide-${i} slide-img">
             <img src="/html_mock-up/presentation-slide-example/slide-${i}.jpg">
         </div>`);
             ctx.addPage();
         }
-
+        
+        // activate tooltip
         $(function () {
             $('[data-toggle="tooltip"]').tooltip();
         });
