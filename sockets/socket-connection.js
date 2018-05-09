@@ -11,8 +11,8 @@ class SocketIOConnection {
       socket.on("upvote", incvalue => {
         this.io.emit("upvote", incvalue);
       });
-      socket.on("vote", ()=>{
-        this.io.emit('vote');
+      socket.on("vote", (option)=>{
+        this.io.emit('vote', option);
       })
     });
   }

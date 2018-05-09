@@ -15,7 +15,7 @@ $(() => {
         labels: json[0].style.labels,
         datasets: [{
           label: json[0].style.label,
-          data: [0, 0, 0, 0],
+          data: [1, 2, 3, 4],
           backgroundColor: json[0].style.bgc,
           borderColor: json[0].style.bdc,
           borderWidth: json[0].style.bdw
@@ -45,8 +45,7 @@ $(() => {
   });
 
   socket.on('vote', val => {
-    console.log("Oh fuck");
-    myChart.data.datasets[0].data[1] += 1;
+    myChart.data.datasets[0].data[val] += 1;
     myChart.update();
   })
 

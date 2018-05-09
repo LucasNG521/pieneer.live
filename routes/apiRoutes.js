@@ -7,7 +7,6 @@ class ApiRouter {
 
     router() {
         const router = require("express").Router();
-
         router.get("/", (req, res) => {
             res.send('hi');
         });
@@ -44,7 +43,7 @@ class ApiRouter {
 
         // Presentation operations
         router.get("/presentations/:presentationid", (req, res) => {
-            const presentation   = knex('presentation').select().where('id', req.params.presentationid)
+            const presentation = knex('presentation').select().where('id', req.params.presentationid)
                 .then((arr) => {
                     res.json(arr);
                 })
