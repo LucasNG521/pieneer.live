@@ -8,7 +8,6 @@ class ChartDetails {
         this.bdc = bdc;
         this.bdw = bdw;
     }
-
     // To output to Chart object
     chartDetailInJson() {
         return {
