@@ -14,14 +14,14 @@ class ViewRouter {
       }
     });
 
-<<<<<<< HEAD
     router.get('/test', (req, res) => {
       if (req.param("force") == "mobile" || req.device.type != "desktop") {
         res.redirect('html_mock-up/testGroundMobile/');
       } else {
         res.redirect('html_mock-up/testGround/');
-      }
-=======
+      };
+    });
+
     //passport-facebook
     router.get('/auth/facebook',
       passport.authenticate('facebook'));
@@ -55,12 +55,6 @@ class ViewRouter {
       (req, res) => {
         res.redirect('/');
       });
-
-
-    router.get('/testcanvas', (req, res) => {
-      res.redirect('html_mock-up/testGround/');
->>>>>>> 28bc5ed5bf58c3d17764b7429a4dfe112aa6a8da
-    })
 
     return router;
   }

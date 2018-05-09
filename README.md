@@ -110,9 +110,8 @@ Refactorized the layout of the canvas, finished the tool kit for live-presentati
 - viewRoures.js
     -router passport (facebook, google, linkedin)
 
-- html 
-    - login
-    - signup
+###changed
+- login.html and signup.html moved to index.html 
 
 ### Problem
 - passport-facebook/linkedin didn't work

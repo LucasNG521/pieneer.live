@@ -1,5 +1,9 @@
+const config = require('../knexfile').development;
+const knex = require('knex')(config);
+
+
 class ApiRouter {
-    constructor() {}
+    constructor() { }
 
     router() {
         const router = require("express").Router();
@@ -10,7 +14,10 @@ class ApiRouter {
 
         // User operations
         router.get("/users/:userid", (req, res) => {
-            res.json();
+            const user = knex('presenter').select().where('id', req.params.userid);
+            user.then((arr) => {
+                res.json(arr);
+            })
         });
         router.post("/users/:userid", (req, res) => {
             res.send('Edit');
