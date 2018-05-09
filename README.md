@@ -118,21 +118,15 @@ Refactorized the layout of the canvas, finished the tool kit for live-presentati
 
 ## version 0.1 May 9, 2018 (Ivan)
 
-Today's focus was to setup the database, setting up the correct seeding file for the right data to go through with the testing. Also, the pathing of the API (routers->apiRoutes) is coming into shape, where the design of the actual wireframe is required to help visualize 
+Today's focus was to setup the database, setting up the correct seeding file for the right data to go through with the testing. Also, the pathing of the API (routers->apiRoutes) is coming into shape, where the design of the actual wireframe is required to help visualize what to make out of the database. 
+Also the mobile and web connection is established, where clicking on the cellphone will trigger changes on the website instantly, the only thing that is missing is to push the vote counts into the database as well as recalling the piece of data from SQL.
 
 ### Added
-- npm install
-    - passport-linkedin
-    - passport-google-oauth20
-
-- passport.js
-    - passport.use(facebook, google, linkedin)
-
-- viewRoures.js
-    -router passport (facebook, google, linkedin)
+- API to access the database
+- Connection between mobile and the web version
 
 ### changed
-- login.html and signup.html moved to index.html 
+- Seeding content
 
 ### Problem
-- passport-facebook/linkedin didn't work
+- Vote counts are static, serving from the front end instead of sending it to backend
