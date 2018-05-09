@@ -14,6 +14,14 @@ class ViewRouter {
       }
     });
 
+    router.get('/test', (req, res) => {
+      if (req.param("force") == "mobile" || req.device.type != "desktop") {
+        res.redirect('html_mock-up/testGroundMobile/');
+      } else {
+        res.redirect('html_mock-up/testGround/');
+      };
+    });
+
     //passport-facebook
     router.get('/auth/facebook',
       passport.authenticate('facebook'));
@@ -47,11 +55,6 @@ class ViewRouter {
       (req, res) => {
         res.redirect('/');
       });
-
-
-    router.get('/testcanvas', (req, res) => {
-      res.redirect('html_mock-up/testGround/');
-    })
 
     return router;
   }

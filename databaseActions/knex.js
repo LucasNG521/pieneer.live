@@ -4,18 +4,8 @@ class DatabaseAction {
     constructor(knex) {
         this.knex = knex;
     }
-    writeChartInfo() {
-        const checkline = this.knex('testpoll').insert({
-                question: 'hi',
-                answer_content: [{
-                    A: "I am a boy",
-                    B: "Something here",
-                    C: "Something"
-                }],
-                style: [{
-                    bgc: ['rgba(123,123,123,0.5)']
-                }]
-            })
+    writeChartInfo(table, chartStyle) {
+        const checkline = this.knex(table).insert(chartStyle)
             .then((something) => {
                 console.log(something);
             }).catch((err) => {
@@ -23,8 +13,8 @@ class DatabaseAction {
             });
     }
 
-    readChartInfo(idnum) { // Promise<string>
-        const checkline = this.knex('testpoll').select().where({
+    readChartInfo(table, idnum) { // Promise<string>
+        const checkline = this.knex(table).select().where({
             id: idnum
         });
         // console.log(checkline);

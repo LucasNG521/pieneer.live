@@ -10,7 +10,7 @@ module.exports = (app) => {
   app.use(passport.session());
 
 
-  passport.use(new FacebookStrategy({
+  passport.use('facebook', new FacebookStrategy({
     clientID: FACEBOOK_APP_ID,
     clientSecret: FACEBOOK_APP_SECRET,
     callbackURL: "http://localhost:8181/auth/facebook/callback"
@@ -22,7 +22,7 @@ module.exports = (app) => {
     }
   ));
 
-  passport.use(new GoogleStrategy({
+  passport.use('google', new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
     callbackURL: "http://localhost:8181/auth/google/callback"
@@ -34,7 +34,7 @@ module.exports = (app) => {
     }
   ));
 
-  passport.use(new LinkedInStrategy({
+  passport.use('linkedin', new LinkedInStrategy({
     consumerKey: LINKEDIN_API_KEY,
     consumerSecret: LINKEDIN_SECRET_KEY,
     callbackURL: "http://localhost:8181/auth/linkedin/callback"

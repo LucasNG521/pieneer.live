@@ -2,7 +2,7 @@ const SocketIO = require("socket.io");
 
 class SocketIOConnection {
   constructor(http) {
-    this.io = SocketIO(http);
+    this.io = SocketIO(http).of('/testroom');
   }
 
   router() {
@@ -11,6 +11,9 @@ class SocketIOConnection {
       socket.on("upvote", incvalue => {
         this.io.emit("upvote", incvalue);
       });
+      socket.on("vote", (option)=>{
+        this.io.emit('vote', option);
+      })
     });
   }
 }

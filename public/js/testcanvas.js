@@ -1,66 +1,53 @@
 $(() => {
-    const socket = io();
+  const socket = io('/testroom');
 
-    $("#addone").click(() => {
-        console.log('clicked upvote');
-        socket.emit("upvote", 1);
-    });
-    socket.on("upvote", val => {
-        console.log('received upvote');
-        myChart.data.datasets[0].data[1] += val;
-        myChart.update();
-    });
+  const ctx = document.getElementById("myChart");
+  let myChart;
 
+  $.ajax({
+    dataType: 'json',
+    url: `http://localhost:8181/api/polls/1`,
 
-});
-
-var ctx = document.getElementById("myChart");
-
-var data = [12, 10, 4, 8];
-
-var labels = ["A", "B", "C", "D", "E", "F"];
-labels = labels.slice(0, data.length);
-
-var type = "bar";
-
-var myChart = new Chart(ctx, {
-    type: type,
-    data: {
-        labels: labels,
+  }).then((json) => {
+    myChart = new Chart(ctx, {
+      type: json[0].style.type,
+      data: {
+        labels: json[0].style.labels,
         datasets: [{
-            label: "",
-            data: data,
-            backgroundColor: [
-                "rgba(255, 99, 132, 0.5)",
-                "rgba(75, 192, 192, 0.5)",
-                "rgba(54, 162, 235, 0.5)",
-                "rgba(255, 206, 86, 0.5)",
-                "rgba(153, 102, 255, 0.5)",
-                "rgba(255, 159, 64, 0.5)"
-            ],
-            borderColor: [
-                "rgba(255,99,132,1)",
-                "rgba(75, 192, 192, 1)",
-                "rgba(54, 162, 235, 1)",
-                "rgba(255, 206, 86, 1)",
-                "rgba(153, 102, 255, 1)",
-                "rgba(255, 159, 64, 1)"
-            ],
-            borderWidth: 1
+          label: json[0].style.label,
+          data: [1, 2, 3, 4],
+          backgroundColor: json[0].style.bgc,
+          borderColor: json[0].style.bdc,
+          borderWidth: json[0].style.bdw
         }]
-    },
-    options: {
+      },
+      options: {
         scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
-        },
-        legend: {
-            display: false
-        },
-        responsive: true,
-        maintainAspectRatio: false
-    }
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
+      }
+    });
+  })
+
+  $("#addone").click(() => {
+    console.log('clicked upvote');
+    socket.emit("upvote", 1);
+  });
+
+  socket.on("upvote", (val) => {
+    console.log('received upvote');
+    myChart.data.datasets[0].data[1] += val;
+    myChart.update();
+  });
+
+  socket.on('vote', val => {
+    myChart.data.datasets[0].data[val] += 1;
+    myChart.update();
+  })
+
+
 });
