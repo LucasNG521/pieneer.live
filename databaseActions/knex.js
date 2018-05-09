@@ -1,3 +1,5 @@
+const config = require('../knexfile').development;
+
 class DatabaseAction {
     constructor(knex) {
         this.knex = knex;
@@ -37,17 +39,17 @@ class DatabaseAction {
 }
 
 
-const knex = require('knex')({
-    client: 'postgresql',
-    connection: {
-        database: 'pieneertest',
-        user: 'ivanoung',
-        password: 'ivanoung'
-    }
-});
+// const knex = require('knex')({
+//     client: 'postgresql',
+//     connection: {
+//         database: 'pieneertest',
+//         user: 'ivanoung',
+//         password: 'ivanoung'
+//     }
+// });
 
 
-const database = new DatabaseAction(knex);
+const database = new DatabaseAction(require('knex')(config));
 database.writeChartInfo();
 // database.readChartInfo(3).then((res) => {
 //     console.log(res);
