@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Edit presention | Pieneer - Live Presentation made Interactive and Easy</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+    <link rel="stylesheet" href="/css/desktop.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">Pieneer</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="dashboard.html">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="edit_presentation.html">Edit Presentation</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="presentation.html">Play Presentation</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/?force=mobile">Mobile</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container presentation mt-5 row">
+        <div class="list col-3">
+            <div class="slide slide-image">
+                <img src="/html_mock-up/presentation-slide-example/slide-1.jpg">
+            </div>
+            <div class="slide slide-image">
+                <img src="/html_mock-up/presentation-slide-example/slide-1.jpg">
+            </div>
+            <div class="actions">
+                <button data-toggle="tooltip" class="btn btn-info" type="button" id="insert-ppt" title="Insert PPT">
+                    <i class="fas fa-file-powerpoint"></i>
+                </button>
+                <button data-toggle="tooltip" class="btn btn-info" type="button" id="insert-image" title="Insert image">
+                    <i class="fas fa-file-image"></i>
+                </button>
+                <button data-toggle="tooltip" class="btn btn-info" type="button" id="insert-poll" title="Insert poll">
+                    <i class="fas fa-chart-bar"></i>
+                </button>
+                <button data-toggle="tooltip" class="btn btn-info" type="button" id="insert-qa" title="Insert Q&A">
+                    <i class="fas fa-question-circle"></i>
+                </button>
+            </div>
+        </div>
+        <div class="preview col-9">
+            <img class="img-fluid" src="/html_mock-up/presentation-slide-example/slide-1.jpg">
+        </div>
+    </div>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<script>
+    var hover_slide = -1;
+    function actionPos(new_hover = -1) {
+        if (hover_slide != new_hover) {
+            var hover_slide_dom = $('.slide:nth-child(' + new_hover + ')');
+            var offset = hover_slide_dom.position();
+            $('div.actions').css({ top: offset.top + hover_slide_dom.height()+6, left: offset.left });
+            hover_slide = new_hover;
+        }
+    }
+    function previewSlide(id) {
+        id = id + 1;
+        $('.preview').html('<img class="img-fluid" src="/html_mock-up/presentation-slide-example/slide-' + id + '.jpg">');
+    }
+    actionPos($('.slide').length);
+    $('.slide').mouseenter(function () {
+        actionPos(1 + $(".slide").index($(this)));
+    });
+    $('.slide').click(function () {
+        previewSlide($(".slide").index($(this)));
+    });
+    $('.slide:last-child').mouseenter();
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+    $('.presentation').on('click', 'button', function (e) {
+        e.preventDefault();
+        console.log('add to slide ' + $(this).attr('id') + ' position ' + hover_slide);
+    });
+</script>
+
+</html>

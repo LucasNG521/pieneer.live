@@ -1,14 +1,13 @@
 class ChartDetails {
-    constructor(type, labels, nameOfTable, data = [], bgc = [], bdc = [], bdw = 1) {
-        this.types = type;
-        this.labels = labels;
-        this.labelOfTable = nameOfTable;
-        this.datas = data;
-        this.bgc = bgc;
-        this.bdc = bdc;
-        this.bdw = bdw;
+    constructor(style) {
+        this.types = style['type'];
+        this.labels = style['labels'];
+        this.labelOfTable = style['label'];
+        this.datas = [0];
+        this.bgc = style['bgc'];
+        this.bdc = style['bdc'];
+        this.bdw = style['bdw'];
     }
-
     // To output to Chart object
     chartDetailInJson() {
         return {

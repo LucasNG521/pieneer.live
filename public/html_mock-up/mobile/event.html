@@ -6,42 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
-    <style>
-        .fa-thumbs-up {
-            color: gray;
-            width: 38px;
-            text-align: center;
-        }
-
-        .liked {
-            color: #007bff;
-        }
-
-        .tab-pane.qa {
-            padding-bottom: 38px;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/event.css">
 </head>
 
 <body>
-
-
-    <div class="d-flex">
-        <div class="mr-auto justify-content-begin">
-            <a href="/html_mock-up/mobile/" alt="Exit event">
-                <button type="button" class="btn btn-info">
-                    <i class="fas fa-sign-out-alt"></i>
-                </button>
-            </a>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Event name</a>
         </div>
-        <h2>Name of the event</h2>
-        <div class="ml-auto justify-content-end">
-            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">
-                <i class="fas fa-user"></i>
-            </button>
-        </div>
-    </div>
-    <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
+        <ul class="navbar-nav navbar-text">
+            <li>
+                <a href="#" alt="Edit User Name" data-toggle="modal" data-target="#editNameModal">
+                    <i class="fas fa-user fa-lg"></i>
+                </a>
+            </li>
+            <li>
+                <a href="/html_mock-up/mobile/" alt="Exit event">
+                    <i class="fas fa-sign-out-alt fa-lg"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="nav nav-tabs justify-content-center mt-3" id="myTab" role="tablist">
         <li class="nav-item">
             <a class="nav-link active" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">Info</a>
         </li>
@@ -50,7 +36,9 @@
         </li>
         <li class="nav-item">
             <a class="nav-link" id="poll-tab" data-toggle="tab" href="#poll" role="tab" aria-controls="poll" aria-selected="false">Polls
-                <span class="badge badge-danger badge-pill">!</span>
+                <span class="badge badge-pill">
+                    <img width="26" src="/img/poll-dots.svg">
+                </span>
             </a>
         </li>
     </ul>
@@ -82,8 +70,9 @@
             </div>
         </div>
         <div class="tab-pane qa fade" id="qa" role="tabpanel" aria-labelledby="qa-tab">
-            <h3>Ask the speaker</h3>
-
+            <div class="container">
+                <h3>Ask the speaker</h3>
+            </div>
             <ul class="list-group questions">
                 <li class="list-group-item">
                     <div class="user">
@@ -142,42 +131,48 @@
             </form>
         </div>
         <div class="tab-pane fade" id="poll" role="tabpanel" aria-labelledby="poll-tab">
-            <h3>Live poll</h3>
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <p>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy
-                        text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make
-                        a type specimen book?
-                    </p>
-                </li>
+            <div class="container">
+                <h3>Live poll</h3>
+                <p>
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy
+                    text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type
+                    specimen book?
+                </p>
+            </div>
+            <ul class="list-group poll">
                 <li class="list-group-item">
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input" id="customCheck1">
                         <label class="custom-control-label" for="customCheck1">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</label>
                     </div>
+                </li>
+                <li class="list-group-item">
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input" id="customCheck2">
                         <label class="custom-control-label" for="customCheck2">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</label>
                     </div>
+                </li>
+                <li class="list-group-item">
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input" id="customCheck3">
                         <label class="custom-control-label" for="customCheck3">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</label>
                     </div>
+                </li>
+                <li class="list-group-item">
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input" id="customCheck4">
                         <label class="custom-control-label" for="customCheck4">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</label>
                     </div>
-                    <div class="text-center">
-                        <input class="btn btn-primary" id="submit" type="submit" value="Submit">
-                    </div>
                 </li>
             </ul>
+            <div class="text-center mt-3">
+                <input class="btn btn-primary" id="submit" type="submit" value="Submit">
+            </div>
         </div>
     </div>
 
-    <!-- Name Modal -->
-    <div class="modal fade" id="myModal" role="dialog">
+    <!-- Edit Name Modal -->
+    <div class="modal fade" id="editNameModal" role="dialog">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -204,70 +199,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-    <script>
-        var name = (typeof $.cookie("name") == 'undefined') ? '' : $.cookie("name");
-        $('#myModal').on('show.bs.modal', function (e) {
-            $('#name').val(name);
-        });
-        $('#myModal').on('hide.bs.modal', function (e) {
-            if (name == '') {
-                e.preventDefault();
-                e.stopImmediatePropagation();
-                return false;
-            }
-        });
-        $('#form-name').submit(function (e) {
-            e.preventDefault();
-            $('.savename').click();
-            return false;
-        });
-        $('.savename').click(function () {
-            if ($('#name').val() != '') {
-                name = $('#name').val();
-                $.cookie("name", name, { expires: 365, path: '/' });
-                $('#myModal').modal('hide');
-            }
-        });
-        $('.questions').on('click', '.fa-thumbs-up', function (e) {
-            e.preventDefault();
-            var thumbs_up = ($(this).text() == '') ? 0 : parseInt($(this).text());
-            if ($(this).hasClass('liked') && thumbs_up === 1) {
-                $(this).text('');
-            } else if ($(this).hasClass('liked')) {
-                $(this).text(thumbs_up - 1);
-            } else {
-                $(this).text(thumbs_up + 1);
-            }
-            $(this).toggleClass('liked');
-        });
-        $('#send_question').submit(function (e) {
-            e.preventDefault();
-            var question = $('#question').val();
-            if (question != '') {
-                var html_question = `<li class="list-group-item">
-                    <div class="user">
-                        <i class="far fa-user"></i> ${name}
-                    </div>
-                    <div class="question d-flex align-items-center justify-content-center">
-                        ${question}
-                        <div class="ml-auto justify-content-end">
-                            <a href="#" alt="Like">
-                                <i class="fas fa-thumbs-up fa-lg"></i>
-                            </a>
-                        </div>
-                    </div>
-                </li>`;
-                $('.questions').append(html_question);
-                $('#question').val('');
-                scrollDown();
-            }
-        });
-        function scrollDown() {
-            $('html, body').animate({ scrollTop: $('.questions')[0].scrollHeight }, 0);
-        }
-        if (name == '')
-            $('#myModal').modal('show');
-    </script>
+    <script src="/js/event.js"></script>
 </body>
 
 </html>

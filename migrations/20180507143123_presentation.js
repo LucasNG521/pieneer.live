@@ -8,7 +8,7 @@ exports.up = function(knex, Promise) {
     // table.decimal('location');
     table.specificType('location', 'point');
     table.string('address');
-    table.dateTime('dateTime');
+    // table.dateTime('dateTime');
     table.timestamps(false,true);
   });
 };
