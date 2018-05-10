@@ -10,6 +10,19 @@
         body {
             height: 100vh;
         }
+
+        .fa-user {
+            color: rgb(153, 157, 159);
+        }
+
+        .fa-sign-out-alt {
+            color: #ffffff;
+        }
+
+        ul.navbar-nav {
+            columns: 2;
+        }
+
         .fa-thumbs-up {
             color: gray;
             width: 38px;
@@ -23,28 +36,63 @@
         .tab-pane.qa {
             padding-bottom: 38px;
         }
+
+        .badge-pill {
+            padding-top: 0px;
+            padding-bottom: 0px;
+            height: 21px;
+            padding-left: 2px;
+        }
+
+        .list-group-item:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .poll .list-group-item:nth-child(1) {
+            background: #ffb3c280;
+        }
+
+        .poll .list-group-item:nth-child(2) {
+            background: #aae0df80;
+        }
+
+        .poll .list-group-item:nth-child(3) {
+            background: #9fd0f680;
+        }
+
+        .poll .list-group-item:nth-child(4) {
+            background: #ffe6ad80;
+        }
+
+        .poll .list-group-item:nth-child(5) {
+            background: #ffe6ad80;
+        }
+
+        .poll .list-group-item:nth-child(6) {
+            background: #ffe6ad80;
+        }
     </style>
 </head>
 
 <body>
-
-
-    <div class="d-flex">
-        <div class="mr-auto justify-content-begin">
-            <a href="/html_mock-up/mobile/" alt="Exit event">
-                <button type="button" class="btn btn-info">
-                    <i class="fas fa-sign-out-alt"></i>
-                </button>
-            </a>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Event name</a>
         </div>
-        <h2>Name of the event</h2>
-        <div class="ml-auto justify-content-end">
-            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">
-                <i class="fas fa-user"></i>
-            </button>
-        </div>
-    </div>
-    <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
+        <ul class="navbar-nav navbar-text">
+            <li>
+                <a href="#" alt="Edit User Name" data-toggle="modal" data-target="#myModal">
+                    <i class="fas fa-user fa-lg"></i>
+                </a>
+            </li>
+            <li>
+                <a href="/html_mock-up/mobile/" alt="Exit event">
+                    <i class="fas fa-sign-out-alt fa-lg"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="nav nav-tabs justify-content-center mt-3" id="myTab" role="tablist">
         <li class="nav-item">
             <a class="nav-link active" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">Info</a>
         </li>
@@ -53,7 +101,9 @@
         </li>
         <li class="nav-item">
             <a class="nav-link" id="poll-tab" data-toggle="tab" href="#poll" role="tab" aria-controls="poll" aria-selected="false">Polls
-                <span class="badge badge-danger badge-pill">!</span>
+                <span class="badge badge-pill">
+                    <img width="26" src="/img/poll-dots.svg">
+                </span>
             </a>
         </li>
     </ul>
@@ -154,7 +204,7 @@
                     specimen book?
                 </p>
             </div>
-            <ul class="list-group">
+            <ul class="list-group poll">
                 <li class="list-group-item">
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input" id="customCheck1">

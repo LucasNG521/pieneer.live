@@ -162,26 +162,6 @@ div.colors {
     padding: 0 100px 50px 100px;
 }
 
-.item-0 {
-    background-color: #FFFFFF;
-}
-
-.item-1 {
-    background-color: #f8f9fa;
-}
-
-.item-2 {
-    background-color: #FFFFFF;
-}
-
-.item-3 {
-    background-color: #f8f9fa;
-}
-
-.item-4 {
-    background-color: #FFFFFF;
-}
-
-.item-5 {
-    background-color: #f8f9fa;
+.list-group-item:nth-child(even) {
+    background: #f8f9fa;
 }
