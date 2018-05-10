@@ -96,6 +96,9 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <button type="submit" value="Sign out" class="btn btn-primary"><a href="#" onclick="signOut();">Sign out</a></button>
 
 </body>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -104,9 +107,17 @@
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 
 <script>
+  //google log-in
   $('#login').on('shown.bs.modal', function () {
     $('#myInput').trigger('focus')
   })
+  //google log-out
+  function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      console.log('User signed out.');
+    });
+  }
 </script>
 
 </html>
