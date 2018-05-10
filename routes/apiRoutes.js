@@ -1,9 +1,11 @@
 const config = require('../knexfile').development;
 const knex = require('knex')(config);
-
+const ImageAction =require('../databaseActions/imageActions');
 
 class ApiRouter {
-    constructor() {}
+    constructor() {
+        this.imageAction = new ImageAction();
+    }
 
     router() {
         const router = require("express").Router();
@@ -110,6 +112,18 @@ class ApiRouter {
                     res.status(500).send(err)
                 })
         });
+
+
+
+
+        // http://www.ighsg/api/images/123/242/?pages=12
+        /* This section is to gain access to the image library*/
+        router.get('/images/:userid/:presentationid/', imageAction.readfile(req, res) );
+        router.post('/images/');
+        router.put('/images/');
+        router.delete('/images/');
+
+
 
         return router;
     }
