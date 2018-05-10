@@ -7,6 +7,7 @@ class ApiRouter {
     router() {
         const router = require("express").Router();
         router.get("/", (req, res) => {
+            // Insert potential how-to use API page
             res.send('hi');
         });
 
@@ -170,7 +171,7 @@ class ApiRouter {
 
         // http://www.ighsg/api/images/123/242/?pages=12
         /* This section is to gain access to the image library*/
-        router.get('/images/:userid/:presentationid/');
+        router.get('/images/:userid/:presentationid', this.imageActions.readImage);
         router.post('/images/');
         router.put('/images/');
         router.delete('/images/');
