@@ -14,3 +14,22 @@ ul.navbar-nav {
     padding-top: 0;
     padding-bottom: 0;
 }
+
+.col-lg-3 {
+    margin-top: 30px;
+}
+
+div.list {
+    width: 250px;
+}
+
+.list .slide {
+    margin-bottom: 50px;
+}
+
+.list img {
+    width: 200px;
+}
+.actions {
+    position: absolute;
+}
