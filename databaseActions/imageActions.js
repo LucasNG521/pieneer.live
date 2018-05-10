@@ -1,8 +1,10 @@
 class ImageActions {
-    readfile(req, res){
-        if (req.query.pages){
-            const erer = fs.readfile()
+    readfile(req, res) {
+        if (req.query.pages) {
+            const erer = fs.readfile();
         }
         res.send('jpg');
     }
 }
+
+module.exports = ImageActions;
