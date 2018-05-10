@@ -114,7 +114,7 @@ Refactorized the layout of the canvas, finished the tool kit for live-presentati
 - login.html and signup.html moved to index.html 
 
 ### Problem
-- passport-facebook/linkedin didn't work
+- passport-facebook/linkedin didn't work 
 
 ## version 0.1 May 9, 2018 (Ivan)
 
@@ -130,3 +130,16 @@ Also the mobile and web connection is established, where clicking on the cellpho
 
 ### Problem
 - Vote counts are static, serving from the front end instead of sending it to backend
+
+
+## version 0.1 May 10, 2018 (Lucas)
+
+changed apiRoutes.js and added body-parser to app.js. The REST is working and esay to read.
+
+### Added
+- sign-out google 
+
+### Changed
+- apiRoutes content
+
+### Problem
