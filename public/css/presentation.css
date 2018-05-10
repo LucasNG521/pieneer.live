@@ -163,17 +163,25 @@ div.colors {
 }
 
 .item-0 {
-    background-color: #ffb3c2;
+    background-color: #FFFFFF;
 }
 
 .item-1 {
-    background-color: #aae0df;
+    background-color: #f8f9fa;
 }
 
 .item-2 {
-    background-color: #9fd0f6;
+    background-color: #FFFFFF;
 }
 
 .item-3 {
-    background-color: #ffe6ad;
+    background-color: #f8f9fa;
+}
+
+.item-4 {
+    background-color: #FFFFFF;
+}
+
+.item-5 {
+    background-color: #f8f9fa;
 }
