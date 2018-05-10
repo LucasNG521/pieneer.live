@@ -3,7 +3,7 @@ const knex = require('knex')(config);
 
 
 class ApiRouter {
-    constructor() {}
+    constructor() { }
 
     router() {
         const router = require("express").Router();
@@ -22,6 +22,15 @@ class ApiRouter {
                 })
         });
         router.post("/users/:userid", (req, res) => {
+            const user = knex('presenter').insert().where('id', req.params.userid)
+                .then((arr) => {
+                    res.json(arr);
+                })
+                .catch(err => {
+                    res.status(500).send(err)
+                })
+        });
+        router.put("/users/:userid", (req, res) => {
             const user = knex('presenter').update().where('id', req.params.userid)
                 .then((arr) => {
                     res.json(arr);
@@ -52,6 +61,15 @@ class ApiRouter {
                 })
         });
         router.post("/presentations/:presentationid", (req, res) => {
+            const presentation = knex('presentation').insert().where('id', req.params.presentationid)
+                .then((arr) => {
+                    res.json(arr);
+                })
+                .catch(err => {
+                    res.status(500).send(err)
+                })
+        });
+        router.put("/presentations/:presentationid", (req, res) => {
             const presentation = knex('presentation').update().where('id', req.params.presentationid)
                 .then((arr) => {
                     res.json(arr);
@@ -73,13 +91,41 @@ class ApiRouter {
 
         // Slides operation
         router.get("/slides/:slideid", (req, res) => {
-            res.send('Retrive');
+            const slide = knex('pages').select().where('id', req.params.slideid)
+                .then((arr) => {
+                    res.json(arr);
+                })
+                .catch(err => {
+                    res.status(500).send(err)
+                })
         });
         router.post("/slides/:slideid", (req, res) => {
-            res.send('Edit');
+            const slide = knex('pages').insert().where('id', req.params.slideid)
+                .then((arr) => {
+                    res.json(arr);
+                })
+                .catch(err => {
+                    res.status(500).send(err)
+                })
+        });
+        router.put("/slides/:slideid", (req, res) => {
+            const slide = knex('pages').update().where('id', req.params.slideid)
+                .then((arr) => {
+                    res.json(arr);
+                })
+                .catch(err => {
+                    res.status(500).send(err)
+                })
         });
         router.delete("/slides/:slideid", (req, res) => {
-            res.send('Delete');
+            const slide = knex('pages').where('id', req.params.slideid).delete()
+                .then(() => {
+                    console.log('deleted');
+                    res.status(200).end()
+                })
+                .catch(err => {
+                    res.status(500).send(err)
+                })
         });
 
         // Polls operations
@@ -93,6 +139,15 @@ class ApiRouter {
                 })
         });
         router.post("/polls/:pollid", (req, res) => {
+            const poll = knex('polls').insert().where('id', req.params.pollid)
+                .then((arr) => {
+                    res.json(arr);
+                })
+                .catch(err => {
+                    res.status(500).send(err)
+                })
+        });
+        router.put("/polls/:pollid", (req, res) => {
             const poll = knex('polls').update().where('id', req.params.pollid)
                 .then((arr) => {
                     res.json(arr);
