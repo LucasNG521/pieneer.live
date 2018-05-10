@@ -6,72 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
-    <style>
-        body {
-            height: 100vh;
-        }
-
-        .fa-user {
-            color: rgb(153, 157, 159);
-        }
-
-        .fa-sign-out-alt {
-            color: #ffffff;
-        }
-
-        ul.navbar-nav {
-            columns: 2;
-        }
-
-        .fa-thumbs-up {
-            color: gray;
-            width: 38px;
-            text-align: center;
-        }
-
-        .liked {
-            color: #007bff;
-        }
-
-        .tab-pane.qa {
-            padding-bottom: 38px;
-        }
-
-        .badge-pill {
-            padding-top: 0px;
-            padding-bottom: 0px;
-            height: 21px;
-            padding-left: 2px;
-        }
-
-        .list-group-item:nth-child(even) {
-            background: #f8f9fa;
-        }
-
-        .poll .list-group-item:nth-child(1) {
-            background: #ffb3c280;
-        }
-
-        .poll .list-group-item:nth-child(2) {
-            background: #aae0df80;
-        }
-
-        .poll .list-group-item:nth-child(3) {
-            background: #9fd0f680;
-        }
-
-        .poll .list-group-item:nth-child(4) {
-            background: #ffe6ad80;
-        }
-
-        .poll .list-group-item:nth-child(5) {
-            background: #ffe6ad80;
-        }
-
-        .poll .list-group-item:nth-child(6) {
-            background: #ffe6ad80;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/event.css">
 </head>
 
 <body>
@@ -81,7 +16,7 @@
         </div>
         <ul class="navbar-nav navbar-text">
             <li>
-                <a href="#" alt="Edit User Name" data-toggle="modal" data-target="#myModal">
+                <a href="#" alt="Edit User Name" data-toggle="modal" data-target="#editNameModal">
                     <i class="fas fa-user fa-lg"></i>
                 </a>
             </li>
@@ -236,8 +171,8 @@
         </div>
     </div>
 
-    <!-- Name Modal -->
-    <div class="modal fade" id="myModal" role="dialog">
+    <!-- Edit Name Modal -->
+    <div class="modal fade" id="editNameModal" role="dialog">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -264,70 +199,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-    <script>
-        var name = (typeof $.cookie("name") == 'undefined') ? '' : $.cookie("name");
-        $('#myModal').on('show.bs.modal', function (e) {
-            $('#name').val(name);
-        });
-        $('#myModal').on('hide.bs.modal', function (e) {
-            if (name == '') {
-                e.preventDefault();
-                e.stopImmediatePropagation();
-                return false;
-            }
-        });
-        $('#form-name').submit(function (e) {
-            e.preventDefault();
-            $('.savename').click();
-            return false;
-        });
-        $('.savename').click(function () {
-            if ($('#name').val() != '') {
-                name = $('#name').val();
-                $.cookie("name", name, { expires: 365, path: '/' });
-                $('#myModal').modal('hide');
-            }
-        });
-        $('.questions').on('click', '.fa-thumbs-up', function (e) {
-            e.preventDefault();
-            var thumbs_up = ($(this).text() == '') ? 0 : parseInt($(this).text());
-            if ($(this).hasClass('liked') && thumbs_up === 1) {
-                $(this).text('');
-            } else if ($(this).hasClass('liked')) {
-                $(this).text(thumbs_up - 1);
-            } else {
-                $(this).text(thumbs_up + 1);
-            }
-            $(this).toggleClass('liked');
-        });
-        $('#send_question').submit(function (e) {
-            e.preventDefault();
-            var question = $('#question').val();
-            if (question != '') {
-                var html_question = `<li class="list-group-item">
-                    <div class="user">
-                        <i class="far fa-user"></i> ${name}
-                    </div>
-                    <div class="question d-flex align-items-center justify-content-center">
-                        ${question}
-                        <div class="ml-auto justify-content-end">
-                            <a href="#" alt="Like">
-                                <i class="fas fa-thumbs-up fa-lg"></i>
-                            </a>
-                        </div>
-                    </div>
-                </li>`;
-                $('.questions').append(html_question);
-                $('#question').val('');
-                scrollDown();
-            }
-        });
-        function scrollDown() {
-            $('html, body').animate({ scrollTop: $('.questions')[0].scrollHeight }, 0);
-        }
-        if (name == '')
-            $('#myModal').modal('show');
-    </script>
+    <script src="/js/event.js"></script>
 </body>
 
 </html>
