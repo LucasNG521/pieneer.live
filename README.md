@@ -147,14 +147,27 @@ changed apiRoutes.js and added body-parser to app.js. The REST is working and es
 
 ## version 0.1 May 11, 2018 (Lucas)
 
-Added database table and maked change. local-login is working, username come to req.possport.name !
+Added database table and maked change.trying to do local-login and username come to req.possport.name(if user is loggedin) !
 
 ### Added
 -  magirations files
-    - login
+    - login table
+
+-  npm install bcrypt
+
+- apiRoutes
+    - added router-login
 
 ### Changed
+- index.html
+    - changed edit-info modal content (now is working and connect to db)
+
 - seeds file
     - changed some columns
 
 ### Problem
+- local-login
+    - i don't know how to route login to button/modal (login without login.html)
+    - the index.html missing sign-up function 
+- google-login
+    - cuz we missing login page google-login won't callback to homepage.
