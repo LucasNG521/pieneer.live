@@ -5,39 +5,60 @@ exports.seed = function (knex, Promise) {
       return knex('polls').del().then(() => {
         return knex('pages').del().then(() => {
           return knex('presentation').del().then(() => {
-            return knex('presenter').del()
-              .then(function () {
-                // Inserts seed entries
-                return knex('presenter').insert([{
+            return knex('presenter').del().then(() => {
+              return knex('login').del()
+                .then(() => {
+                  // Inserts seed entries
+                  return knex('login').insert([{
                     id: 1,
-                    name: 'ivan',
+                    username: 'ivan',
                     password: '1234',
-                    email: 'ivan@ivan.com',
-                    phone: '12345678',
-                    company: 'ivan.co',
-                    'social-login': JSON.stringify('facebook')
+                    social_login: JSON.stringify('facebook')
                   },
                   {
                     id: 2,
-                    name: 'didier',
+                    username: 'didier',
                     password: '123321',
-                    email: 'didier@didier.com',
-                    phone: '12345678',
-                    company: 'didier.co',
-                    'social-login': JSON.stringify('google')
+                    social_login: JSON.stringify('google')
                   },
                   {
                     id: 3,
-                    name: 'lucas',
+                    username: 'lucas',
                     password: '321321',
+                    social_login: JSON.stringify('linkedin')
+                  }
+                  ]);
+                }).then(() => {
+                  return knex('presenter').insert([{
+                    id: 1,
+                    login_id: 1,
+                    first_name: 'i',
+                    last_name: 'van',
+                    email: 'ivan@ivan.com',
+                    phone: '12345678',
+                    company: 'ivan.co'
+                  },
+                  {
+                    id: 2,
+                    login_id: 2,
+                    first_name: 'di',
+                    last_name: 'dier',
+                    email: 'didier@didier.com',
+                    phone: '12345678',
+                    company: 'didier.co',
+                  },
+                  {
+                    id: 3,
+                    login_id: 3,
+                    first_name: 'lu',
+                    last_name: 'cas',
                     email: 'lucas@lucas.com',
                     phone: '12345678',
                     company: 'lucas.co',
-                    'social-login': JSON.stringify('linkedin')
                   }
-                ]);
-              }).then(() => {
-                return knex('presentation').insert([{
+                  ]);
+                }).then(() => {
+                  return knex('presentation').insert([{
                     id: 1,
                     presenter_id: 1,
                     title: 'hello world',
@@ -58,9 +79,9 @@ exports.seed = function (knex, Promise) {
                     location: '133.45456,4.123123',
                     address: 'uk'
                   }
-                ]);
-              }).then(() => {
-                return knex('pages').insert([{
+                  ]);
+                }).then(() => {
+                  return knex('pages').insert([{
                     id: 1,
                     presentation_id: 1,
                     page_type: 'img',
@@ -120,226 +141,227 @@ exports.seed = function (knex, Promise) {
                     page_type: 'poll',
                     order: '4'
                   }
-                ]);
-              }).then(() => {
-                return knex('polls').insert([
-                  // {type: 'bar/pie/doughnut/polarArea', labels: string[], label: "", bgc: string[], bdc: string[], bdw: number}
-                  {
-                    id: 1,
-                    pages_id: 2,
-                    question: '1+1 = ?',
-                    answer_content: JSON.stringify({
-                      A: '1',
-                      B: '2',
-                      C: '3',
-                      D: '4'
-                    }),
-                    style: JSON.stringify({
-                      type: 'bar',
-                      labels: ['a', 'b', 'c', 'd'],
-                      label: "1+1 = ?",
-                      bgc: ['rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)'
-                      ],
-                      bdc: ['rgba(255,99,132,1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)'
-                      ],
-                      bdw: 2
-                    })
-                  },
-                  {
-                    id: 2,
-                    pages_id: 7,
-                    question: 'What is your fav food?',
-                    answer_content: JSON.stringify({
-                      A: 'Bacon',
-                      B: 'Veal',
-                      C: "Your mama",
-                      D: "Salmon"
-                    }),
-                    style: JSON.stringify({
-                      type: 'doughnut',
-                      labels: ['a', 'b', 'c', 'd'],
-                      label: "1+1 = ?",
-                      bgc: ['rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)'
-                      ],
-                      bdc: ['rgba(255,99,132,1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)'
-                      ],
-                      bdw: 2
-                    })
-                  },
-                  {
-                    id: 3,
-                    pages_id: 9,
-                    question: 'Beautifully-dumb or Hidiously-smart',
-                    answer_content: JSON.stringify({
-                      A: "Beautifully-dumb",
-                      B: "Hidiously-smart"
-                    }),
-                    style: JSON.stringify({
-                      type: 'pie',
-                      labels: ['a', 'b'],
-                      label: "1+1 = ?",
-                      bgc: ['rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)'
-                      ],
-                      bdc: ['rgba(255,99,132,1)',
-                        'rgba(54, 162, 235, 1)'
-                      ],
-                      bdw: 2
-                    })
-                  },
-                  {
-                    id: 4,
-                    pages_id: 10,
-                    question: 'Best singer',
-                    answer_content: JSON.stringify({
-                      A: "Kanye West",
-                      B: 'Celion Dion',
-                      C: "Luciano Pavarotti",
-                      D: "You"
-                    }),
-                    style: JSON.stringify({
-                      type: 'polarArea',
-                      labels: ['a', 'b', 'c', 'd'],
-                      label: "1+1 = ?",
-                      bgc: ['rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)'
-                      ],
-                      bdc: ['rgba(255,99,132,1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)'
-                      ],
-                      bdw: 2
-                    })
-                  }
-                ])
-              }).then(() => {
-                return knex('result').insert([{
+                  ]);
+                }).then(() => {
+                  return knex('polls').insert([
+                    // {type: 'bar/pie/doughnut/polarArea', labels: string[], label: "", bgc: string[], bdc: string[], bdw: number}
+                    {
+                      id: 1,
+                      pages_id: 2,
+                      question: '1+1 = ?',
+                      answer_content: JSON.stringify({
+                        A: '1',
+                        B: '2',
+                        C: '3',
+                        D: '4'
+                      }),
+                      style: JSON.stringify({
+                        type: 'bar',
+                        labels: ['a', 'b', 'c', 'd'],
+                        label: "1+1 = ?",
+                        bgc: ['rgba(255, 99, 132, 0.2)',
+                          'rgba(54, 162, 235, 0.2)',
+                          'rgba(255, 206, 86, 0.2)',
+                          'rgba(75, 192, 192, 0.2)'
+                        ],
+                        bdc: ['rgba(255,99,132,1)',
+                          'rgba(54, 162, 235, 1)',
+                          'rgba(255, 206, 86, 1)',
+                          'rgba(75, 192, 192, 1)'
+                        ],
+                        bdw: 2
+                      })
+                    },
+                    {
+                      id: 2,
+                      pages_id: 7,
+                      question: 'What is your fav food?',
+                      answer_content: JSON.stringify({
+                        A: 'Bacon',
+                        B: 'Veal',
+                        C: "Your mama",
+                        D: "Salmon"
+                      }),
+                      style: JSON.stringify({
+                        type: 'doughnut',
+                        labels: ['a', 'b', 'c', 'd'],
+                        label: "1+1 = ?",
+                        bgc: ['rgba(255, 99, 132, 0.2)',
+                          'rgba(54, 162, 235, 0.2)',
+                          'rgba(255, 206, 86, 0.2)',
+                          'rgba(75, 192, 192, 0.2)'
+                        ],
+                        bdc: ['rgba(255,99,132,1)',
+                          'rgba(54, 162, 235, 1)',
+                          'rgba(255, 206, 86, 1)',
+                          'rgba(75, 192, 192, 1)'
+                        ],
+                        bdw: 2
+                      })
+                    },
+                    {
+                      id: 3,
+                      pages_id: 9,
+                      question: 'Beautifully-dumb or Hidiously-smart',
+                      answer_content: JSON.stringify({
+                        A: "Beautifully-dumb",
+                        B: "Hidiously-smart"
+                      }),
+                      style: JSON.stringify({
+                        type: 'pie',
+                        labels: ['a', 'b'],
+                        label: "1+1 = ?",
+                        bgc: ['rgba(255, 99, 132, 0.2)',
+                          'rgba(54, 162, 235, 0.2)'
+                        ],
+                        bdc: ['rgba(255,99,132,1)',
+                          'rgba(54, 162, 235, 1)'
+                        ],
+                        bdw: 2
+                      })
+                    },
+                    {
+                      id: 4,
+                      pages_id: 10,
+                      question: 'Best singer',
+                      answer_content: JSON.stringify({
+                        A: "Kanye West",
+                        B: 'Celion Dion',
+                        C: "Luciano Pavarotti",
+                        D: "You"
+                      }),
+                      style: JSON.stringify({
+                        type: 'polarArea',
+                        labels: ['a', 'b', 'c', 'd'],
+                        label: "1+1 = ?",
+                        bgc: ['rgba(255, 99, 132, 0.2)',
+                          'rgba(54, 162, 235, 0.2)',
+                          'rgba(255, 206, 86, 0.2)',
+                          'rgba(75, 192, 192, 0.2)'
+                        ],
+                        bdc: ['rgba(255,99,132,1)',
+                          'rgba(54, 162, 235, 1)',
+                          'rgba(255, 206, 86, 1)',
+                          'rgba(75, 192, 192, 1)'
+                        ],
+                        bdw: 2
+                      })
+                    }
+                  ])
+                }).then(() => {
+                  return knex('result').insert([{
                     id: 1,
                     polls_id: 1,
                     answer: 'A',
-                    username: 'ivan'
+                    visiter_name: 'ivan'
                   },
                   {
                     id: 2,
                     polls_id: 1,
                     answer: 'B',
-                    username: 'didier'
+                    visiter_name: 'didier'
                   },
                   {
                     id: 3,
                     polls_id: 1,
                     answer: 'C',
-                    username: 'lucas'
+                    visiter_name: 'lucas'
                   },
                   {
                     id: 4,
                     polls_id: 1,
                     answer: 'C',
-                    username: 'Andrew'
+                    visiter_name: 'Andrew'
                   },
                   {
                     id: 5,
                     polls_id: 1,
                     answer: 'D',
-                    username: 'Your mama'
+                    visiter_name: 'Your mama'
                   },
                   {
                     id: 6,
                     polls_id: 1,
                     answer: 'D',
-                    username: 'Michael'
+                    visiter_name: 'Michael'
                   },
                   {
                     id: 7,
                     polls_id: 1,
                     answer: 'A',
-                    username: 'Your mama'
+                    visiter_name: 'Your mama'
                   },
                   {
                     id: 8,
                     polls_id: 2,
                     answer: 'A',
-                    username: 'Alex'
+                    visiter_name: 'Alex'
                   },
                   {
                     id: 9,
                     polls_id: 2,
                     answer: 'B',
-                    username: 'Gordon'
+                    visiter_name: 'Gordon'
                   },
                   {
                     id: 10,
                     polls_id: 2,
                     answer: 'C',
-                    username: 'King'
+                    visiter_name: 'King'
                   },
                   {
                     id: 11,
                     polls_id: 2,
                     answer: 'D',
-                    username: 'C K'
+                    visiter_name: 'C K'
                   },
                   {
                     id: 12,
                     polls_id: 3,
                     answer: 'A',
-                    username: 'Soyna'
+                    visiter_name: 'Soyna'
                   },
                   {
                     id: 13,
                     polls_id: 3,
                     answer: 'A',
-                    username: 'Donna'
+                    visiter_name: 'Donna'
                   },
                   {
                     id: 14,
                     polls_id: 3,
                     answer: 'B',
-                    username: 'Judith'
+                    visiter_name: 'Judith'
                   }
-                ])
-              }).then(() => {
-                return knex('q_a').insert([{
+                  ])
+                }).then(() => {
+                  return knex('q_a').insert([{
                     id: 1,
                     presentation_id: 1,
                     question: 'Ivan?',
-                    username: 'ivan',
+                    visiter_name: 'ivan',
                     likes: 10
                   },
                   {
                     id: 2,
                     presentation_id: 2,
                     question: 'Didier?',
-                    username: 'didier',
+                    visiter_name: 'didier',
                     likes: 20
                   },
                   {
                     id: 3,
                     presentation_id: 3,
                     question: 'Lucas?',
-                    username: 'lucas',
+                    visiter_name: 'lucas',
                     likes: 30
                   }
-                ])
-              });
+                  ])
+                });
+            });
           });
         });
       });
     });
   });
-}
+};
