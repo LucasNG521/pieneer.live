@@ -76,7 +76,18 @@ function previewSlide(slide_id) {
 `;
         $('.preview').html(slide_html);
     } else if ($('.slide').eq(slide_id).hasClass('slide-qa')) {
-        $('.preview').html($('.slide').eq(slide_id).html());
+        var slide_html = `
+        <form class="container mt-5" action="/api/event" method="POST" id="form-poll">
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="title">Q&A title</label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="text" name="title" value="Q&A" id="title">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary save-poll mt-5">Save</button>
+        </form>
+`;
+        $('.preview').html(slide_html);
     }
 }
 function insertImage(link) {
@@ -111,7 +122,7 @@ $('.presentation').on('click', 'button', function (e) {
         $('.slide').eq(hover_slide).after(`
         <div class="slide slide-poll">
             <div>
-                Poll
+                <i class="fas fa-chart-bar fa-2x mr-2"></i>Poll
             </div>
         </div>`);
         $('.slide').eq(1 + hover_slide).click();
@@ -119,11 +130,21 @@ $('.presentation').on('click', 'button', function (e) {
         $('.slide').eq(hover_slide).after(`
         <div class="slide slide-qa">
             <div>
-                Q&A
+                <i class="fas fa-question-circle fa-2x mr-2"></i>Q&A
             </div>
         </div>`);
         $('.slide').eq(1 + hover_slide).click();
+    } else if ($(this).attr('id') == 'delete-slide') {
+        $('.slide').eq(hover_slide).remove();
+        // hover_slide --;
+        // $('.slide').eq(hover_slide).mouseenter();
+        if(hover_slide==$('.slide').length) {
+            $('.slide').eq(hover_slide-1).mouseenter().click();
+        } else {
+            $('.slide').eq(hover_slide).click();
+        }
     }
+    $(this).blur();
 });
 
 // init

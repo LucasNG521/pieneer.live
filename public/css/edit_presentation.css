@@ -12,6 +12,7 @@ div.list {
     padding-bottom: 50px;
     min-height: 150px;
     text-align: center;
+    cursor: pointer;
 }
 
 .slide img, .slide div {
