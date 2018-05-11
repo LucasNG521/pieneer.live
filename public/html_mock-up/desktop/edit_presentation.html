@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/min/dropzone.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css">
     <link rel="stylesheet" href="/css/main_desktop.css">
     <link rel="stylesheet" href="/css/edit_presentation.css">
 </head>
@@ -35,27 +36,37 @@
 
     <div class="container-fluid presentation row no-gutters p-0">
         <div class="list col mt-4">
-            <div class="slide slide-0 slide-html">
+            <div class="slide slide-html active">
                 <div>
                     Infos
                 </div>
             </div>
-            <div class="slide slide-1 slide-image">
+            <div class="slide slide-image">
                 <img src="/html_mock-up/presentation-slide-example/slide-1.jpg">
             </div>
-            <div class="slide slide-2 slide-image">
+            <div class="slide slide-poll">
+                <div>
+                    Poll
+                </div>
+            </div>
+            <div class="slide slide-qa">
+                <div>
+                    Q&A
+                </div>
+            </div>
+            <div class="slide slide-image">
                 <img src="/html_mock-up/presentation-slide-example/slide-2.jpg">
             </div>
-            <div class="slide slide-3 slide-image">
+            <div class="slide slide-image">
                 <img src="/html_mock-up/presentation-slide-example/slide-3.jpg">
             </div>
-            <div class="slide slide-4 slide-image">
+            <div class="slide slide-image">
                 <img src="/html_mock-up/presentation-slide-example/slide-4.jpg">
             </div>
-            <div class="slide slide-5 slide-image">
+            <div class="slide slide-image">
                 <img src="/html_mock-up/presentation-slide-example/slide-5.jpg">
             </div>
-            <div class="slide slide-6 slide-image">
+            <div class="slide slide-image">
                 <img src="/html_mock-up/presentation-slide-example/slide-6.jpg">
             </div>
             <div class="actions">
@@ -70,6 +81,9 @@
                 </button>
                 <button data-toggle="tooltip" class="btn btn-info" type="button" id="insert-qa" title="Insert Q&A">
                     <i class="fas fa-question-circle"></i>
+                </button>
+                <button data-toggle="tooltip" class="btn btn-danger" type="button" id="delete-slide" title="Delete slide">
+                    <i class="fas fa-trash-alt"></i>
                 </button>
             </div>
         </div>
@@ -134,6 +148,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/min/dropzone.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
 <script src="/js/edit_presentation.js"></script>
 
 </html>
