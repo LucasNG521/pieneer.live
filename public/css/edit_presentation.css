@@ -1,0 +1,14 @@
+div.list {
+    width: 250px;
+}
+
+.list .slide {
+    padding-bottom: 50px;
+}
+
+.list img {
+    width: 200px;
+}
+.actions {
+    position: absolute;
+}
