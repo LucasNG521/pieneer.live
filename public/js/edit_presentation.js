@@ -4,8 +4,14 @@ function actionPos(new_hover = -1) {
     if (hover_slide != new_hover) {
         var hover_slide_dom = $('.slide').eq(new_hover);
         var offset = hover_slide_dom.position();
-        $('div.actions').css({ top: offset.top + $('.list')[0].scrollTop + hover_slide_dom.height() + 6, left: 37 });
         hover_slide = new_hover;
+        var left = (hover_slide == 0) ? 37 : 16;
+        $('div.actions').css({ top: offset.top + $('.list')[0].scrollTop + hover_slide_dom.height() + 6, left: left });
+        if (hover_slide == 0) {
+            $('#delete-slide').hide();
+        } else {
+            $('#delete-slide').show();
+        }
     }
 }
 function previewSlide(slide_id) {
@@ -108,6 +114,7 @@ $('.presentation').on('click', 'button', function (e) {
                 Poll
             </div>
         </div>`);
+        $('.slide').eq(1 + hover_slide).click();
     } else if ($(this).attr('id') == 'insert-qa') {
         $('.slide').eq(hover_slide).after(`
         <div class="slide slide-qa">
@@ -115,6 +122,7 @@ $('.presentation').on('click', 'button', function (e) {
                 Q&A
             </div>
         </div>`);
+        $('.slide').eq(1 + hover_slide).click();
     }
 });
 
@@ -199,14 +207,19 @@ $('.preview').on('click', '.save-infos', function (e) {
 });
 
 $('.preview').on('click', '.add-answer', function (e) {
-    var letter = String.fromCharCode("A".charCodeAt()+$('.answer').length);
-    $(this).before(`
-    <div class="form-group row">
-        <label class="col-sm-2 col-form-label" for="answer">Answer ${letter}</label>
-        <div class="col-sm-10">
-            <input class="form-control answer" type="text" name="answer[]" value="">
-        </div>
-    </div>`);
+    var letter = String.fromCharCode("A".charCodeAt() + $('.answer').length);
+    if ($('.answer').length < 6) {
+        $(this).before(`
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="answer">Answer ${letter}</label>
+            <div class="col-sm-10">
+                <input class="form-control answer" type="text" name="answer[]" value="">
+            </div>
+        </div>`);
+        if ($('.answer').length == 6) {
+            $('.add-answer').hide();
+        }
+    }
 });
 
 $('.preview').on('click', '.save-poll', function (e) {
