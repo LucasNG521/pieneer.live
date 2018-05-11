@@ -2,10 +2,8 @@ const fs = require('fs');
 const path = require('path');
 
 class ImageActions {
-
-
-    readImage(req, res) {
-        const imageOptions = {
+    constructor() {
+        this.imageOptions = {
             root: path.join(__dirname,
                 '/imageLibrary',
                 `/user-${req.params.userid}`,
@@ -16,6 +14,10 @@ class ImageActions {
                 'x-sent': true
             }
         };
+    }
+
+    readImage(req, res) {
+
         if (req.query.pages) {
             res.sendFile(`${req.params.userid}-${req.params.presentationid}-${req.query.pages}.png`, imageOptions, function (err) {
                 if (err) {
@@ -29,16 +31,17 @@ class ImageActions {
         }
 
     }
-    addImage(){
-        
-    }
-    removeImage(){
+    addImage(req, res) {
+        fs.writeFile()
 
     }
-    editImage(){
+    removeImage() {
 
     }
-    
+    editImage() {
+
+    }
+
 }
 
 module.exports = ImageActions;
