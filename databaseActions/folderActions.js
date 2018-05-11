@@ -1,18 +1,17 @@
 const fs = require('fs');
 const path = require('path');
 
-// Sync version is not working
-// Converting to promise later
-
 class FolderActions {
     constructor() {
         this.rootPath = path.join(__dirname, '/imageLibrary');
-        this.sixPad = this.sixPad.bind(this);
+        this.sixPad = (num) => {
+            return (num.toString()).padStart(6, '0');
+        };
     }
 
-    sixPad(num) {
-        return (num.toString()).padStart(6, '0');
-    }
+    // sixPad(num) {
+
+    // }
 
     mkUserDir(userId) {
         fs.mkdirSync(path.join(this.rootPath, `/user-${this.sixPad(userId)}`));
@@ -55,5 +54,5 @@ class FolderActions {
 
 module.exports = FolderActions;
 
-const testFoler = new FolderActions();
-testFoler.readPresentationDir(1, 1);
+// const testFoler = new FolderActions();
+// testFoler.readPresentationDir(1, 1);

@@ -2,13 +2,21 @@ const fs = require('fs');
 const path = require('path');
 
 class ImageActions {
+    constructor() {
+
+    }
+
+
     readImage(req, res) {
+        const userId = (req.params.userid).toString().padStart(6, '0');
+        const presentationId = (req.params.presentationid).toString().padStart(6, '0');
+
 
         const imageOptions = {
             root: path.join(__dirname,
                 '/imageLibrary',
-                `/user-${req.params.userid}`,
-                `/presentation-${req.params.presentationid}`),
+                `/user-${userId}`,
+                `/presentation-${presentationId}`),
             dotfiles: 'deny',
             headers: {
                 'x-timestamp': Date.now(),
@@ -17,10 +25,9 @@ class ImageActions {
         };
 
         if (req.query.pages) {
-            res.sendFile(`${req.params.userid}-${req.params.presentationid}-${req.query.pages}.png`, imageOptions, function (err) {
+            res.sendFile(`${userId}-${presentationId}-${req.query.pages}.png`, imageOptions, function (err) {
                 if (err) {
-                    console.log(err);
-                    res.status(400).end();
+                    res.status(400).send(err);
                 } else {
                     console.log('Image sent');
                 }
@@ -29,8 +36,27 @@ class ImageActions {
         }
 
     }
-    addImage(req, res) {
-        // fs.writeFile()
+    writeImage(req, res) {
+        const userId = (req.params.userid).toString().padStart(6, '0');
+        const presentationId = (req.params.presentationid).toString().padStart(6, '0');
+        const fileType = req.files.file.name.split('.').pop();
+
+
+        if (!req.files) {
+            return res.status(400).send('No files were uploaded.');
+        } else {
+            req.files.file.mv(path.join(__dirname,
+                '/imageLibrary',
+                `/user-${userId}`,
+                `/presentation-${presentationId}`,
+                `/${userId}-${presentationId}-${req.query.pages}.${fileType}`), (err) => {
+                if (err) {
+                    return res.status(500).send(err);
+                }
+            })
+        }
+
+
 
     }
     removeImage() {
