@@ -3,24 +3,20 @@ const path = require('path');
 
 class ImageActions {
     constructor() {
-        this.sixPad = this.sixPad.bind(this);
+
     }
 
-    sixPad(num) {
-        return (num.toString()).padStart(6, '0');
-    }
 
     readImage(req, res) {
-        const param = {
-            userId: this.sixPad(req.params.userid),
-            presentationId: this.sixPad(req.params.presentationid)
+        const userId = (req.params.userid).toString().padStart(6, '0');
+        const presentationId = (req.params.presentationid).toString().padStart(6, '0');
 
-        }
+
         const imageOptions = {
             root: path.join(__dirname,
                 '/imageLibrary',
-                `/user-${param.userId}`,
-                `/presentation-${param.presentationId}`),
+                `/user-${userId}`,
+                `/presentation-${presentationId}`),
             dotfiles: 'deny',
             headers: {
                 'x-timestamp': Date.now(),
@@ -29,7 +25,7 @@ class ImageActions {
         };
 
         if (req.query.pages) {
-            res.sendFile(`${param.userId}-${param.presentationId}-${req.query.pages}.png`, imageOptions, function (err) {
+            res.sendFile(`${userId}-${presentationId}-${req.query.pages}.png`, imageOptions, function (err) {
                 if (err) {
                     res.status(400).send(err);
                 } else {
@@ -41,20 +37,19 @@ class ImageActions {
 
     }
     writeImage(req, res) {
-        const param = {
-            userId: this.sixPad(req.params.userid),
-            presentationId: this.sixPad(req.params.presentationid),
-            fileType: req.files.file.name.split('.').pop()
-        }
+        const userId = (req.params.userid).toString().padStart(6, '0');
+        const presentationId = (req.params.presentationid).toString().padStart(6, '0');
+        const fileType = req.files.file.name.split('.').pop();
+
 
         if (!req.files) {
             return res.status(400).send('No files were uploaded.');
         } else {
             req.files.file.mv(path.join(__dirname,
                 '/imageLibrary',
-                `/user-${param.userId}`,
-                `/presentation-${param.presentationId}`,
-                `/${param.userId}-${param.presentationId}-${req.query.pages}.${param.fileType}`), (err) => {
+                `/user-${userId}`,
+                `/presentation-${presentationId}`,
+                `/${userId}-${presentationId}-${req.query.pages}.${fileType}`), (err) => {
                 if (err) {
                     return res.status(500).send(err);
                 }

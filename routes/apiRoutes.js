@@ -14,6 +14,70 @@ class ApiRouter {
             res.send('hi');
         });
 
+        // Login ( create a new user to req data to database )operations
+        router.get("/login/:loginid", (req, res) => {
+            const user = this.knex('login')
+                .select()
+                .where('id', req.params.loginid)
+                .then((arr) => {
+                    res.json(arr);
+                })
+                .catch(err => {
+                    res.status(500).send(err)
+                });
+        });
+
+        router.post("/login", (req, res) => {
+            const user = this.knex('login')
+                .insert({
+                    username: req.body.username,
+                    password: req.body.password,
+                    social_login: req.body.social_login
+                })
+                .then(() => {
+                    // res.send(({success:true}));
+                    console.log('added');
+                    // Building the user folder for the user in database
+
+
+
+                    res.json(req.body);
+                })
+                .catch(err => {
+                    res.status(500).send(err)
+                });
+        });
+
+        router.put("/login/:loginid", (req, res) => {
+            const user = this.knex('login')
+                .update({
+                    username: req.body.username,
+                    password: req.body.password,
+                    social_login: req.body.social_login
+                })
+                .where('id', req.params.loginid)
+                .then(() => {
+                    console.log('edited');
+                    res.json(req.body);
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                });
+        });
+
+        router.delete("/users/:userid", (req, res) => {
+            const user = this.knex('presenter')
+                .where('id', req.params.userid)
+                .delete()
+                .then(() => {
+                    console.log('deleted');
+                    res.status(200).end();
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                });
+        });
+
         // User operations
         router.get("/users/:userid", (req, res) => {
             const user = this.knex('presenter')
@@ -30,12 +94,11 @@ class ApiRouter {
         router.post("/users", (req, res) => {
             const user = this.knex('presenter')
                 .insert({
-                    name: req.body.name,
-                    password: req.body.password,
+                    first_name: req.body.first_name,
+                    last_name: req.body.last_name,
                     email: req.body.email,
                     phone: req.body.phone,
                     company: req.body.company,
-                    'social-login': JSON.stringify(req.body['social-login'])
                 })
                 .then(() => {
                     // res.send(({success:true}));
@@ -54,12 +117,11 @@ class ApiRouter {
         router.put("/users/:userid", (req, res) => {
             const user = this.knex('presenter')
                 .update({
-                    name: req.body.name,
-                    password: req.body.password,
+                    first_name: req.body.first_name,
+                    last_name: req.body.last_name,
                     email: req.body.email,
                     phone: req.body.phone,
                     company: req.body.company,
-                    'social-login': JSON.stringify(req.body['social-login'])
                 })
                 .where('id', req.params.userid)
                 .then(() => {
@@ -280,7 +342,7 @@ class ApiRouter {
                 .insert({
                     polls_id: req.body.polls_id,
                     answer: req.body.answer,
-                    username: req.body.username
+                    visiter_name: req.body.visiter_name
                 })
                 .then((arr) => {
                     console.log(`added`);
@@ -296,7 +358,7 @@ class ApiRouter {
                 .update({
                     polls_id: req.body.polls_id,
                     answer: req.body.answer,
-                    username: req.body.username
+                    visiter_name: req.body.visiter_name
                 })
                 .where('id', req.params.resultid)
                 .then((arr) => {
@@ -339,7 +401,7 @@ class ApiRouter {
                 .insert({
                     presentation_id: req.body.presentation_id,
                     question: req.body.question,
-                    username: req.body.username,
+                    visiter_name: req.body.visiter_name,
                     likes: req.body.likes
                 })
                 .then((arr) => {
@@ -356,7 +418,7 @@ class ApiRouter {
                 .update({
                     presentation_id: req.body.presentation_id,
                     question: req.body.question,
-                    username: req.body.username,
+                    visiter_name: req.body.visiter_name,
                     likes: req.body.likes
                 })
                 .where('id', req.params.q_aid)

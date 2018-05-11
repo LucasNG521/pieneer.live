@@ -6,6 +6,14 @@ class ViewRouter {
   router() {
     const router = require("express").Router();
 
+    function isLoggedIn(req, res, next) {
+      if (req.isAuthenticated()) {
+        return next();
+      }
+
+      res.redirect('/');
+    }
+
     router.get("/", (req, res) => {
       if (req.param("force") == "mobile" || req.device.type != "desktop") {
         res.redirect("html_mock-up/mobile/");
@@ -21,6 +29,20 @@ class ViewRouter {
         res.redirect('html_mock-up/testGround/');
       };
     });
+
+    //passport-local
+    router.get('/', isLoggedIn, (req, res) => {
+      res.sendFile(__dirname + '/');
+    });
+
+  //   router.get('/', (req, res) => {
+  //     res.sendFile(__dirname + '/login.html');
+  // });
+
+    router.post('/', passport.authenticate('local-signup', {
+      successRedirect: '/',
+      failureRedirect: '/error'
+    }));
 
     //passport-facebook
     router.get('/auth/facebook',
