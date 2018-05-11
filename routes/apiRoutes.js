@@ -385,7 +385,7 @@ class ApiRouter {
         // http://www.ighsg/api/images/123/242/?pages=12
         /* This section is to gain access to the image library*/
         router.get('/images/:userid/:presentationid', this.imageActions.readImage);
-        router.post('/images/');
+        // router.post('/images/:userid/:presentationid', this.imageActions.writeImage);
         router.put('/images/:userid/:presentationid');
         router.delete('/images/:userid/:presentationid');
 
