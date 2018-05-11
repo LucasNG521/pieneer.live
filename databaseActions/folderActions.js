@@ -7,13 +7,18 @@ const path = require('path');
 class FolderActions {
     constructor() {
         this.rootPath = path.join(__dirname, '/imageLibrary');
+        this.sixPad = this.sixPad.bind(this);
     }
 
-    mkUserDir(userid) {
-        fs.mkdirSync(path.join(this.rootPath, `/user-${(userid.toString()).padStart(6,'0')}`))
+    sixPad(num) {
+        return (num.toString()).padStart(6, '0');
     }
-    readUserDir(userid) {
-        fs.readdir(path.join(this.rootPath, `/user-${(userid.toString()).padStart(6,'0')}`), 'utf8', (err, nameArray) => {
+
+    mkUserDir(userId) {
+        fs.mkdirSync(path.join(this.rootPath, `/user-${this.sixPad(userId)}`));
+    }
+    readUserDir(userId) {
+        fs.readdir(path.join(this.rootPath, `/user-${this.sixPad(userId)}`), 'utf8', (err, nameArray) => {
             if (err) {
                 throw new Error(err)
             } else {
@@ -22,8 +27,16 @@ class FolderActions {
         })
     }
 
-    mkPresentationDir() {
-
+    mkPresentationDir(userId, presentationId) {
+        fs.mkdir(path.join(this.rootPath,
+            `/user-${this.sixPad(userId)}`,
+            `presentation-${this.sixPad(presentationId)}`), (err) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("ok");
+            }
+        })
     }
     readPresentationDir() {
 
@@ -31,3 +44,6 @@ class FolderActions {
 }
 
 module.exports = FolderActions;
+
+const testFoler = new FolderActions();
+testFoler.mkPresentationDir(1, 3);
