@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Messenger - Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <style>
+        .col-12{
+            margin: 20px;
+        }
+        h1 {
+            margin-bottom: 80px;
+        }
+    </style>
+</head>
+
+<body>
+    
+    <div class="row align-items-center" style="height:100%">
+        <div class="col-12 text-center">
+                <h1>Messenger App</h1>
+                <form action="/login" method="post">
+                <div>
+                    <label>Username:</label>
+                    <input type="text" name="username" />
+                </div>
+                <div>
+                    <label>Password:</label>
+                    <input type="password" name="password" />
+                </div>
+                <div>
+                    <input type="submit" value="Log In" />
+                </div>
+            </form>
+        </div>
+
+        <div class="col-12 text-center">
+            <a href="/auth/facebook">
+                <img src="https://scontent.fhkg4-2.fna.fbcdn.net/v/t39.2365-6/18928641_251957295286418_4362086450741641216_n.png?_nc_cat=0&amp;_nc_eui2=v1%3AAeGuif68GOaidwIBqz375oD1Qtk2TAJZawo9wih3lDB2npnFtvuowO4mASWeiECwvzoQW2AvNxePzYAwcttm5R4QxLNjEhjEOyowMvZHRr-QAQ&amp;oh=28715bc70dbea2135f26ef771ecca229&amp;oe=5B645305"
+                    alt="facebook login" width="300">
+            </a>
+        </div>
+
+        <div class="col-12 text-center">
+            <a href="/auth/google">
+                <img src="https://d2396xwzgx97rb.cloudfront.net/assets/btn_google_signin_dark_normal_web@2x-448a18a5c3a2829354efd176e50d0c4a173f1806ad1b4d51fb15cba3e24a362c.png"
+                    alt="google login" width="300">
+            </a>
+        </div>
+</body>
+
+</html>
