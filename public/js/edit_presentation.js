@@ -41,7 +41,34 @@ function previewSlide(slide_id) {
     } else if ($('.slide').eq(slide_id).hasClass('slide-image')) {
         $('.preview').html($('.slide').eq(slide_id).html());
     } else if ($('.slide').eq(slide_id).hasClass('slide-poll')) {
-        $('.preview').html($('.slide').eq(slide_id).html());
+        var slide_html = `
+        <form class="container mt-5" action="/api/event" method="POST" id="form-poll">
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="question">Question</label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="text" name="question" value="Poll question" id="question">
+                </div>
+            </div>
+            <div class="form-group row mt-5">
+                <label class="col-sm-2 col-form-label" for="answer">Answer A</label>
+                <div class="col-sm-10">
+                    <input class="form-control answer" type="text" name="answer[]" value="Answer 1">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="answer">Answer B</label>
+                <div class="col-sm-10">
+                    <input class="form-control answer" type="text" name="answer[]" value="Answer 2">
+                </div>
+            </div>
+            <button class="btn btn-info add-answer" type="button" title="Add answer">
+                <i class="fas fa-plus-square"></i> Add answer
+            </button>
+            <br/>
+            <button type="submit" class="btn btn-primary save-poll mt-5">Save</button>
+        </form>
+`;
+        $('.preview').html(slide_html);
     } else if ($('.slide').eq(slide_id).hasClass('slide-qa')) {
         $('.preview').html($('.slide').eq(slide_id).html());
     }
@@ -74,6 +101,20 @@ $('.presentation').on('click', 'button', function (e) {
     } else if ($(this).attr('id') == 'insert-image') {
         upload = [];
         $('#uploadImageModal').modal('show');
+    } else if ($(this).attr('id') == 'insert-poll') {
+        $('.slide').eq(hover_slide).after(`
+        <div class="slide slide-poll">
+            <div>
+                Poll
+            </div>
+        </div>`);
+    } else if ($(this).attr('id') == 'insert-qa') {
+        $('.slide').eq(hover_slide).after(`
+        <div class="slide slide-qa">
+            <div>
+                Q&A
+            </div>
+        </div>`);
     }
 });
 
@@ -144,7 +185,7 @@ $('.insert-image').click(function () {
     };
 })(jQuery);
 
-$('.save-infos').click(function (e) {
+$('.preview').on('click', '.save-infos', function (e) {
     e.preventDefault();
     $.ajax({
         url: '/api/event/1', // id
@@ -153,6 +194,30 @@ $('.save-infos').click(function (e) {
         dataType: "json",
         contentType: "application/json"
     }).then((data) => {
-        console.log('user infos updated');
+        console.log('infos updated');
+    });
+});
+
+$('.preview').on('click', '.add-answer', function (e) {
+    var letter = String.fromCharCode("A".charCodeAt()+$('.answer').length);
+    $(this).before(`
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="answer">Answer ${letter}</label>
+        <div class="col-sm-10">
+            <input class="form-control answer" type="text" name="answer[]" value="">
+        </div>
+    </div>`);
+});
+
+$('.preview').on('click', '.save-poll', function (e) {
+    e.preventDefault();
+    $.ajax({
+        url: '/api/poll/1', // id
+        type: 'POST',
+        data: JSON.stringify($('#form-poll').serializeFormJSON()),
+        dataType: "json",
+        contentType: "application/json"
+    }).then((data) => {
+        console.log('poll updated');
     });
 });
