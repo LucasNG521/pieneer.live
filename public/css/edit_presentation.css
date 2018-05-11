@@ -14,10 +14,11 @@ div.list {
     text-align: center;
 }
 
-.list img, .list span {
+.slide img, .slide div {
     width: 200px;
     min-height: 150px;
     border: 1px solid rgba(0, 0, 0, .20);
+    margin: auto;
 }
 
 .actions {

@@ -6,9 +6,7 @@ function actionPos(new_hover = -1) {
         var hover_slide_dom = $('.slide-' + new_hover);
         console.log(hover_slide_dom);
         var offset = hover_slide_dom.position();
-        console.log(offset);
-        console.log(hover_slide_dom.offset());
-        $('div.actions').css({ top: offset.top + hover_slide_dom.height() + 6, left: 37 });
+        $('div.actions').css({ top: offset.top + $('.list')[0].scrollTop + hover_slide_dom.height() + 6, left: 37 });
         hover_slide = new_hover;
     }
 }
