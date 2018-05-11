@@ -17,6 +17,7 @@ class FolderActions {
     mkUserDir(userId) {
         fs.mkdirSync(path.join(this.rootPath, `/user-${this.sixPad(userId)}`));
     }
+
     readUserDir(userId) {
         fs.readdir(path.join(this.rootPath, `/user-${this.sixPad(userId)}`), 'utf8', (err, nameArray) => {
             if (err) {
@@ -38,12 +39,21 @@ class FolderActions {
             }
         })
     }
-    readPresentationDir() {
-
+    readPresentationDir(userId, presentationId) {
+        fs.readdir(path.join(this.rootPath,
+            `/user-${this.sixPad(userId)}`,
+            `presentation-${this.sixPad(presentationId)}`), (err, nameString) => {
+            if (err) {
+                throw new Error(err);
+            } else {
+                console.log(nameString);
+            }
+        });
     }
+
 }
 
 module.exports = FolderActions;
 
 const testFoler = new FolderActions();
-testFoler.mkPresentationDir(1, 3);
+testFoler.readPresentationDir(1, 1);

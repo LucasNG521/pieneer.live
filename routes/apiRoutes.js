@@ -1,7 +1,7 @@
 // Post = new entity
 // Put  = edit entity
 class ApiRouter {
-    constructor(imageActions, knex, folderActions) {
+    constructor(imageActions, folderActions, knex) {
         this.folderActions = folderActions;
         this.imageActions = imageActions;
         this.knex = knex;
