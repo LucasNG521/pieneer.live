@@ -1,4 +1,5 @@
 #!/usr/bin/nodejs
+
 const express = require("express");
 const device = require("express-device");
 const bodyParser = require("body-parser");
@@ -18,9 +19,12 @@ const ViewRouter = require("./routes/viewRoutes");
 const ApiRouter = require('./routes/apiRoutes');
 
 const ImageActions = require('./databaseActions/imageActions');
+const FolderActions = require('./databaseActions/folderActions');
 
 app.use(bodyParser.json()); // for parsing application/json
-app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({
+    extended: true
+})); // for parsing application/x-www-form-urlencoded
 // app.use(multer()); // for parsing multipart/form-data
 
 app.use(device.capture());
@@ -68,7 +72,7 @@ app.post("/slides/upload-image", (req, res) => {
 });
 
 app.use("/", new ViewRouter().router());
-app.use('/api', new ApiRouter(new ImageActions(), knex).router());
+app.use('/api', new ApiRouter(new ImageActions(), new FolderActions(), knex).router());
 
 
 http.listen(8181, () => console.log("App is running on 8181"));
