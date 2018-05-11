@@ -5,7 +5,7 @@ exports.up = function(knex, Promise) {
     table.integer('polls_id').unsigned();
     table.foreign('polls_id').references('polls.id');
     table.string('answer',1);
-    table.string('username',100);
+    table.string('visiter_name',100);
     table.timestamps(false,true);
   });
 };

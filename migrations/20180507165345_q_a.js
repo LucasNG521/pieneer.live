@@ -5,7 +5,7 @@ exports.up = function(knex, Promise) {
     table.integer('presentation_id').unsigned();
     table.foreign('presentation_id').references('presentation.id');
     table.string('question');
-    table.string('username',100);
+    table.string('visiter_name',100);
     table.integer('likes');
     table.timestamps(false,true);
   });
