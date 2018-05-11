@@ -3,26 +3,24 @@ var upload = [];
 function actionPos(new_hover = -1) {
     console.log(new_hover);
     if (hover_slide != new_hover) {
-        var hover_slide_dom = $('.slide-' + new_hover);
+        var hover_slide_dom = $('.slide').eq(new_hover);
         console.log(hover_slide_dom);
         var offset = hover_slide_dom.position();
-        console.log(offset);
-        console.log(hover_slide_dom.offset());
-        $('div.actions').css({ top: offset.top + hover_slide_dom.height() + 6, left: 37 });
+        $('div.actions').css({ top: offset.top + $('.list')[0].scrollTop + hover_slide_dom.height() + 6, left: 37 });
         hover_slide = new_hover;
     }
 }
 function previewSlide(slide_id) {
     console.log('prev' + slide_id);
     // type image:
-    $('.preview').html($('.slide-' + slide_id).html());
+    $('.preview').html($('.slide').eq(slide_id).html());
 }
-function addImage(link) {
-    hover_slide = hover_slide + 1;
-    $('.list').append(`
-        <div class="slide slide-${hover_slide} slide-image">
+function insertImage(link) {
+    $('.slide').eq(hover_slide).after(`
+        <div class="slide slide-image">
             <img src="${link}">
         </div>`);
+    hover_slide++;
 }
 actionPos(0);
 previewSlide(0);
@@ -81,14 +79,14 @@ Dropzone.options.myDropzoneImage = {
 };
 $('.insert-ppt').click(function () {
     for (var img of upload) {
-        addImage('/slides/' + img);
+        insertImage('/slides/' + img);
     }
     upload = [];
     $('#uploadPPTModal').modal('hide');
 });
 $('.insert-image').click(function () {
     for (var img of upload) {
-        addImage('/slides/' + img);
+        insertImage('/slides/' + img);
     }
     upload = [];
     $('#uploadImageModal').modal('hide');
