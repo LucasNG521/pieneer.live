@@ -143,3 +143,18 @@ changed apiRoutes.js and added body-parser to app.js. The REST is working and es
 - apiRoutes content
 
 ### Problem
+
+
+## version 0.1 May 11, 2018 (Lucas)
+
+Added database table and maked change. local-login is working, username come to req.possport.name !
+
+### Added
+-  magirations files
+    - login
+
+### Changed
+- seeds file
+    - changed some columns
+
+### Problem
