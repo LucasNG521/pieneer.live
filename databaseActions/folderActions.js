@@ -1,9 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 
-// Sync version is not working
-// Converting to promise later
-
 class FolderActions {
     constructor() {
         this.rootPath = path.join(__dirname, '/imageLibrary');
@@ -55,5 +52,5 @@ class FolderActions {
 
 module.exports = FolderActions;
 
-const testFoler = new FolderActions();
-testFoler.readPresentationDir(1, 1);
+// const testFoler = new FolderActions();
+// testFoler.readPresentationDir(1, 1);

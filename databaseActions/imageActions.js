@@ -30,7 +30,7 @@ class ImageActions {
 
     }
     addImage(req, res) {
-        // fs.writeFile()
+        
 
     }
     removeImage() {
