@@ -11,15 +11,15 @@ ctx.on("tool-changed", function (toolname) {
     }
 });
 
-// get presentation data from the API
-$.ajax({
-    dataType: "json",
-    url: "/api/presentation/get_id.json",
-    success: init_slides
-});
 var presentation = '';
 var nb_slides = 0;
 var current_slide = 0;
+// get presentation data from the API
+$.ajax({
+    dataType: "json",
+    url: "/sample_api/presentation/get_id.json",
+    success: init_slides
+});
 function init_slides(data) {
     presentation = data;
     console.log(presentation);
