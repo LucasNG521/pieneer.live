@@ -1,8 +1,11 @@
 {
     "title": "Presentation event title",
-    "presentation_id": 1,
+    "id": 1,
     "location": "Hong Kong",
     "date": "2018/05/12 19:00",
+    "speaker":"Speaker Name (s)",
+    "email":"email@domain.com",
+    "phone":"(+852) 0000 0000",
     "slides": [
         {
             "type": "image",
@@ -18,12 +21,12 @@
             "type": "poll",
             "id": 3,
             "question": "Poll question?",
-            "graph_type": "bar",
+            "graph_type": "pie",
             "answers": [
-                "A. response 1",
-                "B. response 2",
-                "C. response 3",
-                "D. response 4"
+                "response 1",
+                "response 2",
+                "response 3",
+                "response 4"
             ]
         },
         {
@@ -34,7 +37,19 @@
         {
             "type": "q_a",
             "id": 5,
-            "title": "Question & Answer"
+            "title": "Question & Answer",
+            "questions": [
+                {
+                    "question": "question 1",
+                    "name": "name",
+                    "like": 4
+                },
+                {
+                    "question": "question 2",
+                    "name": "other name",
+                    "like": 2
+                }
+            ]
         }
     ]
 }
