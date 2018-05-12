@@ -453,11 +453,12 @@ class ApiRouter {
 
 
         // Folder manipulation
-        router.get ('/folders/:userid'                , this.folderActions.readUserDir        );
-        router.post('/folders/:userid'                , this.folderActions.mkUserDir          );
-        router.get ('/folders/:userid/:presentationid', this.folderActions.readPresentationDir);
-        // router.post();
-        // router.delete();
+        router.get   ('/folders/:userid'                 , this.folderActions.readUserDir           );
+        router.post  ('/folders/:userid'                 , this.folderActions.mkUserDir             );
+        router.delete('/folders/:userid/'                , this.folderActions.removeUserDir         );
+        router.get   ('/folders/:userid/:presentationid' , this.folderActions.readPresentationDir   );
+        router.post  ('/folders/:userid/:presentationid' , this.folderActions.mkPresentationDir     );
+        router.delete('/folders/:userid/:presentationid' , this.folderActions.removePresentationDir );
 
 
 
