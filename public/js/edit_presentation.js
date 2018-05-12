@@ -206,25 +206,35 @@ $('.presentation').on('click', 'button', function (e) {
         upload = [];
         $('#uploadImageModal').modal('show');
     } else if ($(this).attr('id') == 'insert-poll') {
-        // TODO: get new ID
-        var id = 5;
-        $('.slide').eq(hover_slide).after(`
-        <div class="slide slide-poll" data-json='{"type":"poll","id":${id},"question":"","graph_type":"bar","answers":["",""]}'>
-            <div>
-                <i class="fas fa-chart-bar fa-2x mr-2"></i>Poll
-            </div>
-        </div>`);
-        $('.slide').eq(1 + hover_slide).click();
+        $.ajax({
+            url: '/sample_api/poll/post',   // TODO: replace to /api/poll/
+            type: 'GET',   // TODO: replace to POST
+            dataType: "json",
+            contentType: "application/json"
+        }).then((id) => {
+            $('.slide').eq(hover_slide).after(`
+            <div class="slide slide-poll" data-json='{"type":"poll","id":${id},"question":"","graph_type":"bar","answers":["",""]}'>
+                <div>
+                    <i class="fas fa-chart-bar fa-2x mr-2"></i>Poll
+                </div>
+            </div>`);
+            $('.slide').eq(1 + hover_slide).click();
+        });
     } else if ($(this).attr('id') == 'insert-qa') {
-        // TODO: get new ID
-        var id = 5;
-        $('.slide').eq(hover_slide).after(`
+        $.ajax({
+            url: '/sample_api/q_a/post',   // TODO: replace to /api/q_a/
+            type: 'GET',   // TODO: replace to POST
+            dataType: "json",
+            contentType: "application/json"
+        }).then((id) => {
+            $('.slide').eq(hover_slide).after(`
         <div class="slide slide-q_a" data-json='{"type":"q_a","id":${id},"title":"","questions":[]}'>
             <div>
                 <i class="fas fa-question-circle fa-2x mr-2"></i>Q&A
             </div>
         </div>`);
         $('.slide').eq(1 + hover_slide).click();
+        });
     } else if ($(this).attr('id') == 'delete-slide') {
         $('.slide').eq(hover_slide).remove();
         if (hover_slide == $('.slide').length) {
