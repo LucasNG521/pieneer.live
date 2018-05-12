@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-exports.up = function(knex, Promise) {
-  return knex.schema.createTable('presenter',(table)=>{
-=======
 exports.up = function (knex, Promise) {
   return knex.schema.createTable('presenter', (table) => {
->>>>>>> 37881662059827a082467ff25edc088a78a2ef0f
     table.increments();
     table.integer('login_id').unsigned();
     table.foreign('login_id').references('login.id');
