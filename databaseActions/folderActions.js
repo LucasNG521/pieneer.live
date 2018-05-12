@@ -9,11 +9,13 @@ class FolderActions {
         this.rootPath = path.join(__dirname, '/imageLibrary');
     }
 
-    mkUserDir(userId) {
+    mkUserDir(req, res) {
+        const userId = req.params.userid;
         fs.mkdirSync(path.join(this.rootPath, `/user-${stringManipulation.sixPad(userId)}`));
     }
 
-    readUserDir(userId) {
+    readUserDir(req, res) {
+        const userId = req.params.userid;
         fs.readdir(path.join(this.rootPath, `/user-${stringManipulation.sixPad(userId)}`), 'utf8', (err, nameArray) => {
             if (err) {
                 throw new Error(err)
@@ -23,7 +25,12 @@ class FolderActions {
         })
     }
 
-    mkPresentationDir(userId, presentationId) {
+    // Remove entire User Directory when deleting user
+
+    mkPresentationDir(req, res) {
+        const userId = req.params.userid;
+        const presentationId = req.params.presentationid;
+
         fs.mkdir(path.join(this.rootPath,
             `/user-${stringManipulation.sixPad(userId)}`,
             `presentation-${stringManipulation.sixPad(presentationId)}`), (err) => {
@@ -34,7 +41,10 @@ class FolderActions {
             }
         })
     }
-    readPresentationDir(userId, presentationId) {
+    readPresentationDir(req, res) {
+
+        const userId = req.params.userid;
+        const presentationId = req.params.presentationid;
         fs.readdir(path.join(this.rootPath,
             `/user-${this.sixPad(userId)}`,
             `presentation-${this.sixPad(presentationId)}`), (err, nameString) => {
@@ -42,6 +52,21 @@ class FolderActions {
                 throw new Error(err);
             } else {
                 console.log(nameString);
+            }
+        });
+    }
+
+    // Remove presentationdir when the presentation is removed entirly
+    removePresentationDir(req, res) {
+        const userId = req.params.userid;
+        const presentationId = req.params.presentationid;
+        fs.rmdir(path.join(this.rootPath,
+            `/user-${this.sixPad(userId)}`,
+            `presentation-${this.sixPad(presentationId)}`), (err) => {
+            if (err) {
+                throw new Error(err)
+            } else {
+                console.log("Successfully removed folder")
             }
         });
     }

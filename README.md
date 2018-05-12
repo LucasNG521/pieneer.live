@@ -171,3 +171,17 @@ Added database table and maked change.trying to do local-login and username come
     - the index.html missing sign-up function 
 - google-login
     - cuz we missing login page google-login won't callback to homepage.
+
+
+## version 0.1 May 12, 2018 (Ivan)
+Focus on fixing the pathing and the API routes, also added the API paths to add images and remove images.
+
+### Added
+- API to access the database
+- Connection between mobile and the web version
+
+### changed
+- Seeding content
+
+### Problem
+- Vote counts are static, serving from the front end instead of sending it to backend

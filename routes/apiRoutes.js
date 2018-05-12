@@ -448,8 +448,16 @@ class ApiRouter {
         /* This section is to gain access to the image library*/
         router.get('/images/:userid/:presentationid', this.imageActions.readImage);
         // router.post('/images/:userid/:presentationid', this.imageActions.writeImage);
-        router.put('/images/:userid/:presentationid');
+        // router.put('/images/:userid/:presentationid');
         router.delete('/images/:userid/:presentationid', this.imageActions.removeImage);
+
+
+        // Folder manipulation
+        router.get ('/folders/:userid'                , this.folderActions.readUserDir        );
+        router.post('/folders/:userid'                , this.folderActions.mkUserDir          );
+        router.get ('/folders/:userid/:presentationid', this.folderActions.readPresentationDir);
+        // router.post();
+        // router.delete();
 
 
 
