@@ -276,7 +276,9 @@ $("html").mousemove(function () {
     fadeout = setTimeout(hide_control, 2000);
 });
 function hide_control() {
-    $(".control").stop().hide();
+    if ($('.tooltip').length == 0) {
+        $(".control").stop().hide();
+    }
 }
 $("html").mousemove();
 

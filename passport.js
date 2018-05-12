@@ -53,9 +53,9 @@ module.exports = (app) => {
   ));
 
   passport.use('facebook', new FacebookStrategy({
-    clientID: FACEBOOK_APP_ID,
-    clientSecret: FACEBOOK_APP_SECRET,
-    callbackURL: "http://localhost:8181/auth/facebook/callback"
+    clientID: '2117364898475037',
+    clientSecret: '46f25ce454c6f67a62929f1fa4b6bce9',
+    callbackURL: "https://pieneer.live/auth/facebook/callback"
   },
     (accessToken, refreshToken, profile, done) => {
       User.findOrCreate({ facebookId: profile.id }, (err, user) => {
@@ -65,9 +65,9 @@ module.exports = (app) => {
   ));
 
   passport.use('google', new GoogleStrategy({
-    clientID: GOOGLE_CLIENT_ID,
-    clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:8181/dashborad/auth/google/callback"
+    clientID: '976623563011-b70ot73gqn26b87jc02jacdg726tce7s.apps.googleusercontent.com',
+    clientSecret: 'sJRiDC5hZ6LIwJYr16b-21g1',
+    callbackURL: "https://pieneer.live/auth/google/callback"
   },
     (accessToken, refreshToken, profile, done) => {
       User.findOrCreate({ googleId: profile.id }, (err, user) => {
@@ -77,9 +77,9 @@ module.exports = (app) => {
   ));
 
   passport.use('linkedin', new LinkedInStrategy({
-    consumerKey: LINKEDIN_API_KEY,
-    consumerSecret: LINKEDIN_SECRET_KEY,
-    callbackURL: "http://localhost:8181/auth/linkedin/callback"
+    consumerKey: '81ek2wlffsjab8',
+    consumerSecret: 'cIlS1KwTOGQAVE9g',
+    callbackURL: "https://pieneer.live/auth/linkedin/callback"
   },
     (token, tokenSecret, profile, done) => {
       User.findOrCreate({ linkedinId: profile.id }, (err, user) => {

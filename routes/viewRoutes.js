@@ -32,13 +32,19 @@ class ViewRouter {
 
     //passport-local
     router.get('/', isLoggedIn, (req, res) => {
-      res.sendFile(__dirname + '/');
+      res.sendFile(__dirname + '/dashboard.html');
     });
 
   //   router.get('/', (req, res) => {
   //     res.sendFile(__dirname + '/login.html');
   // });
 
+    router.post('/login', passport.authenticate('local-login', {
+      successRedirect: '/',
+      failureRedirect: '/error'
+    }));
+
+    
     router.post('/', passport.authenticate('local-signup', {
       successRedirect: '/',
       failureRedirect: '/error'
