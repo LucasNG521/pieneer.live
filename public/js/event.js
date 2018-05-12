@@ -60,3 +60,7 @@ var name = (typeof $.cookie("name") == 'undefined') ? '' : $.cookie("name");
         }
         if (name == '')
             $('#myModal').modal('show');
+
+
+
+

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Messenger</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+    <style>
+        .container-fluid {
+            padding: 0;
+        }
+
+        .app,
+        .row {
+            height: 100vh;
+        }
+
+        .col-9 {
+            border-left: 1px solid rgba(0, 0, 0, .20);
+        }
+
+        form.fixed-bottom {
+            width: 75%;
+            left: unset;
+            padding: 10px;
+            background: #eee;
+        }
+
+        #message {
+            margin-right: 10px;
+        }
+
+        #messages {
+            height: calc(100vh - 58px);
+            overflow: scroll;
+        }
+
+        #messages p {
+            background: #f1f0f0;
+            color: black;
+            border-radius: 16px;
+            padding: 6px;
+            display: block;
+            margin: 20px;
+            margin-right: 60px;
+        }
+
+        #messages p.me {
+            background: #0084ff;
+            color: white;
+            margin-right: 20px;
+            margin-left: 60px;
+        }
+
+        .list-group-item {
+            cursor: pointer;
+        }
+
+        .list-group-item.active {
+            color: #212529;
+            background-color: #dee2e6;
+            border-color: #ced4da;
+        }
+
+        .badge-pill {
+            padding-right: .6em;
+            padding-left: .6em;
+            border-radius: 10rem;
+            margin-left: 1em;
+        }
+
+        #search {
+            width: 100%;
+            padding-left: 28px;
+            background: url('data:image/svg+xml;utf8,<svg aria-hidden="true" data-prefix="fas" data-icon="search" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-search fa-w-16 fa-5x"><path fill="#adb5bd" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z" class=""></path></svg>') no-repeat white;
+            background-size: 22px;
+            background-position-x: 2px;
+            background-position-y: 2px;
+        }
+        .fab:before {
+            padding-right: 10px;
+        }
+        .fa-facebook-f:before {
+            color: #4267b2;
+        }
+        .fa-google:before {
+            color: #eb4236;
+        }
+
+        #search:after {
+            position: absolute;
+            font-family: Font Awesome\ 5 Free;
+            top: 0;
+            left: 10px;
+            display: block;
+            content: "\f002";
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app container-fluid">
+        <div class="row no-gutters">
+            <div class="col-3">
+                <div class="d-flex">
+                    <h4 id="me"></h4>
+                    <div class="ml-auto justify-content-end">
+                        <a href="/logout">
+                            <button class="btn btn-primary">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </button>
+                        </a>
+                    </div>
+                </div>
+                <input id="search" type="text" name="search" placeholder="Search username" autocomplete="off">
+                <ul class="list-group">
+                </ul>
+            </div>
+            <div class="col-9">
+                <div id="messages">
+                </div>
+                <form class="fixed-bottom" action="#">
+                    <div class="d-flex">
+                        <input class="form-control" id="message" type="text" placeholder="Message" autocomplete="off" />
+                        <div class="ml-auto justify-content-end">
+                            <input class="btn btn-primary float-right" id="submit" type="submit" value="Send">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script>
+        var me, friends, messages, curentChat = '';
+        $(function () {
+            var socket = io();
+            socket.on('init-messages', function (init_messages) {
+                console.log(init_messages);
+                $('.list-group-item').remove();
+                me = init_messages.me;
+                $('#me').text(me.name);
+                friends = init_messages.friends;
+                messages = init_messages.messages;
+                var last_message_timestamp = 10;  // fake timestamp
+                var i = 0;
+                for (var friend of friends) {
+                    console.log(friend);
+                    var isMostRecent = (i == 0 || (messages[friend.username].length > 0 && messages[friend.username][0].date > last_message_timestamp)) ? true : false;
+                    var active = (isMostRecent) ? ' active' : '';
+                    active += (friend.username.indexOf('facebook_')===0)?' fab fa-facebook-f':'';
+                    active += (friend.username.indexOf('google_')===0)?' fab fa-google':'';
+                    if (isMostRecent) {
+                        curentChat = friend.username;
+                        if (messages[friend.username].length > 0 && messages[friend.username][0].date > last_message_timestamp) {
+                            last_message_timestamp = messages[friend.username][0].date;
+                        }
+                        $('#messages p').remove();
+                        $('.list-group-item').removeClass('active');
+                        $('.list-group').prepend(`<li data-user="${friend.username}" class="list-group-item ${friend.username}${active}">${friend.name}</li>`);
+                    } else {
+                        $('.list-group').append(`<li data-user="${friend.username}" class="list-group-item ${friend.username}${active}">${friend.name}</li>`);
+                    }
+                    for (var m of messages[friend.username]) {
+                        if (isMostRecent) {
+                            var class_me = (m.from == me.username) ? 'me' : '';
+                            $('#messages').prepend(`<p class="${class_me}">${m.message}</p>`);
+                        }
+                    }
+                    scrollDown();
+                    i++;
+                }
+            });
+            $('form').submit(function (e) {
+                e.preventDefault();
+                if ($('#message').val() != "") {
+                    var send_message = { 'to': curentChat, message: $('#message').val() };
+                    socket.emit('new message', send_message);
+                    $('#message').val('');
+                    if (!$('li:eq(0)').hasClass('active')) {
+                        var moveTop = $('.list-group-item.active').remove();
+                        moveTop.prependTo('.list-group');
+                    }
+                }
+            });
+            socket.on('new message', function (message) {
+                console.log(message);
+                console.log(curentChat);
+                var from = (message.from == me.username) ? message.to : message.from;
+                messages[from].unshift(message);
+                if (from == curentChat) {
+                    var class_me = (message.from == me.username) ? 'me' : '';
+                    $('#messages').append(`<p class="${class_me}">${message.message}</p>`);
+                } else {
+                    var nb_notif = $('.' + from + ' span').text();
+                    $('.' + from + ' span').remove();
+                    nb_notif = (nb_notif == '') ? 1 : 1 + parseInt(nb_notif);
+                    $('.' + from).html($('.' + from).text() + '<span class="badge badge-primary badge-pill">' + nb_notif + '</span>');
+                    console.log('new notif');
+                }
+                scrollDown();
+            });
+            $('.list-group').on('click', 'li', function () {
+                $('#search').val('').keyup();   // empty search form
+                if ($(this).attr('data-user') != curentChat) {
+                    $('.list-group-item').removeClass('active');
+                    $(this).addClass('active');
+                    curentChat = $(this).attr('data-user');
+                    $('.' + curentChat + ' span').remove();
+                    // if (local_messages[curentChat].length == 0) {
+                    //     console.log('subscribe room ' + curentChat);
+                    //     socket.emit('subscribe', $(this).text());
+                    // }
+                    $('#messages p').remove();
+                    for (var m of messages[curentChat]) {
+                        console.log(m);
+                        var class_me = (m.from == me.username) ? 'me' : '';
+                        $('#messages').prepend(`<p class="${class_me}">${m.message}</p>`);
+                    }
+                    scrollDown();
+                }
+            });
+            $('#search').keyup(function () {
+                var search = $(this).val().toLowerCase();
+                $(".list-group li").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(search) > -1)
+                });
+            });
+        });
+
+        function scrollDown() {
+            $('#messages').animate({ scrollTop: $('#messages')[0].scrollHeight }, 0);
+        }
+    </script>
+</body>
+
+</html>
