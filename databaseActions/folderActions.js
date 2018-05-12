@@ -1,24 +1,20 @@
 const fs = require('fs');
 const path = require('path');
+const StringManipulation = require('../tools/stringManipulation');
+const stringManipulation = new StringManipulation();
+
 
 class FolderActions {
     constructor() {
         this.rootPath = path.join(__dirname, '/imageLibrary');
-        this.sixPad = (num) => {
-            return (num.toString()).padStart(6, '0');
-        };
     }
 
-    // sixPad(num) {
-
-    // }
-
     mkUserDir(userId) {
-        fs.mkdirSync(path.join(this.rootPath, `/user-${this.sixPad(userId)}`));
+        fs.mkdirSync(path.join(this.rootPath, `/user-${stringManipulation.sixPad(userId)}`));
     }
 
     readUserDir(userId) {
-        fs.readdir(path.join(this.rootPath, `/user-${this.sixPad(userId)}`), 'utf8', (err, nameArray) => {
+        fs.readdir(path.join(this.rootPath, `/user-${stringManipulation.sixPad(userId)}`), 'utf8', (err, nameArray) => {
             if (err) {
                 throw new Error(err)
             } else {
@@ -29,8 +25,8 @@ class FolderActions {
 
     mkPresentationDir(userId, presentationId) {
         fs.mkdir(path.join(this.rootPath,
-            `/user-${this.sixPad(userId)}`,
-            `presentation-${this.sixPad(presentationId)}`), (err) => {
+            `/user-${stringManipulation.sixPad(userId)}`,
+            `presentation-${stringManipulation.sixPad(presentationId)}`), (err) => {
             if (err) {
                 console.log(err);
             } else {
@@ -53,6 +49,3 @@ class FolderActions {
 }
 
 module.exports = FolderActions;
-
-// const testFoler = new FolderActions();
-// testFoler.readPresentationDir(1, 1);

@@ -1,15 +1,14 @@
 const fs = require('fs');
 const path = require('path');
+const StringManipulation = require('../tools/stringManipulation');
+const stringManipulation = new StringManipulation();
+
 
 class ImageActions {
-    constructor() {
-
-    }
-
 
     readImage(req, res) {
-        const userId = (req.params.userid).toString().padStart(6, '0');
-        const presentationId = (req.params.presentationid).toString().padStart(6, '0');
+        const userId = stringManipulation.sixPad(req.params.userid);
+        const presentationId = stringManipulation.sixPad(req.params.presentationid);
 
 
         const imageOptions = {
@@ -37,8 +36,8 @@ class ImageActions {
 
     }
     writeImage(req, res) {
-        const userId = (req.params.userid).toString().padStart(6, '0');
-        const presentationId = (req.params.presentationid).toString().padStart(6, '0');
+        const userId = stringManipulation.sixPad(req.params.userid);
+        const presentationId = stringManipulation.sixPad(req.params.presentationid);
         const fileType = req.files.file.name.split('.').pop();
 
 
@@ -59,11 +58,23 @@ class ImageActions {
 
 
     }
-    removeImage() {
+    removeImage(req, res) {
+        const userId = stringManipulation.sixPad(req.params.userid);
+        const presentationId = stringManipulation.sixPad(req.params.presentationid);
+        // remove file from the server with params 
 
+        fs.unlink(path.join(__dirname, '/imageLibrary',
+            `/user-${userId}`, `/presentation-${presentationId}`, `/${userId}-${presentationId}-${req.query.pages}.png`), (err) => {
+            if (err) {
+                console.log(err);
+                res.status(400).send(err);
+            } else {
+                res.status(200).end();
+            }
+        })
     }
     editImage() {
-
+        // Need object from FrontEnd to determine how to manipulate the sequence of the presentation
     }
 
 }

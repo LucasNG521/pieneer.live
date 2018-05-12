@@ -449,7 +449,7 @@ class ApiRouter {
         router.get('/images/:userid/:presentationid', this.imageActions.readImage);
         // router.post('/images/:userid/:presentationid', this.imageActions.writeImage);
         router.put('/images/:userid/:presentationid');
-        router.delete('/images/:userid/:presentationid');
+        router.delete('/images/:userid/:presentationid', this.imageActions.removeImage);
 
 
 
