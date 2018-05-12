@@ -1,5 +1,3 @@
-const config = require("../knexfile").development;
-
 class DatabaseActions {
     constructor(knex) {
         this.knex = knex;
