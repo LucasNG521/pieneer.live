@@ -4,6 +4,8 @@ var graph_type = ['bar', 'pie', 'line'];
 // get presentation data from the API
 $.ajax({
     dataType: "json",
+    contentType: "application/json",
+    type: 'GET',
     url: "/sample_api/presentation/get_id.json",
     success: init_slides
 });
@@ -207,10 +209,8 @@ $('.presentation').on('click', 'button', function (e) {
         $('#uploadImageModal').modal('show');
     } else if ($(this).attr('id') == 'insert-poll') {
         $.ajax({
-            url: '/sample_api/poll/post',   // TODO: replace to /api/poll/
             type: 'GET',   // TODO: replace to POST
-            dataType: "json",
-            contentType: "application/json"
+            url: '/sample_api/poll/post',   // TODO: replace to /api/poll/
         }).then((id) => {
             $('.slide').eq(hover_slide).after(`
             <div class="slide slide-poll" data-json='{"type":"poll","id":${id},"question":"","graph_type":"bar","answers":["",""]}'>
@@ -222,10 +222,8 @@ $('.presentation').on('click', 'button', function (e) {
         });
     } else if ($(this).attr('id') == 'insert-qa') {
         $.ajax({
-            url: '/sample_api/q_a/post',   // TODO: replace to /api/q_a/
             type: 'GET',   // TODO: replace to POST
-            dataType: "json",
-            contentType: "application/json"
+            url: '/sample_api/q_a/post',   // TODO: replace to /api/q_a/
         }).then((id) => {
             $('.slide').eq(hover_slide).after(`
         <div class="slide slide-q_a" data-json='{"type":"q_a","id":${id},"title":"","questions":[]}'>
@@ -320,11 +318,11 @@ $('.preview').on('click', '.save-infos', function (e) {
     presentation.phone = infos.phone;
     infos = JSON.stringify(infos);
     $.ajax({
-        url: $('#form-infos').attr('action'),
-        type: 'PUT',
-        data: infos,
         dataType: "json",
-        contentType: "application/json"
+        contentType: "application/json",
+        type: 'PUT',
+        url: $('#form-infos').attr('action'),
+        data: infos
     }).then((data) => {
         console.log('infos updated');
     });
@@ -359,11 +357,11 @@ $('.preview').on('click', '.save-poll', function (e) {
     $('.slide.active').attr('data-json', JSON.stringify(data_json));
     poll = JSON.stringify(poll);
     $.ajax({
-        url: $('#form-poll').attr('action'),
-        type: 'PUT',
-        data: poll,
         dataType: "json",
-        contentType: "application/json"
+        contentType: "application/json",
+        type: 'PUT',
+        url: $('#form-poll').attr('action'),
+        data: poll
     }).then((data) => {
         console.log('poll updated');
     });
@@ -378,11 +376,11 @@ $('.preview').on('click', '.save-q_a', function (e) {
     $('.slide.active').attr('data-json', JSON.stringify(data_json));
     q_a = JSON.stringify(q_a);
     $.ajax({
-        url: $('#form-q_a').attr('action'),
-        type: 'PUT',
-        data: q_a,
         dataType: "json",
-        contentType: "application/json"
+        contentType: "application/json",
+        type: 'PUT',
+        url: $('#form-q_a').attr('action'),
+        data: q_a
     }).then((data) => {
         console.log('q_a updated');
     });

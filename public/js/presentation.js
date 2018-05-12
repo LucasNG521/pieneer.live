@@ -29,13 +29,17 @@ function init_slides(data) {
     // var event_date = formatDate(presentation.date);
     $('#presentation').append(`
     <div class="slide slide-0 slide-html active">
-        <h1>${presentation.title}</h1>
-        <h2>${presentation.location}</h2>
-        <h2>${presentation.date}</h2>
-        <div id="qrcode"></div>
+        <h1 class="pt-5">${presentation.title}</h1>
+        <h2 class="mt-5">📍 ${presentation.location}</h2>
+        <h2 class="mt-5">${presentation.speaker}</h2>
+        <div class="mt-5" id="qrcode"></div>
     </div>`);
 
-    $('#qrcode').qrcode(document.location.protocol + '//' + document.location.host + '/html_mock-up/mobile/event.html');
+    var mobile_url = document.location.protocol + '//' + document.location.host + '/html_mock-up/mobile/event.html';
+
+    $('#url').html(mobile_url);
+
+    $('#qrcode').qrcode(mobile_url);
 
     // init next slides
     var i = 1;
@@ -67,7 +71,6 @@ function init_slides(data) {
         } else if (slide.type == "q_a") {
             html_slide = `
             <div class="slide slide-${i} slide-${slide.type}">
-                <h1>${slide.title}</h1>
             </div>`;
         }
         $('#presentation').append(html_slide);
@@ -89,6 +92,40 @@ function update_slide() {
         slide = presentation.slides[current_slide - 1];
         if (slide.type == 'poll') {
             display_chart(slide.id);
+        } else if (slide.type == 'q_a') {
+            $.ajax({
+                dataType: "json",
+                contentType: "application/json",
+                type: 'GET',
+                url: "/sample_api/q_a/get_id.json",
+                success: function (q_a) {
+                    var questions = '';
+                    for (const question of q_a.questions) {
+                        var like = (question.like > 0) ? `<i class="fas fa-thumbs-up fa-lg mr-2"> ${question.like}</i>` : '';
+                        questions += `
+                    <li class="list-group-item">
+                        <div class="user text-left">
+                            <i class="far fa-user"></i> ${question.name}
+                        </div>
+                        <div class="question d-flex align-items-center justify-content-center">
+                            ${question.question}
+                            <div class="ml-auto justify-content-end">
+                            ${like}
+                            </div>
+                        </div>
+                    </li>`;
+                    }
+                    html_slide = `
+                    <div class="q_a-container">
+                        <h1>${q_a.title}</h1>
+                        <ul class="list-group mt-5">
+                            ${questions}
+                        </ul>
+                    </div>`;
+                    console.log(html_slide);
+                    $('.slide-' + slide.id).html(html_slide);
+                }
+            });
         }
     }
 }
