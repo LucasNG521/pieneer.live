@@ -19,8 +19,9 @@ socketIOConnection.router();
 const ViewRouter = require("./routes/viewRoutes");
 const ApiRouter = require('./routes/apiRoutes');
 
-const ImageActions = require('./databaseActions/imageActions');
-const FolderActions = require('./databaseActions/folderActions');
+const ImageActions    = require('./databaseActions/imageActions'   );
+const FolderActions   = require('./databaseActions/folderActions'  );
+const DatabaseActions = require('./databaseActions/databaseActions');
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({
@@ -40,7 +41,7 @@ const fileUpload = require('express-fileupload');
 app.use(fileUpload());
 
 app.use("/", new ViewRouter().router());
-app.use('/api', new ApiRouter(new ImageActions(), new FolderActions(), knex).router());
+app.use('/api', new ApiRouter(new ImageActions(), new FolderActions(), new DatabaseActions(require('knex')(require('./knexfile').development))).router());
 
 
 http.listen(8181, () => console.log("App is running on 8181"));

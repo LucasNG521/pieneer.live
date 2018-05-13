@@ -1,5 +1,55 @@
 var hover_slide = -1;
 var upload = [];
+var graph_type = ['bar', 'pie', 'line'];
+// get presentation data from the API
+$.ajax({
+    dataType: "json",
+    contentType: "application/json",
+    type: 'GET',
+    url: "/sample_api/presentation/get_id.json",
+    success: init_slides
+});
+function init_slides(data) {
+    presentation = data;
+    console.log(presentation);
+
+    // init first slide
+    $('.list').append(`
+    <div class="slide slide-html active">
+        <div>
+            <i class="fas fa-info-circle fa-2x mr-2"></i>Infos
+        </div>
+    </div>`);
+
+    for (slide of presentation.slides) {
+        var html_slide = "";
+        if (slide.type == "image") {
+            html_slide = `
+            <div class="slide slide-${slide.type}" data-json='` + JSON.stringify(slide) + `'>
+                <img src="${slide.link}">
+            </div>`;
+        } else if (slide.type == "poll") {
+            html_slide = `
+            <div class="slide slide-poll" data-json='`+ JSON.stringify(slide) + `'>
+                <div>
+                    <i class="fas fa-chart-bar fa-2x mr-2"></i>Poll
+                </div>
+            </div>`;
+        } else if (slide.type == "q_a") {
+            html_slide = `
+            <div class="slide slide-q_a" data-json='`+ JSON.stringify(slide) + `'>
+                <div>
+                    <i class="fas fa-question-circle fa-2x mr-2"></i>Q&A
+                </div>
+            </div>`;
+        }
+        $('.list').append(html_slide);
+    }
+    // init actions
+    actionPos(0);
+    $('.slide').eq(0).click();
+}
+
 function actionPos(new_hover = -1) {
     if (hover_slide != new_hover) {
         var hover_slide_dom = $('.slide').eq(new_hover);
@@ -20,24 +70,42 @@ function previewSlide(slide_id) {
     console.log('prev' + slide_id);
     if ($('.slide').eq(slide_id).hasClass('slide-html')) {
         var slide_html = `
-        <form class="container mt-5" action="/api/event" method="POST" id="form-infos">
+        <form class="container mt-5" action="/api/presentation/${presentation.id}" method="POST" id="form-infos">
             <h2><i class="fas fa-info-circle mr-2 mb-5"></i>Infos</h2>
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label" for="title">Title</label>
                 <div class="col-sm-10">
-                    <input class="form-control" type="text" name="title" value="Presentation title" id="title">
+                    <input class="form-control" type="text" name="title" value="${presentation.title}" id="title">
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label" for="location">Location</label>
                 <div class="col-sm-10">
-                    <input class="form-control" type="text" name="location" value="Hong Kong" id="location">
+                    <input class="form-control" type="text" name="location" value="${presentation.location}" id="location">
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label" for="date">Date</label>
                 <div class="col-sm-10">
-                    <input class="form-control date" type="text" name="date" value="2018/05/10 15:43" id="date">
+                    <input class="form-control date" type="text" name="date" value="${presentation.date}" id="date">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="speaker">Speaker</label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="text" name="speaker" value="${presentation.speaker}" id="speaker">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="email">Email</label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="text" name="email" value="${presentation.email}" id="email">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="phone">Phone</label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="text" name="phone" value="${presentation.phone}" id="phone">
                 </div>
             </div>
             <div>
@@ -50,48 +118,61 @@ function previewSlide(slide_id) {
     } else if ($('.slide').eq(slide_id).hasClass('slide-image')) {
         $('.preview').html($('.slide').eq(slide_id).html());
     } else if ($('.slide').eq(slide_id).hasClass('slide-poll')) {
+        var slide = JSON.parse($('.slide').eq(slide_id).attr('data-json'));
+        var responses = '';
+        for (const key in slide.answers) {
+            var letter = String.fromCharCode("A".charCodeAt() + parseInt(key));
+            responses += `
+            <div class="form-group row mt-5">
+                <label class="col-sm-2 col-form-label text-right" for="answer-${key}">Answer ${letter}</label>
+                <div class="col-sm-10 pl-5">
+                    <input class="form-control answer" type="text" id="answer-${key}" name="answers" value="${slide.answers[key]}">
+                </div>
+            </div>`;
+        }
+        var add_answer = (slide.answers.length < 6) ? '<button class="btn btn-info add-answer" type="button" title="Add answer"><i class="fas fa-plus-square"></i> Add answer</button>' : '';
+        var select_graph_type = '';
+        for (var type of graph_type) {
+            select_graph_type += (type == slide.graph_type) ? `<option value="${type}" selected="selected">${type}</option>` : `<option value="${type}">${type}</option>`;
+        }
         var slide_html = `
-        <form class="container mt-5" action="/api/event" method="POST" id="form-poll">
+        <form class="container mt-5" action="/api/poll/${slide.id}" method="POST" id="form-poll">
             <h2><i class="fas fa-chart-bar mr-2 mb-5"></i>Poll</h2>
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label font-weight-bold" for="question">Question</label>
+                <label class="col-sm-2 col-form-label" for="question">Question</label>
                 <div class="col-sm-10">
-                    <input class="form-control" type="text" name="question" value="Poll question" id="question">
-                </div>
-            </div>
-            <div class="form-group row mt-5">
-                <label class="col-sm-2 col-form-label text-right" for="answer">Answer A</label>
-                <div class="col-sm-10 pl-5">
-                    <input class="form-control answer" type="text" name="answer[]" value="Answer 1">
+                    <input class="form-control" type="text" name="question" value="${slide.question}" id="question">
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label text-right" for="answer">Answer B</label>
-                <div class="col-sm-10 pl-5">
-                    <input class="form-control answer" type="text" name="answer[]" value="Answer 2">
+                <label class="col-sm-2 col-form-label" for="graph_type">Graph type</label>
+                <div class="col-sm-10">
+                    <select class="form-control" id="graph_type" name="graph_type">
+                        ${select_graph_type}
+                    </select>
                 </div>
             </div>
+            ${responses}
             <div>
-                <button class="btn btn-info add-answer" type="button" title="Add answer">
-                    <i class="fas fa-plus-square"></i> Add answer
-                </button>
+                ${add_answer}
                 <button type="submit" class="btn btn-primary save-poll float-right">Save</button>
             </div>
         </form>
 `;
         $('.preview').html(slide_html);
-    } else if ($('.slide').eq(slide_id).hasClass('slide-qa')) {
+    } else if ($('.slide').eq(slide_id).hasClass('slide-q_a')) {
+        var slide = JSON.parse($('.slide').eq(slide_id).attr('data-json'));
         var slide_html = `
-        <form class="container mt-5" action="/api/event" method="POST" id="form-poll">
+        <form class="container mt-5" action="/api/q_a/${slide.id}" method="POST" id="form-q_a">
             <h2><i class="fas fa-question-circle mr-2 mb-5"></i>Q&A</h2>
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label" for="title">Q&A title</label>
                 <div class="col-sm-10">
-                    <input class="form-control" type="text" name="title" value="Q&A" id="title">
+                    <input class="form-control" type="text" name="title" value="${slide.title}" id="title">
                 </div>
             </div>
             <div>
-                <button type="submit" class="btn btn-primary save-qa float-right">Save</button>
+                <button type="submit" class="btn btn-primary save-q_a float-right">Save</button>
             </div>
         </form>
 `;
@@ -127,37 +208,41 @@ $('.presentation').on('click', 'button', function (e) {
         upload = [];
         $('#uploadImageModal').modal('show');
     } else if ($(this).attr('id') == 'insert-poll') {
-        $('.slide').eq(hover_slide).after(`
-        <div class="slide slide-poll">
-            <div>
-                <i class="fas fa-chart-bar fa-2x mr-2"></i>Poll
-            </div>
-        </div>`);
-        $('.slide').eq(1 + hover_slide).click();
+        $.ajax({
+            type: 'GET',   // TODO: replace to POST
+            url: '/sample_api/poll/post',   // TODO: replace to /api/poll/
+        }).then((id) => {
+            $('.slide').eq(hover_slide).after(`
+            <div class="slide slide-poll" data-json='{"type":"poll","id":${id},"question":"","graph_type":"bar","answers":["",""]}'>
+                <div>
+                    <i class="fas fa-chart-bar fa-2x mr-2"></i>Poll
+                </div>
+            </div>`);
+            $('.slide').eq(1 + hover_slide).click();
+        });
     } else if ($(this).attr('id') == 'insert-qa') {
-        $('.slide').eq(hover_slide).after(`
-        <div class="slide slide-qa">
+        $.ajax({
+            type: 'GET',   // TODO: replace to POST
+            url: '/sample_api/q_a/post',   // TODO: replace to /api/q_a/
+        }).then((id) => {
+            $('.slide').eq(hover_slide).after(`
+        <div class="slide slide-q_a" data-json='{"type":"q_a","id":${id},"title":"","questions":[]}'>
             <div>
                 <i class="fas fa-question-circle fa-2x mr-2"></i>Q&A
             </div>
         </div>`);
         $('.slide').eq(1 + hover_slide).click();
+        });
     } else if ($(this).attr('id') == 'delete-slide') {
         $('.slide').eq(hover_slide).remove();
-        // hover_slide --;
-        // $('.slide').eq(hover_slide).mouseenter();
-        if(hover_slide==$('.slide').length) {
-            $('.slide').eq(hover_slide-1).mouseenter().click();
+        if (hover_slide == $('.slide').length) {
+            $('.slide').eq(hover_slide - 1).mouseenter().click();
         } else {
             $('.slide').eq(hover_slide).click();
         }
     }
     $(this).blur();
 });
-
-// init
-actionPos(0);
-$('.slide').eq(0).click();
 
 // upload files
 Dropzone.options.myDropzonePpt = {
@@ -224,25 +309,34 @@ $('.insert-image').click(function () {
 
 $('.preview').on('click', '.save-infos', function (e) {
     e.preventDefault();
+    var infos = $('#form-infos').serializeFormJSON();
+    presentation.title = infos.title;
+    presentation.date = infos.date;
+    presentation.location = infos.location;
+    presentation.speaker = infos.speaker;
+    presentation.email = infos.email;
+    presentation.phone = infos.phone;
+    infos = JSON.stringify(infos);
     $.ajax({
-        url: '/api/event/1', // id
-        type: 'POST',
-        data: JSON.stringify($('#form-infos').serializeFormJSON()),
         dataType: "json",
-        contentType: "application/json"
+        contentType: "application/json",
+        type: 'PUT',
+        url: $('#form-infos').attr('action'),
+        data: infos
     }).then((data) => {
         console.log('infos updated');
     });
 });
 
 $('.preview').on('click', '.add-answer', function (e) {
-    var letter = String.fromCharCode("A".charCodeAt() + $('.answer').length);
-    if ($('.answer').length < 6) {
+    var nb_anwsers = $('.answer').length;
+    var letter = String.fromCharCode("A".charCodeAt() + nb_anwsers);
+    if (nb_anwsers < 6) {
         $(this).before(`
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label text-right" for="answer">Answer ${letter}</label>
+        <div class="form-group row mt-5">
+            <label class="col-sm-2 col-form-label text-right" for="answer-${nb_anwsers}">Answer ${letter}</label>
             <div class="col-sm-10 pl-5">
-                <input class="form-control answer" type="text" name="answer[]" value="">
+                <input class="form-control answer" type="text" id="answer-${nb_anwsers}" name="answers" value="">
             </div>
         </div>`);
         if ($('.answer').length == 6) {
@@ -253,13 +347,41 @@ $('.preview').on('click', '.add-answer', function (e) {
 
 $('.preview').on('click', '.save-poll', function (e) {
     e.preventDefault();
+    var poll = $('#form-poll').serializeFormJSON();
+    var data_json = JSON.parse($('.slide.active').attr('data-json'));
+    console.log(poll);
+    console.log(data_json);
+    data_json.question = poll.question;
+    data_json.graph_type = poll.graph_type;
+    data_json.answers = poll.answers;
+    $('.slide.active').attr('data-json', JSON.stringify(data_json));
+    poll = JSON.stringify(poll);
     $.ajax({
-        url: '/api/poll/1', // id
-        type: 'POST',
-        data: JSON.stringify($('#form-poll').serializeFormJSON()),
         dataType: "json",
-        contentType: "application/json"
+        contentType: "application/json",
+        type: 'PUT',
+        url: $('#form-poll').attr('action'),
+        data: poll
     }).then((data) => {
         console.log('poll updated');
+    });
+});
+
+$('.preview').on('click', '.save-q_a', function (e) {
+    e.preventDefault();
+    var q_a = $('#form-q_a').serializeFormJSON();
+    var data_json = JSON.parse($('.slide.active').attr('data-json'));
+    console.log(data_json);
+    data_json.title = q_a.title;
+    $('.slide.active').attr('data-json', JSON.stringify(data_json));
+    q_a = JSON.stringify(q_a);
+    $.ajax({
+        dataType: "json",
+        contentType: "application/json",
+        type: 'PUT',
+        url: $('#form-q_a').attr('action'),
+        data: q_a
+    }).then((data) => {
+        console.log('q_a updated');
     });
 });
