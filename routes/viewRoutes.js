@@ -1,9 +1,10 @@
 const passport = require('passport');
 
-class ViewRouter {
-  constructor() { }
+// class ViewRouter {
+//   constructor() { }
 
-  router() {
+//   router() {
+  module.exports = (ViewRouter) => {
     const router = require("express").Router();
 
     function isLoggedIn(req, res, next) {
@@ -18,7 +19,7 @@ class ViewRouter {
       res.redirect('/login');
     });
 
-    router.post('/', passport.authenticate('local-login', {
+    router.post('/login', passport.authenticate('local-login', {
       successRedirect: '/',
       failureRedirect: '/error'
     }));
@@ -82,6 +83,6 @@ class ViewRouter {
 
     return router;
   }
-}
+// }
 
-module.exports = ViewRouter;
+// module.exports = ViewRouter;

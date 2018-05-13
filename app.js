@@ -6,6 +6,7 @@ const setupPassport = require("./passport")
 const bodyParser = require("body-parser");
 const app = express();
 const http = require("http").Server(app);
+const router = require('./routes/viewRoutes')(express);
 // var multer = require('multer'); 
 
 
@@ -42,7 +43,8 @@ app.use(fileUpload());
 const config = require('./knexfile').development;
 const knex = require('knex')(config);
 
-app.use("/", new ViewRouter().router());
+// app.use("/", new ViewRouter().router());
+app.use('/', router);
 app.use('/api', new ApiRouter(new ImageActions(), new FolderActions(), new DatabaseActions(knex)).router());
 
 

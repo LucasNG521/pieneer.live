@@ -5,7 +5,14 @@ const LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 require('dotenv').config();
 const bcrypt = require('./bcrypt');
-const knex = require('knex');
+// const knex = require('knex')({
+//   client: 'postgresql',
+//   connection: {
+//       database: process.env.DEVELOPMENT_DB_NAME,
+//       user: process.env.DEVELOPMENT_DB_USER,
+//       password: process.env.DEVELOPMENT_DB_PASSWORD
+//   }
+// });
 
 module.exports = (app) => {
   app.use(passport.initialize());
