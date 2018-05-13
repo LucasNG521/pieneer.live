@@ -10,9 +10,25 @@ class ViewRouter {
       if (req.isAuthenticated()) {
         return next();
       }
-
-      res.redirect('/');
+      res.redirect('/login');
     }
+
+    //passport-local
+    router.get('/dashboard', isLoggedIn, (req, res) => {
+      res.redirect('/login');
+    });
+
+    router.post('/', passport.authenticate('local-login', {
+      successRedirect: '/',
+      failureRedirect: '/error'
+    }));
+
+
+    router.post('/signup', passport.authenticate('local-signup', {
+      successRedirect: '/',
+      failureRedirect: '/error'
+    }));
+
 
     router.get("/", (req, res) => {
       if (req.param("force") == "mobile" || req.device.type != "desktop") {
@@ -29,26 +45,6 @@ class ViewRouter {
         res.redirect('html_mock-up/testGround/');
       };
     });
-
-    //passport-local
-    router.get('/', isLoggedIn, (req, res) => {
-      res.sendFile(__dirname + '/dashboard.html');
-    });
-
-  //   router.get('/', (req, res) => {
-  //     res.sendFile(__dirname + '/login.html');
-  // });
-
-    router.post('/login', passport.authenticate('local-login', {
-      successRedirect: '/',
-      failureRedirect: '/error'
-    }));
-
-    
-    router.post('/', passport.authenticate('local-signup', {
-      successRedirect: '/',
-      failureRedirect: '/error'
-    }));
 
     //passport-facebook
     router.get('/auth/facebook',

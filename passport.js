@@ -2,7 +2,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
 const LinkedInStrategy = require('passport-linkedin').Strategy;
-const GoogleStrategy = require('passport-google').Strategy;
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 require('dotenv').config();
 const bcrypt = require('./bcrypt');
 const knex = require('knex');
@@ -90,16 +90,16 @@ module.exports = (app) => {
 
 
   passport.serializeUser((user, done) => {
-    done(null, user.email);
+    done(null, user.id);
   });
 
-  passport.deserializeUser((email, done) => {
-    let user = users.find((user) => user.email == email);
-    if (user == null) {
-      done(new Error('Wrong user id.'));
+  passport.deserializeUser(async (id, done) => {
+    let users = await knex('login').where({id:id});
+    if (users.length == 0) {
+        return done(new Error(`Wrong user id ${id}`));
     }
-
-    done(null, user);
-  });
+    let user = users[0];
+    return done(null, user);
+});
 
 };
