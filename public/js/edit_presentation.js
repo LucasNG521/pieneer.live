@@ -1,6 +1,7 @@
 var hover_slide = -1;
 var upload = [];
 var graph_type = ['bar', 'pie', 'line'];
+var presentation = {};
 // get presentation data from the API
 $.ajax({
     dataType: "json",
