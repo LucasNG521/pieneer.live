@@ -185,3 +185,24 @@ Focus on fixing the pathing and the API routes, also added the API paths to add 
 
 ### Problem
 - Vote counts are static, serving from the front end instead of sending it to backend
+
+## version 0.1 May 13, 2018 (Lucas)
+
+focus on passport.js (local-login and social-login) Now is working!!
+still working on google-login in same page .
+
+### Added
+
+
+### Changed
+- npm install passport-linkedin-auth2
+    - uninstall passport-linkedin, changed to passport-linkedin-auth2 
+
+- viewRouter
+    - without class
+
+- app.js
+    - app.js:46:47 chaged content (i don't know will it affect anything, but still working)
+
+### Problem
+- passport login is working but i have a problem about router, when i loged-in will not route to homepage, i need michael!!!

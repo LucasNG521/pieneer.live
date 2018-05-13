@@ -15,7 +15,7 @@ const passport = require('passport');
     }
 
     //passport-local
-    router.get('/dashboard', isLoggedIn, (req, res) => {
+    router.get('/', isLoggedIn, (req, res) => {
       res.redirect('/login');
     });
 

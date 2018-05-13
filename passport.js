@@ -5,32 +5,32 @@ const LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 require('dotenv').config();
 const bcrypt = require('./bcrypt');
-// const knex = require('knex')({
-//   client: 'postgresql',
-//   connection: {
-//       database: process.env.DEVELOPMENT_DB_NAME,
-//       user: process.env.DEVELOPMENT_DB_USER,
-//       password: process.env.DEVELOPMENT_DB_PASSWORD
-//   }
-// });
+const knex = require('knex')({
+  client: 'postgresql',
+  connection: {
+      database: process.env.DEVELOPMENT_DB_NAME,
+      user: process.env.DEVELOPMENT_DB_USER,
+      password: process.env.DEVELOPMENT_DB_PASSWORD
+  }
+});
 
 module.exports = (app) => {
   app.use(passport.initialize());
   app.use(passport.session());
 
   passport.use('local-signup', new LocalStrategy(
-    async (email, password, done) => {
+    async (username, password, done) => {
       try {
-        let users = await knex('login').where({ name: name });
+        let users = await knex('login').where({ username: username });
         if (users.length > 0) {
           return done(null, false, { message: 'Email already taken' });
         }
         let hash = await bcrypt.hashPassword(password)
         const newUser = {
-          name: name,
+          username: username,
           password: hash
         };
-        let userId = await knex('login').insert(newUser).returning('id');
+        let usersId = await knex('login').insert(newUser).returning('id');
         done(null, newUser);
       } catch (err) {
         done(err);
@@ -40,9 +40,9 @@ module.exports = (app) => {
 
 
   passport.use('local-login', new LocalStrategy(
-    async (email, password, done) => {
+    async (username, password, done) => {
       try {
-        let users = await knex('login').where({ name: name })
+        let users = await knex('login').where({ username: username})
         if (users.length == 0) {
           return done(null, false, { message: 'Incorrect credentials' });
         }
@@ -111,7 +111,7 @@ module.exports = (app) => {
   });
 
   passport.deserializeUser(async (id, done) => {
-    let users = await knex('login').where({id:id});
+    let users = await knex('users').where({id:id});
     if (users.length == 0) {
         return done(new Error(`Wrong user id ${id}`));
     }
