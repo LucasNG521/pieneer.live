@@ -10,17 +10,56 @@ class ApiRouter {
 
     router() {
         const router = require("express").Router();
+
         router.get("/", (req, res) => {
             // Insert potential how-to use API page
             res.redirect('/html_mock-up/api/index.html');
         });
 
-        // Login ( create a new user to req data to database )operations
-        router.get("/login/:loginid", this.databaseActions.getUser);
-        router.post("/login", this.databaseActions.createUser);
-        router.put("/login/:loginid", this.databaseActions.editUser);
+        router.get("/login/:loginid", (req, res) => {
+            this.databaseActions
+                .getUser(req.params.loginid)
+                .then((result) => {
+                    res.json(result);
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                })
+
+        });
+        router.post("/login", (req, res) => {
+            this.databaseActions
+                .createUser(req.body.username, req.body.password, req.body.social_login)
+                .then((result) => {
+                    res.json(result);
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                })
+
+        });
+        router.put("/login/:loginid", (req, res) => {
+            this.databaseActions
+                .editUser(res.params.loginid, req.body.username, req.body.password, req.body.social_login)
+                .then((result) => {
+                    res.json(result);
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                })
+        });
         // FIXME: Changing the user back into login?
-        router.delete("/users/:userid", this.databaseActions.removeUser);
+        router.delete("/users/:userid", (req, res) => {
+            this.databaseActions
+                .removeUser(req.params.userid)
+                .then(() => {
+                    console.log("user deleted");
+                    res.status(200).end();
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                });
+        });
 
 
         // User operations
@@ -28,6 +67,7 @@ class ApiRouter {
         router.post("/users", this.databaseActions.addUserInfo);
         router.put("/users/:userid", this.databaseActions.editUserInfo);
         router.delete("/users/:userid", this.databaseActions.removeUserInfo);
+
 
         // Presentation operations
         router.get("/presentations/:presentationid", this.databaseActions.getPresentation);

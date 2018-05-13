@@ -2,50 +2,34 @@ class DatabaseActions {
     constructor(knex) {
         this.knex = knex;
     }
-    getUser(req, res) {
+    getUser(loginId) {
         const user = this.knex("login")
             .select()
-            .where("id", req.params.loginid)
-            .then(arr => {
-                res.json(arr);
-            })
-            .catch(err => {
-                res.status(500).send(err);
-            });
+            .where("id", loginId);
+        return user;
     }
-    createUser(req, res) {
+    createUser(username, password, socialLogin) {
         const user = this.knex("login")
             .insert({
-                username: req.body.username,
-                password: req.body.password,
-                social_login: req.body.social_login
-            })
-            .then(() => {
-                res.json(req.body);
-            })
-            .catch(err => {
-                res.status(500).send(err);
+                username: username,
+                password: password,
+                social_login: socialLogin
             });
+        return user;
     }
-    editUser(req, res) {
+    editUser(userId, username, password, socialLogin) {
         const user = this.knex("login")
             .update({
-                username: req.body.username,
+                username: username,
                 password: req.body.password,
-                social_login: req.body.social_login
+                social_login: socialLogin
             })
-            .where("id", req.params.loginid)
-            .then(() => {
-                console.log("edited");
-                res.json(req.body);
-            })
-            .catch(err => {
-                res.status(500).send(err);
-            });
+            .where("id", userId);
+        return user;
     }
-    removeUser(req, res) {
+    removeUser(userId) {
         const user = this.knex("presenter")
-            .where("id", req.params.userid)
+            .where("id", userId)
             .delete()
             .then(() => {
                 console.log("deleted");
