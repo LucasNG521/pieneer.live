@@ -12,7 +12,6 @@ class ApiRouter {
         const router = require("express").Router();
 
         router.get("/", (req, res) => {
-            // Insert potential how-to use API page
             res.redirect('/html_mock-up/api/index.html');
         });
 
@@ -29,7 +28,7 @@ class ApiRouter {
         });
         router.post("/login", (req, res) => {
             this.databaseActions
-                .createUser(req.body.username, req.body.password, req.body.social_login)
+                .createUser(req.body.username, req.body.password, req.body['social_login'])
                 .then((result) => {
                     res.json(result);
                 })
@@ -48,10 +47,9 @@ class ApiRouter {
                     res.status(500).send(err);
                 })
         });
-        // FIXME: Changing the user back into login?
-        router.delete("/users/:userid", (req, res) => {
+        router.delete("/login/:loginid", (req, res) => {
             this.databaseActions
-                .removeUser(req.params.userid)
+                .removeUser(req.params.loginid)
                 .then(() => {
                     console.log("user deleted");
                     res.status(200).end();
@@ -70,10 +68,46 @@ class ApiRouter {
 
 
         // Presentation operations
-        router.get("/presentations/:presentationid", this.databaseActions.getPresentation);
-        router.post("/presentations", this.databaseActions.addPresentation);
-        router.put("/presentations/:presentationid", this.databaseActions.editPresentation);
-        router.delete("/presentations/:presentationid", this.databaseActions.removePresentation);
+        router.get("/presentations/:presentationid", (req, res) => {
+            this.databaseActions
+                .getPresentation(req.params.presentationid)
+                .then((result) => {
+                    res.status(200).json(result);
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                });
+        });
+        router.post("/presentations", (req, res) => {
+            this.databaseActions
+                .addPresentation(req.body.presenterid, req.body.title, req.body.location, req.body.address)
+                .then(arr => {
+                    res.json(arr);
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                });
+        });
+        router.put("/presentations/:presentationid", (req, res) => {
+            this.databaseActions
+                .editPresentation(req.params.presentationid, req.body.presenterid, req.body.title, req.body.location, req.body.address)
+                .then(arr => {
+                    res.json(arr);
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                });
+        });
+        router.delete("/presentations/:presentationid", (req, res) => {
+            this.databaseActions
+                .removePresentation(req.params.presentationid)
+                .then(() => {
+                    res.status(200).end();
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                });
+        });
 
         // Slides operation
         router.get("/slides/:slideid", this.databaseActions.getSlides);
