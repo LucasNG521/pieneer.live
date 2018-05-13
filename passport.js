@@ -1,8 +1,8 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
-const LinkedInStrategy = require('passport-linkedin').Strategy;
-const GoogleStrategy = require('passport-google').Strategy;
+const LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 require('dotenv').config();
 const bcrypt = require('./bcrypt');
 const knex = require('knex');
@@ -77,29 +77,39 @@ module.exports = (app) => {
   ));
 
   passport.use('linkedin', new LinkedInStrategy({
-    consumerKey: '81ek2wlffsjab8',
-    consumerSecret: 'cIlS1KwTOGQAVE9g',
-    callbackURL: "https://pieneer.live/auth/linkedin/callback"
+    clientID: '81ek2wlffsjab8',
+    clientSecret: 'cIlS1KwTOGQAVE9g',
+    callbackURL: "https://pieneer.live/auth/linkedin/callback",
+    scope: ['r_emailaddress', 'r_basicprofile'],
   },
     (token, tokenSecret, profile, done) => {
       User.findOrCreate({ linkedinId: profile.id }, (err, user) => {
         return done(err, user);
       });
+    },
+    function(accessToken, refreshToken, profile, done) {
+      // asynchronous verification, for effect...
+      process.nextTick(function () {
+        // To keep the example simple, the user's LinkedIn profile is returned to
+        // represent the logged-in user. In a typical application, you would want
+        // to associate the LinkedIn account with a user record in your database,
+        // and return that user instead.
+        return done(null, profile);
+      });
     }
-  ));
-
+    ));
 
   passport.serializeUser((user, done) => {
-    done(null, user.email);
+    done(null, user.id);
   });
 
-  passport.deserializeUser((email, done) => {
-    let user = users.find((user) => user.email == email);
-    if (user == null) {
-      done(new Error('Wrong user id.'));
+  passport.deserializeUser(async (id, done) => {
+    let users = await knex('login').where({id:id});
+    if (users.length == 0) {
+        return done(new Error(`Wrong user id ${id}`));
     }
-
-    done(null, user);
-  });
+    let user = users[0];
+    return done(null, user);
+});
 
 };

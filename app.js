@@ -2,6 +2,7 @@
 
 const express = require("express");
 const device = require("express-device");
+const setupPassport = require("./passport")
 const bodyParser = require("body-parser");
 const app = express();
 const http = require("http").Server(app);
@@ -26,6 +27,8 @@ app.use(bodyParser.urlencoded({
     extended: true
 })); // for parsing application/x-www-form-urlencoded
 // app.use(multer()); // for parsing multipart/form-data
+
+setupPassport(app);
 
 app.use(device.capture());
 app.use(express.static(__dirname + "/public"));
