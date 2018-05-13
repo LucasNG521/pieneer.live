@@ -108,7 +108,7 @@ class ApiRouter {
                     res.status(500).send(err);
                 });
         });
-
+    
         // Slides operation
         router.get("/slides/:slideid", this.databaseActions.getSlides);
         router.post("/slides", this.databaseActions.addSlides);
