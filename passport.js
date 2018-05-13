@@ -1,29 +1,36 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
-const LinkedInStrategy = require('passport-linkedin').Strategy;
-const GoogleStrategy = require('passport-google').Strategy;
+const LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 require('dotenv').config();
 const bcrypt = require('./bcrypt');
-const knex = require('knex');
+const knex = require('knex')({
+  client: 'postgresql',
+  connection: {
+      database: process.env.DEVELOPMENT_DB_NAME,
+      user: process.env.DEVELOPMENT_DB_USER,
+      password: process.env.DEVELOPMENT_DB_PASSWORD
+  }
+});
 
 module.exports = (app) => {
   app.use(passport.initialize());
   app.use(passport.session());
 
   passport.use('local-signup', new LocalStrategy(
-    async (email, password, done) => {
+    async (username, password, done) => {
       try {
-        let users = await knex('login').where({ name: name });
+        let users = await knex('login').where({ username: username });
         if (users.length > 0) {
           return done(null, false, { message: 'Email already taken' });
         }
         let hash = await bcrypt.hashPassword(password)
         const newUser = {
-          name: name,
+          username: username,
           password: hash
         };
-        let userId = await knex('login').insert(newUser).returning('id');
+        let usersId = await knex('login').insert(newUser).returning('id');
         done(null, newUser);
       } catch (err) {
         done(err);
@@ -33,9 +40,9 @@ module.exports = (app) => {
 
 
   passport.use('local-login', new LocalStrategy(
-    async (email, password, done) => {
+    async (username, password, done) => {
       try {
-        let users = await knex('login').where({ name: name })
+        let users = await knex('login').where({ username: username})
         if (users.length == 0) {
           return done(null, false, { message: 'Incorrect credentials' });
         }
@@ -77,29 +84,39 @@ module.exports = (app) => {
   ));
 
   passport.use('linkedin', new LinkedInStrategy({
-    consumerKey: '81ek2wlffsjab8',
-    consumerSecret: 'cIlS1KwTOGQAVE9g',
-    callbackURL: "https://pieneer.live/auth/linkedin/callback"
+    clientID: '81ek2wlffsjab8',
+    clientSecret: 'cIlS1KwTOGQAVE9g',
+    callbackURL: "https://pieneer.live/auth/linkedin/callback",
+    scope: ['r_emailaddress', 'r_basicprofile'],
   },
     (token, tokenSecret, profile, done) => {
       User.findOrCreate({ linkedinId: profile.id }, (err, user) => {
         return done(err, user);
       });
+    },
+    function(accessToken, refreshToken, profile, done) {
+      // asynchronous verification, for effect...
+      process.nextTick(function () {
+        // To keep the example simple, the user's LinkedIn profile is returned to
+        // represent the logged-in user. In a typical application, you would want
+        // to associate the LinkedIn account with a user record in your database,
+        // and return that user instead.
+        return done(null, profile);
+      });
     }
-  ));
-
+    ));
 
   passport.serializeUser((user, done) => {
-    done(null, user.email);
+    done(null, user.id);
   });
 
-  passport.deserializeUser((email, done) => {
-    let user = users.find((user) => user.email == email);
-    if (user == null) {
-      done(new Error('Wrong user id.'));
+  passport.deserializeUser(async (id, done) => {
+    let users = await knex('users').where({id:id});
+    if (users.length == 0) {
+        return done(new Error(`Wrong user id ${id}`));
     }
-
-    done(null, user);
-  });
+    let user = users[0];
+    return done(null, user);
+});
 
 };

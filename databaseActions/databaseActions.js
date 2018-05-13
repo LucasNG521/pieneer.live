@@ -2,60 +2,39 @@ class DatabaseActions {
     constructor(knex) {
         this.knex = knex;
     }
-    getUser(req, res) {
+    getUser(loginId) {
         const user = this.knex("login")
             .select()
-            .where("id", req.params.loginid)
-            .then(arr => {
-                res.json(arr);
-            })
-            .catch(err => {
-                res.status(500).send(err);
-            });
+            .where("id", loginId);
+        return user;
     }
-    createUser(req, res) {
+    createUser(username, password, socialLogin) {
         const user = this.knex("login")
             .insert({
-                username: req.body.username,
-                password: req.body.password,
-                social_login: req.body.social_login
-            })
-            .then(() => {
-                res.json(req.body);
-            })
-            .catch(err => {
-                res.status(500).send(err);
+                username: username,
+                password: password,
+                social_login: JSON.stringify(socialLogin)
             });
+        return user;
     }
-    editUser(req, res) {
+    editUser(userId, username, password, socialLogin) {
         const user = this.knex("login")
             .update({
-                username: req.body.username,
+                username: username,
                 password: req.body.password,
-                social_login: req.body.social_login
+                social_login: JSON.stringify(socialLogin)
             })
-            .where("id", req.params.loginid)
-            .then(() => {
-                console.log("edited");
-                res.json(req.body);
-            })
-            .catch(err => {
-                res.status(500).send(err);
-            });
+            .where("id", userId);
+        return user;
     }
-    removeUser(req, res) {
-        const user = this.knex("presenter")
-            .where("id", req.params.userid)
-            .delete()
-            .then(() => {
-                console.log("deleted");
-                res.status(200).end();
-            })
-            .catch(err => {
-                res.status(500).send(err);
-            });
+    removeUser(userId) {
+        const user = this.knex("login")
+            .where("id", userId)
+            .delete();
+        return user;
     }
 
+    // User info
     getUserInfo(req, res) {
         const user = this.knex("presenter")
             .select()
@@ -118,65 +97,43 @@ class DatabaseActions {
             });
     }
 
-    getPresentation(req, res) {
+    // Presentation
+    getPresentation(id) {
         const presentation = this.knex("presentation")
             .select()
-            .where("id", req.params.presentationid)
-            .then(arr => {
-                res.json(arr);
-            })
-            .catch(err => {
-                res.status(500).send(err);
-            });
+            .where("id", id);
+        return presentation;
     }
-    addPresentation(req, res) {
+    addPresentation(id, title, loc, address) {
         const presentation = this.knex("presentation")
             .insert({
-                presenter_id: req.body.presenter_id,
-                title: req.body.title,
-                location: req.body.location,
-                address: req.body.address
-            })
-            .then(arr => {
-                console.log(`added`);
-                // res.send(({success:true}));
-                res.json(arr);
-            })
-            .catch(err => {
-                res.status(500).send(err);
+                presenter_id: id,
+                title: title,
+                location: loc,
+                address: address
             });
+        return presentation;
     }
-    editPresentation(req, res) {
+    editPresentation(presentationId, id, title, loc, address) {
         const presentation = this.knex("presentation")
             .update({
-                // vvv presenter_id : req passport.user.id
-                presenter_id: req.body.presenter_id,
-                title: req.body.title,
-                location: req.body.location,
-                address: req.body.address
+                presenter_id: id,
+                title: title,
+                location: loc,
+                address: address
             })
-            .where("id", req.params.presentationid)
-            .then(arr => {
-                console.log(`edited`);
-                res.json(arr);
-            })
-            .catch(err => {
-                res.status(500).send(err);
-            });
+            .where("id", presentationId);
+        return presentation;
     }
-    removePresentation(req, res) {
+    removePresentation(id) {
         const presentation = this.knex("presentation")
-            .where("id", req.params.presentationid)
-            .delete()
-            .then(() => {
-                console.log("deleted");
-                res.status(200).end();
-            })
-            .catch(err => {
-                res.status(500).send(err);
-            });
+            .where("id", id)
+            .delete();
+        return presentation;
     }
 
+
+    // Slides
     getSlides(req, res) {
         const slide = this.knex('pages')
             .select()
