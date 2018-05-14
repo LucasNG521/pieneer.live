@@ -42,7 +42,7 @@ module.exports = (app) => {
   passport.use('local-login', new LocalStrategy(
     async (username, password, done) => {
       try {
-        let users = await knex('users').where({ username: username})
+        let users = await knex('users').where({ usersname: username})
         console.log(users);
         if (users.length == 0) {
           return done(null, false, { message: 'Incorrect credentials' });
