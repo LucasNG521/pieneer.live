@@ -9,7 +9,7 @@ exports.seed = function (knex, Promise) {
               // Inserts seed entries
               return knex('users').insert([{
                 id: 1,
-                username: 'lucas',
+                usersname: 'lucas',
                 //password: '1234'
                 password: '$2b$10$QqMdlv5fuhiIqiTfhjdBwuqdG9vicydgs.o83dTvdvamyb18rc1/u',
                 social_login: JSON.stringify('linkedin'),
@@ -21,7 +21,7 @@ exports.seed = function (knex, Promise) {
               },
               {
                 id: 2,
-                username: 'ivan',
+                usersname: 'ivan',
                 //password: '1234'
                 password: '$2b$10$QqMdlv5fuhiIqiTfhjdBwuqdG9vicydgs.o83dTvdvamyb18rc1/u',
                 social_login: JSON.stringify('facebook'),
@@ -33,7 +33,7 @@ exports.seed = function (knex, Promise) {
               },
               {
                 id: 3,
-                username: 'didier',
+                usersname: 'didier',
                 password: '$2b$10$QqMdlv5fuhiIqiTfhjdBwuqdG9vicydgs.o83dTvdvamyb18rc1/u',
                 social_login: JSON.stringify('google'),
                 first_name: 'di',
@@ -46,24 +46,24 @@ exports.seed = function (knex, Promise) {
             }).then(() => {
               return knex('presentation').insert([{
                 id: 1,
-                user_id: 1,
+                users_id: 1,
                 title: 'hello world',
                 location: 'Hong Kong',
-                data: '2018/05/12 19:00'
+                date: '2018/05/12 19:00'
               },
               {
                 id: 2,
-                presenter_id: 2,
+                users_id: 2,
                 title: 'hello world2',
                 location: 'Hong Kong',
-                data: '2018/05/12 19:00'
+                date: '2018/05/12 19:00'
               },
               {
                 id: 3,
-                presenter_id: 3,
+                users_id: 3,
                 title: 'hello world3',
                 location: 'Hong Kong',
-                data: '2018/05/12 19:00'
+                date: '2018/05/12 19:00'
               }
               ]);
             }).then(() => {
@@ -92,7 +92,7 @@ exports.seed = function (knex, Promise) {
                 {
                   id: 1,
                   polls_question: '1+1 = ?',
-                  answer_content: JSON.stringify({
+                  answers_content: JSON.stringify({
                     A: '1',
                     B: '2',
                     C: '3',
@@ -118,7 +118,7 @@ exports.seed = function (knex, Promise) {
                 {
                   id: 2,
                   polls_question: 'What is your fav food?',
-                  answer_content: JSON.stringify({
+                  answers_content: JSON.stringify({
                     A: 'Bacon',
                     B: 'Veal',
                     C: "Your mama",
@@ -144,7 +144,7 @@ exports.seed = function (knex, Promise) {
                 {
                   id: 3,
                   polls_question: 'Beautifully-dumb or Hidiously-smart',
-                  answer_content: JSON.stringify({
+                  answers_content: JSON.stringify({
                     A: "Beautifully-dumb",
                     B: "Hidiously-smart"
                   }),
@@ -164,7 +164,7 @@ exports.seed = function (knex, Promise) {
                 {
                   id: 4,
                   polls_question: 'Best singer',
-                  answer_content: JSON.stringify({
+                  answers_content: JSON.stringify({
                     A: "Kanye West",
                     B: 'Celion Dion',
                     C: "Luciano Pavarotti",
@@ -189,7 +189,7 @@ exports.seed = function (knex, Promise) {
                 }
               ])
             }).then(() => {
-              return knex('result').insert([{
+              return knex('results').insert([{
                 id: 1,
                 polls_id: 1,
                 answer: 'A',
@@ -263,7 +263,7 @@ exports.seed = function (knex, Promise) {
                   order_index: 2,
                   img_url: 'http://localhost:8181/api/images/1/1/eb01cde43c2e7a19a9802f06d3dd9d01?types=png',
                   polls_id: 3,
-                  q_a_id: 4
+                  q_a_id: 3
                 }
                 ]);
               });
