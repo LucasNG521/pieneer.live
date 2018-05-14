@@ -111,10 +111,10 @@ module.exports = (app) => {
   });
 
   passport.deserializeUser(async (id, done) => {
-    let users = await knex('users').where({id:id});
+    let users = await knex('login').where({id:id});
     if (users.length == 0) {
         return done(new Error(`Wrong user id ${id}`));
-    }
+    } 
     let user = users[0];
     return done(null, user);
 });
