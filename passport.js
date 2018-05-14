@@ -19,15 +19,15 @@ module.exports = (app) => {
   app.use(passport.session());
 
   passport.use('local-signup', new LocalStrategy(
-    async (username, password, done) => {
+    async (usersname, password, done) => {
       try {
-        let users = await knex('users').where({ username: username });
+        let users = await knex('users').where({ usersname: usersname });
         if (users.length > 0) {
           return done(null, false, { message: 'Email already taken' });
         }
         let hash = await bcrypt.hashPassword(password)
         const newUser = {
-          username: username,
+          usersname: usersname,
           password: hash
         };
         let usersId = await knex('users').insert(newUser).returning('id');
