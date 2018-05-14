@@ -68,3 +68,18 @@ div.list {
     max-width: 100%;
     height: auto;
 }
+
+.save-play {
+    text-align: center;
+}
+
+#save-presentation:hover {
+    text-decoration: none;
+}
+
+.alert-warning {
+    position: absolute;
+    top: 62px;
+    right: 5px;
+    display: none;
+}
