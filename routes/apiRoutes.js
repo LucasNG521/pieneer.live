@@ -314,9 +314,8 @@ class ApiRouter {
 
         });
         // router.put('/images/:userid/:presentationid');
-        router.delete('/images/:userid/:presentationid', (req, res) => {
-            this.databaseActions
-                .removePresentation(req.params.presentationid)
+        router.delete('/images/:userid/:presentationid/:md5', (req, res) => {
+            this.imageActions.removeImage(req.params.userid, req.params.presentationid, req.params.md5, req.query.types)
                 .then(() => {
                     res.status(200).end();
                 })

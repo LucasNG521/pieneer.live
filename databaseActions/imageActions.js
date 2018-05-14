@@ -48,24 +48,24 @@ class ImageActions {
         return file;
 
     }
-    removeImage(req, res) {
-        const userId = StringManipulation.sixPad(req.params.userid);
-        const presentationId = StringManipulation.sixPad(req.params.presentationid);
-        // remove file from the server with params 
+    removeImage(userId, presentationId, md5Code, fileType) {
+        const paddedUserId = StringManipulation.sixPad(userId);
+        const paddedPresentationId = StringManipulation.sixPad(presentationId);
 
-        fs.unlink(path.join(__dirname, '/imageLibrary',
-            `/user-${userId}`, `/presentation-${presentationId}`, `/${userId}-${presentationId}-${req.query.pages}.png`), (err) => {
-            if (err) {
-                console.log(err);
-                res.status(400).send(err);
-            } else {
-                res.status(200).end();
-            }
-        })
+        const filePath = path.join(__dirname, '/imageLibrary', `/user-${paddedUserId}`, `/presentation-${paddedPresentationId}`, `/${paddedUserId}-${paddedPresentationId}-${md5Code}.${fileType}`);
+
+        const image = new Promise((resolve, reject) => {
+            fs.unlink(filePath, (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+        });
+        return image;
     }
-    editImage() {
-        // Need object from FrontEnd to determine how to manipulate the sequence of the presentation
-    }
+
 
 }
 
