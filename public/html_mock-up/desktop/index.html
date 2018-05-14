@@ -82,6 +82,7 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" value="Log in" class="btn btn-primary">Log In</button>
                     </form>
+
                     <form action="/signup" method="post">
                         <div>
                             <label>username:</label>
@@ -90,15 +91,6 @@
                         <div>
                             <label>Password:</label>
                             <input type="password" name="password" />
-                        </div>
-                        <div>
-                            <a href="/auth/facebook">facebook login</a>
-                        </div>
-                        <div>
-                            <a href="/auth/google">google login</a>
-                        </div>
-                        <div>
-                            <a href="/auth/linkedin">linkedIn login</a>
                         </div>
                 </div>
                 <div class="modal-footer">
@@ -169,36 +161,36 @@
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 
 <script>
-    // //google log-in
-    // $('#login').on('shown.bs.modal', function () {
-    //     $('#myInput').trigger('focus')
-    // })
+    //google log-in
+    $('#login').on('shown.bs.modal', function () {
+        $('#myInput').trigger('focus')
+    })
     
     //google sign-out
-    // function signOut() {
-    //     var auth2 = gapi.auth2.getAuthInstance();
-    //     auth2.signOut().then(function () {
-    //         console.log('User signed out.');
-    //     });
-    // }
-    // (function ($) {
-    //     $.fn.serializeFormJSON = function () {
+    function signOut() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+            console.log('User signed out.');
+        });
+    }
+    (function ($) {
+        $.fn.serializeFormJSON = function () {
 
-    //         var o = {};
-    //         var a = this.serializeArray();
-    //         $.each(a, function () {
-    //             if (o[this.name]) {
-    //                 if (!o[this.name].push) {
-    //                     o[this.name] = [o[this.name]];
-    //                 }
-    //                 o[this.name].push(this.value || '');
-    //             } else {
-    //                 o[this.name] = this.value || '';
-    //             }
-    //         });
-    //         return o;
-    //     };
-    // })(jQuery);
+            var o = {};
+            var a = this.serializeArray();
+            $.each(a, function () {
+                if (o[this.name]) {
+                    if (!o[this.name].push) {
+                        o[this.name] = [o[this.name]];
+                    }
+                    o[this.name].push(this.value || '');
+                } else {
+                    o[this.name] = this.value || '';
+                }
+            });
+            return o;
+        };
+    })(jQuery);
 
     $('.save-user').click(function (e) {
         e.preventDefault();

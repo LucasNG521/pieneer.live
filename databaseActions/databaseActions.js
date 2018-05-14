@@ -14,6 +14,11 @@ class DatabaseActions {
             .where("id", userId);
         return user;
     }
+    addNewUser(usersname, password){
+        const user = this.knex("users")
+        .insert({usersname: usersname, password: password})
+    return user;
+    }
     editUserInfo(userId, ftname, ltname, email, phone, company) {
         const user = this.knex("users")
             .update({
