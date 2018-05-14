@@ -113,7 +113,7 @@ function update_slide() {
                 success: function (q_a) {
                     var questions = '';
                     for (const question of q_a.questions) {
-                        var like = (question.like > 0) ? `<i class="fas fa-thumbs-up fa-lg mr-2"> ${question.like}</i>` : '';
+                        var likes = (question.likes > 0) ? `<i class="fas fa-thumbs-up fa-lg mr-2"> ${question.likes}</i>` : '';
                         questions += `
                     <li class="list-group-item">
                         <div class="user text-left">
@@ -122,7 +122,7 @@ function update_slide() {
                         <div class="question d-flex align-items-center justify-content-center">
                             ${question.question}
                             <div class="ml-auto justify-content-end">
-                            ${like}
+                            ${likes}
                             </div>
                         </div>
                     </li>`;
