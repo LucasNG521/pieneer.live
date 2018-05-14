@@ -1,11 +1,14 @@
 // Post = new entity
 // Put  = edit entity
+
+const StringManipulation = require('../tools/stringManipulation');
+const path = require('path');
+
 class ApiRouter {
     constructor(imageActions, folderActions, databaseActions) {
         this.folderActions = folderActions;
         this.imageActions = imageActions;
         this.databaseActions = databaseActions;
-
     }
 
     router() {
@@ -154,11 +157,12 @@ class ApiRouter {
         });
 
         // Polls operations
-        router.get("/polls/:pollid", (req, res) => {
+        // TODO: Working on changing the methods
+        router.get("/polls/:pollId", (req, res) => {
             this.databaseActions
-                .removePresentation(req.params.presentationid)
-                .then(() => {
-                    res.status(200).end();
+                .getPolls(req.params.pollId)
+                .then((arr) => {
+                    res.json(arr);
                 })
                 .catch(err => {
                     res.status(500).send(err);
@@ -281,15 +285,21 @@ class ApiRouter {
 
         // http://www.ighsg/api/images/123/242/?pages=12
         /* This section is to gain access to the image library*/
-        router.get('/images/:userid/:presentationid', (req, res) => {
-            this.databaseActions
-                .removePresentation(req.params.presentationid)
-                .then(() => {
-                    res.status(200).end();
-                })
-                .catch(err => {
-                    res.status(500).send(err);
+        router.get('/images/:userId/:presentationId', (req, res) => {
+            const imgInfo = this.imageActions.readImage(req.params.userId, req.params.presentationId);
+
+            if (req.query.pages) {
+                res.sendFile(`${imgInfo.paddedUserId}-${imgInfo.paddedPresentationId}-${req.query.pages}.png`, imgInfo.imageOptions, err => {
+                    // Only error handling
+                    if (err) {
+                        res.status(400).send(err);
+                    } else {
+                        console.log('Image sent');
+                    }
                 });
+
+            }
+
         });
         // router.post('/images/:userid/:presentationid', this.imageActions.writeImage);
         // router.put('/images/:userid/:presentationid');

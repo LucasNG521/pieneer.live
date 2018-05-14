@@ -1,21 +1,20 @@
 const fs = require('fs');
 const path = require('path');
 const StringManipulation = require('../tools/stringManipulation');
-const stringManipulation = new StringManipulation();
 
 
 class ImageActions {
 
-    readImage(req, res) {
-        const userId = stringManipulation.sixPad(req.params.userid);
-        const presentationId = stringManipulation.sixPad(req.params.presentationid);
+    readImage(userId, presentationId) {
+        const paddedUserId = StringManipulation.sixPad(userId);
+        const paddedPresentationId = StringManipulation.sixPad(presentationId);
 
 
         const imageOptions = {
             root: path.join(__dirname,
                 '/imageLibrary',
-                `/user-${userId}`,
-                `/presentation-${presentationId}`),
+                `/user-${paddedUserId}`,
+                `/presentation-${paddedPresentationId}`),
             dotfiles: 'deny',
             headers: {
                 'x-timestamp': Date.now(),
@@ -23,21 +22,16 @@ class ImageActions {
             }
         };
 
-        if (req.query.pages) {
-            res.sendFile(`${userId}-${presentationId}-${req.query.pages}.png`, imageOptions, function (err) {
-                if (err) {
-                    res.status(400).send(err);
-                } else {
-                    console.log('Image sent');
-                }
-            });
-
+        return {
+            paddedUserId,
+            paddedPresentationId,
+            imageOptions
         }
 
     }
     writeImage(req, res) {
-        const userId = stringManipulation.sixPad(req.params.userid);
-        const presentationId = stringManipulation.sixPad(req.params.presentationid);
+        const userId = StringManipulation.sixPad(req.params.userid);
+        const presentationId = StringManipulation.sixPad(req.params.presentationid);
         const fileType = req.files.file.name.split('.').pop();
 
 
@@ -59,8 +53,8 @@ class ImageActions {
 
     }
     removeImage(req, res) {
-        const userId = stringManipulation.sixPad(req.params.userid);
-        const presentationId = stringManipulation.sixPad(req.params.presentationid);
+        const userId = StringManipulation.sixPad(req.params.userid);
+        const presentationId = StringManipulation.sixPad(req.params.presentationid);
         // remove file from the server with params 
 
         fs.unlink(path.join(__dirname, '/imageLibrary',
