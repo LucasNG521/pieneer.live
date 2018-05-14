@@ -39,11 +39,11 @@ class ApiRouter {
         // TODO: Lucassss adding new user 
         router.post("/users", (req, res) => {
             this.databaseActions.addNewUser(req.body.usersname, req.body.password).then(() => {
-                res.json("Hello! you've successfully added a new user ");
-            })
-            .catch(err => {
-                res.status(500).send(err);
-            })
+                    res.json("Hello! you've successfully added a new user ");
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                })
         });
         router.put("/users/:userid", (req, res) => {
             this.databaseActions.editUserInfo(req.params.userid, req.body['first_name'], req.body['last_name'], req.body.email, req.body.phone, req.body.company).then(() => {
@@ -160,10 +160,10 @@ class ApiRouter {
         });
 
         // Polls operations
-        // TODO: Working on changing the methods
+
         router.get("/polls/:pollId", (req, res) => {
             this.databaseActions
-                .getPolls(req.params.pollId)
+                .getPollInfo(req.params.pollId)
                 .then((arr) => {
                     res.json(arr);
                 })
@@ -173,14 +173,15 @@ class ApiRouter {
         });
         router.post("/polls", (req, res) => {
             this.databaseActions
-                .removePresentation(req.params.presentationid)
-                .then(() => {
-                    res.status(200).end();
+                .addPollsInfo(req.body['polls_question'], req.body.style, req.body['answer_content'])
+                .then((pollId) => {
+                    res.status(200).json();
                 })
                 .catch(err => {
                     res.status(500).send(err);
                 });
         });
+        // FIXME: OMG
         router.put("/polls/:pollid", (req, res) => {
             this.databaseActions
                 .removePresentation(req.params.presentationid)
@@ -193,7 +194,7 @@ class ApiRouter {
         });
         router.delete("/polls/:pollid", (req, res) => {
             this.databaseActions
-                .removePresentation(req.params.presentationid)
+                .removePollsInfo(req.params.presentationid)
                 .then(() => {
                     res.status(200).end();
                 })

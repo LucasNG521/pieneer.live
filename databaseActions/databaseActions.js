@@ -14,10 +14,13 @@ class DatabaseActions {
             .where("id", userId);
         return user;
     }
-    addNewUser(usersname, password){
+    addNewUser(usersname, password) {
         const user = this.knex("users")
-        .insert({usersname: usersname, password: password})
-    return user;
+            .insert({
+                usersname: usersname,
+                password: password
+            })
+        return user;
     }
     editUserInfo(userId, ftname, ltname, email, phone, company) {
         const user = this.knex("users")
@@ -124,28 +127,26 @@ class DatabaseActions {
     };
 
     // Polls
-    getPolls(pollId) {
+    getPollInfo(pollId) {
         const poll = this.knex('polls')
             .select()
             .where('id', pollId);
         return poll;
     };
-    addPolls(req, res) {
+
+    // FIXME: Need Michale's help to clarify how to return the value after one and another
+    addPollsInfo(question, style, answerContent) {
         const poll = this.knex('polls')
             .insert({
-                pages_id: req.body.pages_id,
-                question: req.body.question,
-                answer_content: JSON.stringify(req.body[answer_content]),
-                style: JSON.stringify(req.body[style])
-            })
-            .then((arr) => {
-                console.log(`added`);
-                res.json(arr);
-            })
-            .catch(err => {
-                res.status(500).send(err);
+                polls_question: question,
+                answer_content: JSON.stringify(answerContent),
+                style: JSON.stringify(style)
             });
+
+        const id = this.knex('polls').select('id').where("polls_question", question);
+        return poll;
     };
+    //FIXME: all that is needed to be replaced or changed.
     editPolls(req, res) {
         const poll = this.knex('polls')
             .update({
@@ -163,7 +164,8 @@ class DatabaseActions {
                 res.status(500).send(err);
             });
     };
-    removePolls(req, res) {
+    //FIXME: all that is needed to be replaced or changed.
+    removePollsInfo(req, res) {
         const poll = this.knex('polls')
             .where('id', req.params.pollid)
             .delete()
@@ -218,18 +220,7 @@ class DatabaseActions {
                 res.status(500).send(err);
             });
     };
-    removePollResults(req, res) {
-        const poll = this.knex('result')
-            .where('id', req.params.resultid)
-            .delete()
-            .then(() => {
-                console.log(`deleted`);
-                res.status(200).end();
-            })
-            .catch(err => {
-                res.status(500).send(err);
-            });
-    };
+
 
     // Q&A Result only get ALL result and add 1 
     getQandAResults(req, res) {
