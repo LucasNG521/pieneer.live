@@ -9,8 +9,6 @@ exports.up = function(knex, Promise) {
     table.string('img_url');
     table.integer('polls_id').unsigned();
     table.foreign('polls_id').references('polls.id');
-    table.integer('q_a_id').unsigned();
-    table.foreign('q_a_id').references('q_a.id');
     table.timestamps(false,true);
   });
 };

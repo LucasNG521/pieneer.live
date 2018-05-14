@@ -193,11 +193,25 @@ $('.list').on('mouseenter', 'div.slide', function (e) {
 $('.list').on('click', 'div.slide', function (e) {
     previewSlide($(".slide").index($(this)));
 });
+$('a#save-presentation').click(function (e) {
+    e.preventDefault;
+    console.log('save-presentation');
+    presentation.slides = [];
+    $('.slide').each(function () {
+        if (!$(this).hasClass('slide-html')) {
+            var data_json = JSON.parse($(this).attr('data-json'));
+            presentation.slides.push(data_json);
+        }
+    });
+    console.log(presentation);
+    $(this).blur();
+    return false;
+});
 $('.slide:last-child').mouseenter();
 $(function () {
     $('[data-toggle="tooltip"]').tooltip();
 });
-$('.presentation').on('click', 'button', function (e) {
+$('.presentation .actions').on('click', 'button', function (e) {
     e.preventDefault();
     console.log('add to slide ' + $(this).attr('id') + ' position ' + hover_slide);
     if ($(this).attr('id') == 'insert-ppt') {
@@ -209,31 +223,45 @@ $('.presentation').on('click', 'button', function (e) {
         upload = [];
         $('#uploadImageModal').modal('show');
     } else if ($(this).attr('id') == 'insert-poll') {
-        $.ajax({
-            type: 'GET',   // TODO: replace to POST
-            url: '/sample_api/poll/post',   // TODO: replace to /api/poll/
-        }).then((id) => {
-            $('.slide').eq(hover_slide).after(`
-            <div class="slide slide-poll" data-json='{"type":"poll","id":${id},"question":"","graph_type":"bar","answers":["",""]}'>
-                <div>
-                    <i class="fas fa-chart-bar fa-2x mr-2"></i>Poll
-                </div>
-            </div>`);
-            $('.slide').eq(1 + hover_slide).click();
-        });
+        if ($('.slide-poll').length > 0) {
+            $(".alert-warning").html('Only 1 poll allowed per presentation').show();
+            $(".alert-warning").fadeTo(2000, 500).slideUp(500, function () {
+                $(".alert-warning").hide('close');
+            });
+        } else {
+            $.ajax({
+                type: 'GET',   // TODO: replace to POST
+                url: '/sample_api/poll/post',   // TODO: replace to /api/poll/
+            }).then((id) => {
+                $('.slide').eq(hover_slide).after(`
+                <div class="slide slide-poll" data-json='{"type":"poll","id":${id},"question":"","graph_type":"bar","answers":["",""]}'>
+                    <div>
+                        <i class="fas fa-chart-bar fa-2x mr-2"></i>Poll
+                    </div>
+                </div>`);
+                $('.slide').eq(1 + hover_slide).click();
+            });
+        }
     } else if ($(this).attr('id') == 'insert-qa') {
-        $.ajax({
-            type: 'GET',   // TODO: replace to POST
-            url: '/sample_api/q_a/post',   // TODO: replace to /api/q_a/
-        }).then((id) => {
-            $('.slide').eq(hover_slide).after(`
+        if ($('.slide-q_a').length > 0) {
+            $(".alert-warning").html('Only 1 Q/A allowed per presentation').show();
+            $(".alert-warning").fadeTo(2000, 500).slideUp(500, function () {
+                $(".alert-warning").hide('close');
+            });
+        } else {
+            $.ajax({
+                type: 'GET',   // TODO: replace to POST
+                url: '/sample_api/q_a/post',   // TODO: replace to /api/q_a/
+            }).then((id) => {
+                $('.slide').eq(hover_slide).after(`
         <div class="slide slide-q_a" data-json='{"type":"q_a","id":${id},"title":"","questions":[]}'>
             <div>
                 <i class="fas fa-question-circle fa-2x mr-2"></i>Q&A
             </div>
         </div>`);
-        $('.slide').eq(1 + hover_slide).click();
-        });
+                $('.slide').eq(1 + hover_slide).click();
+            });
+        }
     } else if ($(this).attr('id') == 'delete-slide') {
         $('.slide').eq(hover_slide).remove();
         if (hover_slide == $('.slide').length) {

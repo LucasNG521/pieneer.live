@@ -1,9 +1,9 @@
 exports.seed = function (knex, Promise) {
   // Deletes ALL existing entries
+  return knex('q_a').del().then(() => {
   return knex('slides').del().then(() => {
     return knex('results').del().then(() => {
       return knex('polls').del().then(() => {
-        return knex('q_a').del().then(() => {
           return knex('presentation').del().then(() => {
             return knex('users').del().then(() => {
               // Inserts seed entries
@@ -64,26 +64,6 @@ exports.seed = function (knex, Promise) {
                 title: 'hello world3',
                 location: 'Hong Kong',
                 date: '2018/05/12 19:00'
-              }
-              ]);
-            }).then(() => {
-              return knex('q_a').insert([{
-                id: 1,
-                q_a_question: 'Ivan?',
-                nickname: 'ivan',
-                likes: 10
-              },
-              {
-                id: 2,
-                q_a_question: 'Didier?',
-                nickname: 'didier',
-                likes: 20
-              },
-              {
-                id: 3,
-                q_a_question: 'Lucas?',
-                nickname: 'lucas',
-                likes: 30
               }
               ]);
             }).then(() => {
@@ -244,28 +224,56 @@ exports.seed = function (knex, Promise) {
                   page_type: 'img',
                   order_index: 1,
                   img_url: 'http://localhost:8181/api/images/1/1/dbccdecac45df6db7c489bb8f3d0dddf?types=png',
-                  polls_id: 1,
-                  q_a_id: 1
+                  polls_id: null
                 },
                 {
                   id: 2,
-                  presentation_id: 2,
-                  page_type: 'img',
-                  order_index: 1,
-                  img_url: 'http://localhost:8181/api/images/1/1/dbccdecac45df6db7c489bb8f3d0dddf?types=png',
-                  polls_id: 2,
-                  q_a_id: 2
+                  presentation_id: 1,
+                  page_type: 'polls',
+                  order_index: 2,
+                  img_url: null,
+                  polls_id: 1,
                 },
                 {
                   id: 3,
-                  presentation_id: 3,
+                  presentation_id: 1,
                   page_type: 'img',
-                  order_index: 2,
+                  order_index: 3,
                   img_url: 'http://localhost:8181/api/images/1/1/eb01cde43c2e7a19a9802f06d3dd9d01?types=png',
-                  polls_id: 3,
-                  q_a_id: 3
+                  polls_id: null,
+                },
+                {
+                  id: 4,
+                  presentation_id: 1,
+                  page_type: 'polls',
+                  order_index: 4,
+                  img_url: null,
+                  polls_id: 1,
                 }
-                ]);
+                ]).then(() => {
+                  return knex('q_a').insert([{
+                    id: 1,
+                    slides_id: 1,
+                    q_a_question: 'Ivan?',
+                    nickname: 'ivan',
+                    likes: 10
+                  },
+                  {
+                    id: 2,
+                    slides_id: 1,
+                    q_a_question: 'Didier?',
+                    nickname: 'didier',
+                    likes: 20
+                  },
+                  {
+                    id: 3,
+                    slides_id: 1,
+                    q_a_question: 'Lucas?',
+                    nickname: 'lucas',
+                    likes: 30
+                  }
+                  ]);
+                })
               });
             });
           });

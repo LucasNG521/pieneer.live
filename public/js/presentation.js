@@ -26,6 +26,8 @@ function init_slides(data) {
     console.log(presentation);
     nb_slides = presentation.slides.length;
 
+    $('title').html(presentation.title + ' | powered by Pieneer - Live Presentation made Interactive and Easy');
+
     // init first slide
     // var event_date = formatDate(presentation.date);
     $('#presentation').append(`
