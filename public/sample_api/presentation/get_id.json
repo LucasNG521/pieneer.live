@@ -21,7 +21,7 @@
             "type": "poll",
             "id": 3,
             "question": "Poll question?",
-            "graph_type": "pie",
+            "graph_type": "bar",
             "answers": [
                 "response 1",
                 "response 2",
@@ -40,11 +40,13 @@
             "title": "Question & Answer",
             "questions": [
                 {
+                    "id":1,
                     "question": "question 1",
                     "name": "name",
                     "like": 4
                 },
                 {
+                    "id":2,
                     "question": "question 2",
                     "name": "other name",
                     "like": 2
