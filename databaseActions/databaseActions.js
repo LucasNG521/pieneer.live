@@ -166,16 +166,12 @@ class DatabaseActions {
         return slide;
     };
 
-    getPolls(req, res) {
+    // Polls
+    getPolls(pollId) {
         const poll = this.knex('polls')
             .select()
-            .where('id', req.params.pollid)
-            .then((arr) => {
-                res.json(arr);
-            })
-            .catch(err => {
-                res.status(500).send(err);
-            });
+            .where('id', pollId);
+        return poll;
     };
     addPolls(req, res) {
         const poll = this.knex('polls')

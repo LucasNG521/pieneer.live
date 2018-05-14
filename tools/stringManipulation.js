@@ -1,5 +1,5 @@
 class StringManipulation {
-    sixPad(num) {
+    static sixPad(num) {
         return (num.toString()).padStart(6, '0');
     }
 }
