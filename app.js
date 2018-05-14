@@ -47,5 +47,5 @@ const knex = require('knex')(config);
 app.use('/', router);
 app.use('/api', new ApiRouter(new ImageActions(), new FolderActions(), new DatabaseActions(knex)).router());
 
-
-http.listen(8181, () => console.log("App is running on 8181"));
+ 
+http.listen(8181, () => console.log("App is running on 8181")); 

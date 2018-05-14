@@ -108,48 +108,266 @@ class ApiRouter {
                     res.status(500).send(err);
                 });
         });
-    
+
+
+        // FIXME: Haven't finish changing the code
         // Slides operation
-        router.get("/slides/:slideid", this.databaseActions.getSlides);
-        router.post("/slides", this.databaseActions.addSlides);
-        router.put("/slides/:slideid", this.databaseActions.editSlides);
-        router.delete("/slides/:slideid", this.databaseActions.removeSlides);
+        router.get("/slides/:slideid", (req, res) => {
+            this.databaseActions
+                .getSlides(req.params.slideid)
+                .then((arr) => {
+                    res.json(arr);
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                });
+        });
+        router.post("/slides", (req, res) => {
+            this.databaseActions
+                .addSlides(req.body.presentation_id, req.body.page_type, req.body.order)
+                .then((arr) => {
+                    res.json(arr);
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                });
+        });
+        router.put("/slides/:slideid", (req, res) => {
+            this.databaseActions
+                .editSlides(req.params.slideid, req.body.presentation_id, req.body.page_type, req.body.order)
+                .then(() => {
+                    res.status(200).end();
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                });
+        });
+        router.delete("/slides/:slideid", (req, res) => {
+            this.databaseActions
+                .removeSlides(req.params.slideid)
+                .then(() => {
+                    res.status(200).end();
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                });
+        });
 
         // Polls operations
-        router.get("/polls/:pollid", this.databaseActions.getPolls);
-        router.post("/polls", this.databaseActions.addPolls);
-        router.put("/polls/:pollid", this.databaseActions.editPolls);
-        router.delete("/polls/:pollid", this.databaseActions.removePolls);
+        router.get("/polls/:pollid", (req, res) => {
+            this.databaseActions
+                .removePresentation(req.params.presentationid)
+                .then(() => {
+                    res.status(200).end();
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                });
+        });
+        router.post("/polls", (req, res) => {
+            this.databaseActions
+                .removePresentation(req.params.presentationid)
+                .then(() => {
+                    res.status(200).end();
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                });
+        });
+        router.put("/polls/:pollid", (req, res) => {
+            this.databaseActions
+                .removePresentation(req.params.presentationid)
+                .then(() => {
+                    res.status(200).end();
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                });
+        });
+        router.delete("/polls/:pollid", (req, res) => {
+            this.databaseActions
+                .removePresentation(req.params.presentationid)
+                .then(() => {
+                    res.status(200).end();
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                });
+        });
 
         //result
-        router.get("/result/:resultid", this.databaseActions.getPollResults);
-        router.post("/result", this.databaseActions.addPollResults);
-        router.put("/result/:resultid", this.databaseActions.editPollResults);
-        router.delete("/result/:resultid", this.databaseActions.removePollResults);
+        router.get("/result/:resultid", (req, res) => {
+            this.databaseActions
+                .removePresentation(req.params.presentationid)
+                .then(() => {
+                    res.status(200).end();
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                });
+        });
+        router.post("/result", (req, res) => {
+            this.databaseActions
+                .removePresentation(req.params.presentationid)
+                .then(() => {
+                    res.status(200).end();
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                });
+        });
+        router.put("/result/:resultid", (req, res) => {
+            this.databaseActions
+                .removePresentation(req.params.presentationid)
+                .then(() => {
+                    res.status(200).end();
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                });
+        });
+        router.delete("/result/:resultid", (req, res) => {
+            this.databaseActions
+                .removePresentation(req.params.presentationid)
+                .then(() => {
+                    res.status(200).end();
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                });
+        });
 
         //result
-        router.get("/q_a/:q_aid", this.databaseActions.getQandAResults);
-        router.post("/q_a", this.databaseActions.addQandAResults);
-        router.put("/q_a/:q_aid", this.databaseActions.editQandAResults);
-        router.delete("/q_a/:q_aid", this.databaseActions.removeQandAResults);
+        router.get("/q_a/:q_aid", (req, res) => {
+            this.databaseActions
+                .removePresentation(req.params.presentationid)
+                .then(() => {
+                    res.status(200).end();
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                });
+        });
+        router.post("/q_a", (req, res) => {
+            this.databaseActions
+                .removePresentation(req.params.presentationid)
+                .then(() => {
+                    res.status(200).end();
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                });
+        });
+        router.put("/q_a/:q_aid", (req, res) => {
+            this.databaseActions
+                .removePresentation(req.params.presentationid)
+                .then(() => {
+                    res.status(200).end();
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                });
+        });
+        router.delete("/q_a/:q_aid", (req, res) => {
+            this.databaseActions
+                .removePresentation(req.params.presentationid)
+                .then(() => {
+                    res.status(200).end();
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                });
+        });
 
         // http://www.ighsg/api/images/123/242/?pages=12
         /* This section is to gain access to the image library*/
-        router.get('/images/:userid/:presentationid', this.imageActions.readImage);
+        router.get('/images/:userid/:presentationid', (req, res) => {
+            this.databaseActions
+                .removePresentation(req.params.presentationid)
+                .then(() => {
+                    res.status(200).end();
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                });
+        });
         // router.post('/images/:userid/:presentationid', this.imageActions.writeImage);
         // router.put('/images/:userid/:presentationid');
-        router.delete('/images/:userid/:presentationid', this.imageActions.removeImage);
+        router.delete('/images/:userid/:presentationid', (req, res) => {
+            this.databaseActions
+                .removePresentation(req.params.presentationid)
+                .then(() => {
+                    res.status(200).end();
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                });
+        });
 
 
         // Folder manipulation: User level
-        router.get('/folders/:userid', this.folderActions.readUserDir);
-        router.post('/folders/:userid', this.folderActions.mkUserDir);
-        router.delete('/folders/:userid/', this.folderActions.removeUserDir);
+        router.get('/folders/:userid', (req, res) => {
+            this.databaseActions
+                .removePresentation(req.params.presentationid)
+                .then(() => {
+                    res.status(200).end();
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                });
+        });
+        router.post('/folders/:userid', (req, res) => {
+            this.databaseActions
+                .removePresentation(req.params.presentationid)
+                .then(() => {
+                    res.status(200).end();
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                });
+        });
+        router.delete('/folders/:userid/', (req, res) => {
+            this.databaseActions
+                .removePresentation(req.params.presentationid)
+                .then(() => {
+                    res.status(200).end();
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                });
+        });
 
         // Folder manipulation: Presentation Level
-        router.get('/folders/:userid/:presentationid', this.folderActions.readPresentationDir);
-        router.post('/folders/:userid/:presentationid', this.folderActions.mkPresentationDir);
-        router.delete('/folders/:userid/:presentationid', this.folderActions.removePresentationDir);
+        router.get('/folders/:userid/:presentationid', (req, res) => {
+            this.databaseActions
+                .removePresentation(req.params.presentationid)
+                .then(() => {
+                    res.status(200).end();
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                });
+        });
+        router.post('/folders/:userid/:presentationid', (req, res) => {
+            this.databaseActions
+                .removePresentation(req.params.presentationid)
+                .then(() => {
+                    res.status(200).end();
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                });
+        });
+        router.delete('/folders/:userid/:presentationid', (req, res) => {
+            this.databaseActions
+                .removePresentation(req.params.presentationid)
+                .then(() => {
+                    res.status(200).end();
+                })
+                .catch(err => {
+                    res.status(500).send(err);
+                });
+        });
 
         return router;
     }

@@ -15,19 +15,19 @@ const passport = require('passport');
     }
 
     //passport-local
-    router.get('/', isLoggedIn, (req, res) => {
+    router.get('/dashboard', isLoggedIn, (req, res) => {
       res.redirect('/login');
     });
 
     router.post('/login', passport.authenticate('local-login', {
-      successRedirect: '/',
-      failureRedirect: '/error'
+      successRedirect: '/dashborad',
+      // failureRedirect: '/error'
     }));
 
 
     router.post('/signup', passport.authenticate('local-signup', {
       successRedirect: '/',
-      failureRedirect: '/error'
+      // failureRedirect: '/error'
     }));
 
 
@@ -82,6 +82,12 @@ const passport = require('passport');
       });
 
     return router;
+
+    //local-logout
+    app.get('/logout', (req, res) => {
+      req.logout();
+      res.redirect('/');
+    });
   }
 // }
 
