@@ -45,7 +45,7 @@
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
             <div class="container">
-                
+
             </div>
         </div>
         <div class="tab-pane qa fade" id="qa" role="tabpanel" aria-labelledby="qa-tab">
@@ -65,43 +65,20 @@
             </form>
         </div>
         <div class="tab-pane fade" id="poll" role="tabpanel" aria-labelledby="poll-tab">
-            <div class="container">
-                <h3>Live poll</h3>
-                <p>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy
-                    text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type
-                    specimen book?
-                </p>
-            </div>
-            <ul class="list-group poll">
-                <li class="list-group-item">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="customCheck1">
-                        <label class="custom-control-label" for="customCheck1">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</label>
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="customCheck2">
-                        <label class="custom-control-label" for="customCheck2">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</label>
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="customCheck3">
-                        <label class="custom-control-label" for="customCheck3">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</label>
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="customCheck4">
-                        <label class="custom-control-label" for="customCheck4">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</label>
-                    </div>
-                </li>
-            </ul>
-            <div class="text-center mt-3">
-                <input class="btn btn-primary" id="submit" type="submit" value="Submit">
-            </div>
+            <form id="send_vote" action="#">
+                <div class="container">
+                    <h3>Live poll</h3>
+                    <p id="poll_question">
+                        
+                    </p>
+                </div>
+                <ul class="list-group poll">
+                    
+                </ul>
+                <div class="text-center mt-3">
+                    <input class="btn btn-primary" id="submit-poll" type="submit" value="Submit">
+                </div>
+            </form>
         </div>
     </div>
 
@@ -133,6 +110,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.slim.js"></script>
     <script src="/js/event.js"></script>
 </body>
 

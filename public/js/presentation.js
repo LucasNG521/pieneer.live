@@ -14,6 +14,7 @@ ctx.on("tool-changed", function (toolname) {
 var presentation = '';
 var nb_slides = 0;
 var current_slide = 0;
+var socket = io();
 // get presentation data from the API
 $.ajax({
     dataType: "json",
@@ -57,7 +58,7 @@ function init_slides(data) {
                 responses += `<li class="list-group-item item-${key}">${slide.answers[key]}</li>`;
             }
             html_slide = `
-            <div class="slide slide-${i} slide-${slide.type}">
+            <div class="slide slide-${i} slide-${slide.type}" data-json='` + JSON.stringify(slide) + `'>
                 <div class="question-container">
                     <h1>${slide.question}</h1>
                     <ul class="list-group">
@@ -82,10 +83,19 @@ function init_slides(data) {
     }
 }
 function update_slide() {
+    if ($('.slide.active').hasClass('slide-poll')) {
+        slide = JSON.parse($('.slide.active').attr('data-json'));
+        socket.emit("vote-stop", slide.id); // id
+    }
     $('.slide.active').removeClass('active');
     $('.slide.slide-' + current_slide).addClass('active');
     ctx.setCurrentPage(current_slide);
     $('#drawing').removeClass('white-background');
+
+    if ($('.slide.active').hasClass('slide-poll')) {
+        slide = JSON.parse($('.slide.active').attr('data-json'));
+        socket.emit("vote-start", slide.id); // id
+    }
 
     // actions for this slide
     if (current_slide > 0) {
@@ -181,8 +191,6 @@ function display_chart(id) {
         }
     });
 
-    // var socket = io();
-
     $("#addone").click(function (e) {
         e.preventDefault();
         console.log('clicked upvote');
@@ -191,11 +199,12 @@ function display_chart(id) {
         myChart.update();
         $(this).blur();
     });
-    // socket.on("upvote", val => {
-    //     console.log('received upvote');
-    //     myChart.data.datasets[0].data[1] += val;
-    //     myChart.update();
-    // });
+
+    socket.on("upvote", val => {
+        console.log('received upvote for ' + val);
+        myChart.data.datasets[0].data[val] += 1;
+        myChart.update();
+    });
 }
 
 // when page loaded
