@@ -134,57 +134,36 @@ class DatabaseActions {
 
 
     // Slides
-    getSlides(req, res) {
+    getSlides(id) {
         const slide = this.knex('pages')
             .select()
-            .where('id', req.params.slideid)
-            .then((arr) => {
-                res.json(arr);
-            })
-            .catch(err => {
-                res.status(500).send(err);
-            });
+            .where('id', id);
+        return slide;
     };
-    addSlides(req, res) {
+    addSlides(id, type, order) {
         const slide = this.knex('pages')
             .insert({
-                presentation_id: req.body.presentation_id,
-                page_type: req.body.page_type,
-                order: req.body.order
-            })
-            .then((arr) => {
-                console.log(`added`);
-                res.json(arr);
-            })
-            .catch(err => {
-                res.status(500).send(err);
+                presentation_id: id,
+                page_type: type,
+                order: order
             });
+        return slide;
     };
-    editSlides(req, res) {
+    editSlides(slideId, id, type, order) {
         const slide = this.knex('pages')
             .update({
-                presentation_id: req.body.presentation_id,
-                page_type: req.body.page_type,
-                order: req.body.order
+                presentation_id: id,
+                page_type: type,
+                order: order
             })
-            .where('id', req.params.slideid)
-            .then((arr) => {
-                console.log(`edited`);
-                res.json(arr);
-            })
-            .catch(err => {
-                res.status(500).send(err);
-            });
+            .where('id', slideId);
+        return slide;
     };
-    removeSlides(req, res) {
-        const slide = this.knex('pages').where('id', req.params.slideid).delete()
-            .then(() => {
-                console.log('deleted');
-                res.status(200).end();
-            })
-            .catch(err => {
-                res.status(500).send(err);
-            })
+    removeSlides(id) {
+        const slide = this.knex('pages')
+            .where('id', id)
+            .delete();
+        return slide;
     };
 
     getPolls(req, res) {
