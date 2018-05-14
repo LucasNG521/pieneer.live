@@ -33,77 +33,7 @@
     </nav>
 
     <div class="container dashboard">
-        <div class="row">
-            <div class="col-lg-3 col-md-6">
-                <div class="card">
-                    <img class="card-img-top" src="/html_mock-up/presentation-slide-example/slide-1.jpg">
-                    <div class="card-body">
-                        <h5 class="card-title">Presentation title</h5>
-                        <a href="edit_presentation.html" class="btn btn-primary">Edit</a>
-                        <a href="presentation.html" class="btn btn-primary">Play</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="card">
-                    <img class="card-img-top" src="/html_mock-up/presentation-slide-example/slide-1.jpg">
-                    <div class="card-body">
-                        <h5 class="card-title">Presentation title</h5>
-                        <a href="edit_presentation.html" class="btn btn-primary">Edit</a>
-                        <a href="presentation.html" class="btn btn-primary">Play</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="card">
-                    <img class="card-img-top" src="/html_mock-up/presentation-slide-example/slide-1.jpg">
-                    <div class="card-body">
-                        <h5 class="card-title">Presentation title</h5>
-                        <a href="edit_presentation.html" class="btn btn-primary">Edit</a>
-                        <a href="presentation.html" class="btn btn-primary">Play</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="card">
-                    <img class="card-img-top" src="/html_mock-up/presentation-slide-example/slide-1.jpg">
-                    <div class="card-body">
-                        <h5 class="card-title">Presentation title</h5>
-                        <a href="edit_presentation.html" class="btn btn-primary">Edit</a>
-                        <a href="presentation.html" class="btn btn-primary">Play</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-3 col-md-6">
-                <div class="card">
-                    <img class="card-img-top" src="/html_mock-up/presentation-slide-example/slide-1.jpg">
-                    <div class="card-body">
-                        <h5 class="card-title">Presentation title</h5>
-                        <a href="edit_presentation.html" class="btn btn-primary">Edit</a>
-                        <a href="presentation.html" class="btn btn-primary">Play</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="card">
-                    <img class="card-img-top" src="/html_mock-up/presentation-slide-example/slide-1.jpg">
-                    <div class="card-body">
-                        <h5 class="card-title">Presentation title</h5>
-                        <a href="edit_presentation.html" class="btn btn-primary">Edit</a>
-                        <a href="presentation.html" class="btn btn-primary">Play</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <a href="edit_presentation.html" class="btn btn-primary">New</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+
     </div>
 
 </body>
@@ -112,7 +42,43 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 <script>
-
+    $.ajax({
+        dataType: "json",
+        contentType: "application/json",
+        type: 'GET',
+        url: "/sample_api/presentation/get.json",
+        success: function (json) {
+            var html_dashboard = '<div class="row">';
+            var i = 1;
+            for (presentation of json.presentations) {
+                html_dashboard += `
+            <div class="col-lg-3 col-md-6">
+                <div class="card">
+                    <img class="card-img-top" src="${presentation.slide}">
+                    <div class="card-body">
+                        <h5 class="card-title">${presentation.title}</h5>
+                        <a href="edit_presentation.html" class="btn btn-primary">Edit</a>
+                        <a href="presentation.html" class="btn btn-primary">Play</a>
+                    </div>
+                </div>
+            </div>`;
+                if (i % 4 == 0) {
+                    html_dashboard += '</div><div class="row">';
+                }
+                i++;
+            }
+            html_dashboard += `
+                <div class="col-lg-3 col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <a href="edit_presentation.html" class="btn btn-primary">New</a>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+            $('.dashboard').html(html_dashboard);
+        }
+    });
 </script>
 
 </html>

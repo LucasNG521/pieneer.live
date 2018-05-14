@@ -103,7 +103,13 @@ function update_slide() {
     if (current_slide > 0) {
         slide = presentation.slides[current_slide - 1];
         if (slide.type == 'poll') {
-            display_chart(slide.id);
+            $.ajax({
+                dataType: "json",
+                url: "/sample_api/poll/get_id.json",
+                success: function (json) {
+                    display_chart(slide.id, json.data);
+                }
+            });
         } else if (slide.type == 'q_a') {
             $.ajax({
                 dataType: "json",
@@ -134,19 +140,15 @@ function update_slide() {
                             ${questions}
                         </ul>
                     </div>`;
-                    console.log(html_slide);
                     $('.slide-' + slide.id).html(html_slide);
                 }
             });
         }
     }
 }
-function display_chart(id) {
+function display_chart(id, data) {
 
     var ctx = document.getElementById("myChart-" + id);
-
-    // get init data by ajax call
-    var data = [12, 10, 4, 8];
 
     var labels = ["A", "B", "C", "D", "E", "F"];
     labels = labels.slice(0, slide.answers.length);
@@ -191,15 +193,6 @@ function display_chart(id) {
             responsive: true,
             maintainAspectRatio: false
         }
-    });
-
-    $("#addone").click(function (e) {
-        e.preventDefault();
-        console.log('clicked upvote');
-        // socket.emit("upvote", 1);
-        myChart.data.datasets[0].data[1] += 1;
-        myChart.update();
-        $(this).blur();
     });
 
     socket.on("upvote", val => {
