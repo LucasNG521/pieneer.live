@@ -43,17 +43,23 @@ module.exports = (app) => {
     async (username, password, done) => {
       try {
         let users = await knex('login').where({ username: username})
+        console.log(users);
         if (users.length == 0) {
           return done(null, false, { message: 'Incorrect credentials' });
         }
         let user = users[0];
+        console.log(user);
+        console.log(password);
+        console.log(user.password);
         let result = await bcrypt.checkPassword(password, user.password);
+        console.log(result);
         if (result) {
           return done(null, user);
         } else {
           return done(null, false, { message: 'Incorrect credentials' });
         }
       } catch (err) {
+        console.log(err);
         done(err);
       }
     }
@@ -65,9 +71,17 @@ module.exports = (app) => {
     callbackURL: "https://pieneer.live/auth/facebook/callback"
   },
     (accessToken, refreshToken, profile, done) => {
-      User.findOrCreate({ facebookId: profile.id }, (err, user) => {
-        return done(err, user);
-      });
+    //   User.findOrCreate({ facebookId: profile.id }, (err, user) => {
+    //     return done(err, user);
+    //   });
+    // }
+    if (profile) {
+      user = profile;
+      return done(null, user);
+      }
+      else {
+      return done(null, false);
+      }
     }
   ));
 
@@ -77,9 +91,16 @@ module.exports = (app) => {
     callbackURL: "https://pieneer.live/auth/google/callback"
   },
     (accessToken, refreshToken, profile, done) => {
-      User.findOrCreate({ googleId: profile.id }, (err, user) => {
-        return done(err, user);
-      });
+      // User.findOrCreate({ googleId: profile.id }, (err, user) => {
+      //   return done(err, user);
+      // });
+      if (profile) {
+        user = profile;
+        return done(null, user);
+        }
+        else {
+        return done(null, false);
+        }
     }
   ));
 
@@ -90,9 +111,16 @@ module.exports = (app) => {
     scope: ['r_emailaddress', 'r_basicprofile'],
   },
     (token, tokenSecret, profile, done) => {
-      User.findOrCreate({ linkedinId: profile.id }, (err, user) => {
-        return done(err, user);
-      });
+      // User.findOrCreate({ linkedinId: profile.id }, (err, user) => {
+      //   return done(err, user);
+      // });
+      if (profile) {
+        user = profile;
+        return done(null, user);
+        }
+        else {
+        return done(null, false);
+        }
     },
     function(accessToken, refreshToken, profile, done) {
       // asynchronous verification, for effect...
@@ -112,10 +140,12 @@ module.exports = (app) => {
 
   passport.deserializeUser(async (id, done) => {
     let users = await knex('login').where({id:id});
+    console.log(users);
     if (users.length == 0) {
         return done(new Error(`Wrong user id ${id}`));
     } 
     let user = users[0];
+    console.log(user);
     return done(null, user);
 });
 

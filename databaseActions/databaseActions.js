@@ -21,7 +21,7 @@ class DatabaseActions {
         const user = this.knex("login")
             .update({
                 username: username,
-                password: req.body.password,
+                password: password,
                 social_login: JSON.stringify(socialLogin)
             })
             .where("id", userId);
@@ -133,6 +133,7 @@ class DatabaseActions {
     }
 
 
+    // TODO: check to see what the page is about
     // Slides
     getSlides(id) {
         const slide = this.knex('pages')

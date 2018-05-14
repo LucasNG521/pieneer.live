@@ -12,19 +12,20 @@ exports.seed = function (knex, Promise) {
                   return knex('login').insert([{
                     id: 1,
                     username: 'ivan',
-                    password: '1234',
+                    //password: '1234'
+                    password: '$2b$10$QqMdlv5fuhiIqiTfhjdBwuqdG9vicydgs.o83dTvdvamyb18rc1/u',
                     social_login: JSON.stringify('facebook')
                   },
                   {
                     id: 2,
                     username: 'didier',
-                    password: '123321',
+                    password: '$2b$10$QqMdlv5fuhiIqiTfhjdBwuqdG9vicydgs.o83dTvdvamyb18rc1/u',
                     social_login: JSON.stringify('google')
                   },
                   {
                     id: 3,
                     username: 'lucas',
-                    password: '321321',
+                    password: '$2b$10$QqMdlv5fuhiIqiTfhjdBwuqdG9vicydgs.o83dTvdvamyb18rc1/u',
                     social_login: JSON.stringify('linkedin')
                   }
                   ]);

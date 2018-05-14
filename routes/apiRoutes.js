@@ -42,7 +42,7 @@ class ApiRouter {
         });
         router.put("/login/:loginid", (req, res) => {
             this.databaseActions
-                .editUser(res.params.loginid, req.body.username, req.body.password, req.body.social_login)
+                .editUser(req.params.loginid, req.body.username, req.body.password, req.body['social_login'])
                 .then((result) => {
                     res.json(result);
                 })
@@ -285,27 +285,37 @@ class ApiRouter {
 
         // http://www.ighsg/api/images/123/242/?pages=12
         /* This section is to gain access to the image library*/
-        router.get('/images/:userId/:presentationId', (req, res) => {
-            const imgInfo = this.imageActions.readImage(req.params.userId, req.params.presentationId);
+        router.get('/images/:userId/:presentationId/:md5', (req, res) => {
+            // /images/1/2/oshdfoi2j3o34134123?fileType=png
+            this.imageActions.readImage(req.params.userId, req.params.presentationId, req.params.md5, req.query.types)
+                .then((imageData) => {
+                    res.status(200).end(imageData);
+                })
+                .catch((err) => {
+                    res.status(500).send(err);
+                });
+        });
+        router.post('/images/:userid/:presentationid', (req, res) => {
+            const fileType = req.files.file.name.split('.').pop();
+            const md5Code = req.files.file.md5;
+            const buffer = req.files.file.data;
+            const userId = req.params.userid;
+            const presentationId = req.params.presentationid;
 
-            if (req.query.pages) {
-                res.sendFile(`${imgInfo.paddedUserId}-${imgInfo.paddedPresentationId}-${req.query.pages}.png`, imgInfo.imageOptions, err => {
-                    // Only error handling
-                    if (err) {
-                        res.status(400).send(err);
-                    } else {
-                        console.log('Image sent');
-                    }
+
+            this.imageActions.writeImage(userId, presentationId, md5Code, fileType, buffer)
+                .then(() => {
+                    console.log(req.files);
+                    res.send("ok");
+                })
+                .catch((err) => {
+                    res.send(err);
                 });
 
-            }
-
         });
-        // router.post('/images/:userid/:presentationid', this.imageActions.writeImage);
         // router.put('/images/:userid/:presentationid');
-        router.delete('/images/:userid/:presentationid', (req, res) => {
-            this.databaseActions
-                .removePresentation(req.params.presentationid)
+        router.delete('/images/:userid/:presentationid/:md5', (req, res) => {
+            this.imageActions.removeImage(req.params.userid, req.params.presentationid, req.params.md5, req.query.types)
                 .then(() => {
                     res.status(200).end();
                 })
