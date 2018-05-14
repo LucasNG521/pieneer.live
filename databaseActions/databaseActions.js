@@ -75,11 +75,22 @@ class DatabaseActions {
     // TODO: check to see what the page is about
     // Slides
     getAllSlides(presentationId) {
-        const slide = this.knex('slides')
+        const allSlides = this.knex('slides')
             .select()
             .where('presentation_id', presentationId);
-        return slide;
+        return allSlides;
     };
+
+    getOneSlides(presentationId, pageNum) {
+        const oneSlide = this.knex('slides')
+            .select()
+            .where({
+                'presentation_id': presentationId,
+                'order_index': pageNum
+            });
+        return oneSlide;
+    }
+
     addSlides(id, type, order) {
         const slide = this.knex('pages')
             .insert({
