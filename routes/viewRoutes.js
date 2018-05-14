@@ -16,20 +16,15 @@ const passport = require('passport');
     }
 
     //passport-local
-    router.get('/dashboard', isLoggedIn, (req, res) => {
-      res.redirect('/dashboard');
-      // res.sendFile(__dirname + '/dashboard.html');
-      // res.send('Here you go, a secret');
-    });
 
     router.post('/login', passport.authenticate('local-login', {
-      successRedirect: '/',
+      successRedirect: '/html_mock-up/desktop/dashboard.html',
       // failureRedirect: '/error'
     }));
 
 
     router.post('/signup', passport.authenticate('local-signup', {
-      successRedirect: '/',
+      successRedirect: '/html_mock-up/desktop/dashboard.html',
       // failureRedirect: '/error'
     }));
 
@@ -57,7 +52,7 @@ const passport = require('passport');
     router.get('/auth/facebook/callback',
       passport.authenticate('facebook', { failureRedirect: '/login' }),
       (req, res) => {
-        res.redirect('/');
+        res.redirect('/html_mock-up/desktop/dashboard.html');
       });
 
     //passport-google
@@ -69,7 +64,7 @@ const passport = require('passport');
     router.get('/auth/google/callback',
       passport.authenticate('google', { failureRedirect: '/login' }),
       (req, res) => {
-        res.redirect('/html_mock-up/desktop');
+        res.redirect('/html_mock-up/desktop/dashboard.html');
       });
 
     // passport-linkedin
@@ -81,7 +76,7 @@ const passport = require('passport');
     router.get('/auth/linkedin/callback',
       passport.authenticate('linkedin', { failureRedirect: '/login' }),
       (req, res) => {
-        res.redirect('/');
+        res.redirect('/html_mock-up/desktop/dashboard.html');
       });
 
     return router;
