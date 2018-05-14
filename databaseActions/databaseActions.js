@@ -91,15 +91,16 @@ class DatabaseActions {
         return oneSlide;
     }
 
-    addSlides(id, type, order) {
-        const slide = this.knex('pages')
+    addSlides(id, url) {
+        const slide = this.knex('slides')
             .insert({
                 presentation_id: id,
-                page_type: type,
-                order: order
+                page_type: 'img',
+                img_url: url
             });
         return slide;
     };
+
     editSlides(slideId, id, type, order) {
         const slide = this.knex('pages')
             .update({

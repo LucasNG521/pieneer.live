@@ -39,7 +39,7 @@ class ImageActions {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve();
+                    resolve(writingPath);
                 }
             })
 

@@ -118,7 +118,6 @@ class ApiRouter {
                         res.status(500).send(err);
                     });
             }
-
         });
 
 
@@ -303,8 +302,8 @@ class ApiRouter {
 
 
             this.imageActions.writeImage(userId, presentationId, md5Code, fileType, buffer)
-                .then(() => {
-                    console.log(req.files);
+                .then((fileName) => {
+                    this.databaseActions.addSlides
                     res.send("ok");
                 })
                 .catch((err) => {
