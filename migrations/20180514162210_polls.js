@@ -1,11 +1,10 @@
+
 exports.up = function (knex, Promise) {
   return knex.schema.createTable('polls', (table) => {
     table.increments();
-    table.integer('pages_id').unsigned();
-    table.foreign('pages_id').references('pages.id');
-    table.string('question');
-    table.json('answer_content');
+    table.string('polls_question');
     table.json('style');
+    table.json('answers_content');
     table.timestamps(false, true);
   });
 };
