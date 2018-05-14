@@ -18,62 +18,47 @@ class ApiRouter {
             res.redirect('/html_mock-up/api/index.html');
         });
 
-        router.get("/login/:loginid", (req, res) => {
-            this.databaseActions
-                .getUser(req.params.loginid)
-                .then((result) => {
-                    res.json(result);
+        // User operations
+        router.get("/users/:userid", (req, res) => {
+            if (req.query.requesttype === 'login') {
+                this.databaseActions.getUserLoginInfo(req.params.userid).then((arr) => {
+                    res.json(arr);
+                }).catch((err) => {
+                    res.status(400).send(err);
                 })
-                .catch(err => {
-                    res.status(500).send(err);
+            } else if (req.query.requesttype === 'general') {
+                this.databaseActions.getUserInfo(req.params.userid).then((arr) => {
+                    res.json(arr);
+                }).catch((err) => {
+                    res.status(400).send(err);
                 })
-
+            } else {
+                res.status(400).send("Please state which information you need");
+            }
         });
-        router.post("/login", (req, res) => {
-            this.databaseActions
-                .createUser(req.body.username, req.body.password, req.body['social_login'])
-                .then((result) => {
-                    res.json(result);
-                })
-                .catch(err => {
-                    res.status(500).send(err);
-                })
-
-        });
-        router.put("/login/:loginid", (req, res) => {
-            this.databaseActions
-                .editUser(req.params.loginid, req.body.username, req.body.password, req.body['social_login'])
-                .then((result) => {
-                    res.json(result);
-                })
-                .catch(err => {
-                    res.status(500).send(err);
-                })
-        });
-        router.delete("/login/:loginid", (req, res) => {
-            this.databaseActions
-                .removeUser(req.params.loginid)
-                .then(() => {
-                    console.log("user deleted");
-                    res.status(200).end();
+        // TODO: Lucassss adding new user 
+        router.post("/users", (req, res) => {});
+        router.put("/users/:userid", (req, res) => {
+            this.databaseActions.editUserInfo(req.params.userid, req.body['first_name'], req.body['last_name'], req.body.email, req.body.phone, req.body.company).then(() => {
+                    res.json("Well done, you've successfully edited your user info");
                 })
                 .catch(err => {
                     res.status(500).send(err);
                 });
         });
-
-
-        // User operations
-        router.get("/users/:userid", this.databaseActions.getUserInfo);
-        router.post("/users", this.databaseActions.addUserInfo);
-        router.put("/users/:userid", this.databaseActions.editUserInfo);
-        router.delete("/users/:userid", this.databaseActions.removeUserInfo);
+        router.delete("/users/:userid", (req, res) => {
+            this.databaseActions.removeUser(req.params.userid).then(() => {
+                res.json("We hate to see you go, bye :''\(\(\(\(");
+            }).catch((err) => {
+                res.status(500).send(err);
+            })
+        });
 
 
         // Presentation operations
         router.get("/presentations/:presentationid", (req, res) => {
             this.databaseActions
-                .getPresentation(req.params.presentationid)
+                .getPresentationInfo(req.params.presentationid)
                 .then((result) => {
                     res.status(200).json(result);
                 })
@@ -83,19 +68,19 @@ class ApiRouter {
         });
         router.post("/presentations", (req, res) => {
             this.databaseActions
-                .addPresentation(req.body.presenterid, req.body.title, req.body.location, req.body.address)
-                .then(arr => {
-                    res.json(arr);
+                .addPresentation(req.body.userId, req.body.title, req.body.location, Date.now())
+                .then(() => {
+                    res.json("Good job");
                 })
-                .catch(err => {
+                .catch((err) => {
                     res.status(500).send(err);
                 });
         });
         router.put("/presentations/:presentationid", (req, res) => {
             this.databaseActions
-                .editPresentation(req.params.presentationid, req.body.presenterid, req.body.title, req.body.location, req.body.address)
+                .editPresentation(req.params.presentationid, req.body.title, req.body.location, Date.now())
                 .then(arr => {
-                    res.json(arr);
+                    res.json("Presentation info changed");
                 })
                 .catch(err => {
                     res.status(500).send(err);
@@ -127,7 +112,7 @@ class ApiRouter {
                 });
         });
 
-        
+
         router.post("/slides", (req, res) => {
             this.databaseActions
                 .addSlides(req.body.presentation_id, req.body.page_type, req.body.order)
