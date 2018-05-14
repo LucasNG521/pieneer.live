@@ -3,11 +3,12 @@ var upload = [];
 var graph_type = ['bar', 'pie', 'line'];
 var presentation = {};
 // get presentation data from the API
+var presentation_id = (document.location.search=='?new=true')?'':'_id';
 $.ajax({
     dataType: "json",
     contentType: "application/json",
     type: 'GET',
-    url: "/sample_api/presentation/get_id.json",
+    url: "/sample_api/presentation/get"+presentation_id+".json",
     success: init_slides
 });
 function init_slides(data) {
@@ -307,6 +308,8 @@ $('.insert-ppt').click(function () {
         insertImage('/slides/' + img);
     }
     upload = [];
+    $('.dz-preview').remove();
+    $('.dropzone.dz-started .dz-message').show();
     $('#uploadPPTModal').modal('hide');
 });
 $('.insert-image').click(function () {
@@ -314,6 +317,8 @@ $('.insert-image').click(function () {
         insertImage('/slides/' + img);
     }
     upload = [];
+    $('.dz-preview').remove();
+    $('.dropzone.dz-started .dz-message').show();
     $('#uploadImageModal').modal('hide');
 });
 

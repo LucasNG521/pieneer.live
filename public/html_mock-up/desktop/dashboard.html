@@ -46,7 +46,7 @@
         dataType: "json",
         contentType: "application/json",
         type: 'GET',
-        url: "/sample_api/presentation/get.json",
+        url: "/sample_api/presentation/get_all.json",
         success: function (json) {
             var html_dashboard = '<div class="row">';
             var i = 1;
@@ -71,7 +71,7 @@
                 <div class="col-lg-3 col-md-6">
                     <div class="card">
                         <div class="card-body">
-                            <a href="edit_presentation.html" class="btn btn-primary">New</a>
+                            <a href="edit_presentation.html?new=true" class="btn btn-primary">New</a>
                         </div>
                     </div>
                 </div>
