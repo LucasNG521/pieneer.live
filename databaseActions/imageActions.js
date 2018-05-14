@@ -5,29 +5,22 @@ const StringManipulation = require('../tools/stringManipulation');
 
 class ImageActions {
 
-    readImage(userId, presentationId) {
+    readImage(userId, presentationId, md5Code, fileType) {
         const paddedUserId = StringManipulation.sixPad(userId);
         const paddedPresentationId = StringManipulation.sixPad(presentationId);
 
+        const filePath = path.join(__dirname, '/imageLibrary', `/user-${paddedUserId}`, `/presentation-${paddedPresentationId}`, `/${paddedUserId}-${paddedPresentationId}-${md5Code}.${fileType}`);
 
-        const imageOptions = {
-            root: path.join(__dirname,
-                '/imageLibrary',
-                `/user-${paddedUserId}`,
-                `/presentation-${paddedPresentationId}`),
-            dotfiles: 'deny',
-            headers: {
-                'x-timestamp': Date.now(),
-                'x-sent': true
-            }
-        };
-
-        return {
-            paddedUserId,
-            paddedPresentationId,
-            imageOptions
-        }
-
+        const image = new Promise((resolve, reject) => {
+            fs.readFile(filePath, (err, imageData) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(imageData);
+                }
+            });
+        });
+        return image;
     }
     writeImage(usId, presId, md5, fileType, buffer) {
 
@@ -53,22 +46,6 @@ class ImageActions {
         })
 
         return file;
-
-        // if (!req.files) {
-        //     return res.status(400).send('No files were uploaded.');
-        // } else {
-        //     req.files.file.mv(path.join(__dirname,
-        //         '/imageLibrary',
-        //         `/user-${userId}`,
-        //         `/presentation-${presentationId}`,
-        //         `/${userId}-${presentationId}-${req.query.pages}.${fileType}`), (err) => {
-        //         if (err) {
-        //             return res.status(500).send(err);
-        //         }
-        //     })
-        // }
-
-
 
     }
     removeImage(req, res) {

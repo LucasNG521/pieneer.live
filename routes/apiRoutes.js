@@ -285,21 +285,15 @@ class ApiRouter {
 
         // http://www.ighsg/api/images/123/242/?pages=12
         /* This section is to gain access to the image library*/
-        router.get('/images/:userId/:presentationId', (req, res) => {
-            const imgInfo = this.imageActions.readImage(req.params.userId, req.params.presentationId);
-
-            if (req.query.pages) {
-                res.sendFile(`${imgInfo.paddedUserId}-${imgInfo.paddedPresentationId}-${req.query.pages}.png`, imgInfo.imageOptions, err => {
-                    // Only error handling
-                    if (err) {
-                        res.status(400).send(err);
-                    } else {
-                        console.log('Image sent');
-                    }
+        router.get('/images/:userId/:presentationId/:md5', (req, res) => {
+            // /images/1/2/oshdfoi2j3o34134123?fileType=png
+            this.imageActions.readImage(req.params.userId, req.params.presentationId, req.params.md5, req.query.types)
+                .then((imageData) => {
+                    res.status(200).end(imageData);
+                })
+                .catch((err) => {
+                    res.status(500).send(err);
                 });
-
-            }
-
         });
         router.post('/images/:userid/:presentationid', (req, res) => {
             const fileType = req.files.file.name.split('.').pop();
