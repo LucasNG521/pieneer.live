@@ -4,8 +4,9 @@ const passport = require('passport');
 //   constructor() { }
 
 //   router() {
-  module.exports = (ViewRouter) => {
-    const router = require("express").Router();
+  module.exports = (express) => {
+    // const router = require("express").Router();
+    const router = express.Router();
 
     function isLoggedIn(req, res, next) {
       if (req.isAuthenticated()) {
@@ -16,11 +17,13 @@ const passport = require('passport');
 
     //passport-local
     router.get('/dashboard', isLoggedIn, (req, res) => {
-      res.redirect('/login');
+      res.redirect('/dashboard');
+      // res.sendFile(__dirname + '/dashboard.html');
+      // res.send('Here you go, a secret');
     });
 
     router.post('/login', passport.authenticate('local-login', {
-      successRedirect: '/dashborad',
+      successRedirect: '/',
       // failureRedirect: '/error'
     }));
 
@@ -83,7 +86,7 @@ const passport = require('passport');
 
     return router;
 
-    //local-logout
+    //logout
     app.get('/logout', (req, res) => {
       req.logout();
       res.redirect('/');
