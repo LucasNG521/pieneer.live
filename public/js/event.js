@@ -1,6 +1,6 @@
 var presentation = {};
 var socket = io();
-
+var poll_id = '';
 $('.badge-pill').hide();
 socket.on("vote-start", id => {
     $('.badge-pill').show();
@@ -52,7 +52,7 @@ function init_event(data) {
     for (var slide of presentation.slides) {
         if (slide.type == 'q_a') {
             for (var question of slide.questions) {
-                var like = (question.like > 0) ? `<i class="fas fa-thumbs-up fa-lg mr-2"> ${question.like}</i>` : '';
+                var likes = (question.likes > 0) ? `<i class="fas fa-thumbs-up fa-lg mr-2"> ${question.likes}</i>` : '';
                 var html_question = `<li class="list-group-item">
                     <div class="user">
                         <i class="far fa-user"></i> ${question.name}
@@ -61,7 +61,7 @@ function init_event(data) {
                         ${question.question}
                         <div class="ml-auto justify-content-end">
                             <a href="#" alt="Like" id="question-${question.id}">
-                                ${like}
+                                ${likes}
                             </a>
                         </div>
                     </div>
@@ -72,6 +72,7 @@ function init_event(data) {
     }
     for (var slide of presentation.slides) {
         if (slide.type == 'poll') {
+            poll_id = slide.id;
             $('#poll_question').html(slide.question);
             var i = 0;
             for (var answer of slide.answers) {
@@ -123,7 +124,7 @@ $('#submit-poll').click(function (e) {
         var votes = $('#send_vote').serializeArray();
         for (vote of votes) {
             console.log('upvote' + vote.value);
-            socket.emit("upvote", vote.value);
+            socket.emit("upvote", {"id":poll_id, "vote":vote.value});
             $(this).addClass('disabled');
         }
     }
@@ -132,9 +133,9 @@ $('.questions').on('click', '.fa-thumbs-up', function (e) {
     e.preventDefault();
     var thumbs_up = ($(this).text() == '') ? 0 : parseInt($(this).text());
     if ($(this).hasClass('liked')) {
-        socket.emit("unlike-question", { "id": $(this).parent().attr('id').replace('question-', ''), "like": thumbs_up });
+        socket.emit("unlike-question", { "id": $(this).parent().attr('id').replace('question-', '') });
     } else {
-        socket.emit("like-question", { "id": $(this).parent().attr('id').replace('question-', ''), "like": thumbs_up });
+        socket.emit("like-question", { "id": $(this).parent().attr('id').replace('question-', '') });
     }
     $(this).toggleClass('liked');
 });
@@ -142,7 +143,7 @@ $('#send_question').submit(function (e) {
     e.preventDefault();
     var question = $('#question').val();
     if (question != '') {
-        socket.emit("send-question", { "name": name, "question": question });
+        socket.emit("send-question", { "name": name, "question": question, "presentation_id": presentation.id });
         $('#question').val('');
     }
 });
@@ -167,10 +168,10 @@ socket.on("new-question", question => {
 socket.on("update-like-question", question => {
     console.log('update-like-question');
     console.log(question);
-    var nb_like = (question.like == 0) ? '' : ' ' + question.like;
-    var html_like = ($('#question-' + question.id + ' i').hasClass('liked')) ? '<i class="fas fa-thumbs-up fa-lg liked">' + nb_like + '</i> ' : '<i class="fas fa-thumbs-up fa-lg">' + nb_like + '</i> ';
-    console.log(html_like);
-    $('#question-' + question.id).html(html_like);
+    var nb_likes = (question.likes == 0) ? '' : ' ' + question.likes;
+    var html_likes = ($('#question-' + question.id + ' i').hasClass('liked')) ? '<i class="fas fa-thumbs-up fa-lg liked">' + nb_likes + '</i> ' : '<i class="fas fa-thumbs-up fa-lg">' + nb_likes + '</i> ';
+    console.log(html_likes);
+    $('#question-' + question.id).html(html_likes);
 });
 function scrollDown() {
     $('html, body').animate({ scrollTop: $('.questions')[0].scrollHeight }, 0);

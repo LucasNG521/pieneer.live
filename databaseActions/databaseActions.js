@@ -2,129 +2,68 @@ class DatabaseActions {
     constructor(knex) {
         this.knex = knex;
     }
-    getUser(loginId) {
-        const user = this.knex("login")
-            .select()
-            .where("id", loginId);
+    getUserLoginInfo(userId) {
+        const user = this.knex("users")
+            .select('usersname', 'password', 'social_login')
+            .where("id", userId);
         return user;
     }
-    createUser(username, password, socialLogin) {
-        const user = this.knex("login")
-            .insert({
-                username: username,
-                password: password,
-                social_login: JSON.stringify(socialLogin)
-            });
+    getUserInfo(userId) {
+        const user = this.knex("users")
+            .select('first_name', 'last_name', 'email', 'phone', 'company')
+            .where("id", userId);
         return user;
     }
-    editUser(userId, username, password, socialLogin) {
-        const user = this.knex("login")
+    editUserInfo(userId, ftname, ltname, email, phone, company) {
+        const user = this.knex("users")
             .update({
-                username: username,
-                password: password,
-                social_login: JSON.stringify(socialLogin)
+                first_name: ftname,
+                last_name: ltname,
+                email: email,
+                phone: phone,
+                company: company
             })
             .where("id", userId);
         return user;
     }
     removeUser(userId) {
-        const user = this.knex("login")
+        const user = this.knex("users")
             .where("id", userId)
             .delete();
         return user;
     }
 
-    // User info
-    getUserInfo(req, res) {
-        const user = this.knex("presenter")
-            .select()
-            .where("id", req.params.userid)
-            .then(arr => {
-                res.json(arr);
-            })
-            .catch(err => {
-                res.status(500).send(err);
-            });
-    }
-    addUserInfo(req, res) {
-        const user = this.knex("presenter")
-            .insert({
-                first_name: req.body.first_name,
-                last_name: req.body.last_name,
-                email: req.body.email,
-                phone: req.body.phone,
-                company: req.body.company
-            })
-            .then(() => {
-                // res.send(({success:true}));
-                console.log("added");
-                // Building the user folder for the user in database
-
-                res.json(req.body);
-            })
-            .catch(err => {
-                res.status(500).send(err);
-            });
-    }
-    editUserInfo(req, res) {
-        const user = this.knex("presenter")
-            .update({
-                first_name: req.body.first_name,
-                last_name: req.body.last_name,
-                email: req.body.email,
-                phone: req.body.phone,
-                company: req.body.company
-            })
-            .where("id", req.params.userid)
-            .then(() => {
-                console.log("edited");
-                res.json(req.body);
-            })
-            .catch(err => {
-                res.status(500).send(err);
-            });
-    }
-    removeUserInfo(req, res) {
-        const user = this.knex("presenter")
-            .where("id", req.params.userid)
-            .delete()
-            .then(() => {
-                console.log("deleted");
-                res.status(200).end();
-            })
-            .catch(err => {
-                res.status(500).send(err);
-            });
-    }
 
     // Presentation
-    getPresentation(id) {
+    getPresentationInfo(id) {
         const presentation = this.knex("presentation")
             .select()
             .where("id", id);
         return presentation;
     }
-    addPresentation(id, title, loc, address) {
+
+    addPresentation(id, title, loc, date) {
         const presentation = this.knex("presentation")
             .insert({
-                presenter_id: id,
+                users_id: id,
                 title: title,
                 location: loc,
-                address: address
+                date: date
             });
         return presentation;
     }
-    editPresentation(presentationId, id, title, loc, address) {
+
+    editPresentation(id, title, loc, date) {
         const presentation = this.knex("presentation")
             .update({
-                presenter_id: id,
                 title: title,
                 location: loc,
-                address: address
+                date: date
             })
-            .where("id", presentationId);
+            .where("id", id);
         return presentation;
     }
+
     removePresentation(id) {
         const presentation = this.knex("presentation")
             .where("id", id)

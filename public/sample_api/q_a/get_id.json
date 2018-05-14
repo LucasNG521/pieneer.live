@@ -5,17 +5,17 @@
         {
             "question": "question 1",
             "name": "name",
-            "like": 4
+            "likes": 4
         },
         {
             "question": "question 2",
             "name": "other name",
-            "like": 2
+            "likes": 2
         },
         {
             "question": "question 3",
             "name": "other name",
-            "like": 0
+            "likes": 0
         }
     ]
 }

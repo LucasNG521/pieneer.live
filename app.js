@@ -13,10 +13,6 @@ setupPassport(app);
 
 const router = require('./routes/viewRoutes')(express);
 
-const SocketIOConnection = require("./sockets/socket-connection");
-const socketIOConnection = new SocketIOConnection(http);
-socketIOConnection.router();
-
 const ViewRouter = require("./routes/viewRoutes");
 const ApiRouter = require('./routes/apiRoutes');
 
@@ -77,6 +73,10 @@ app.post("/slides/upload-image", (req, res) => {
 
 const config = require('./knexfile').development;
 const knex = require('knex')(config);
+
+const SocketIOConnection = require("./sockets/socket-connection");
+const socketIOConnection = new SocketIOConnection(http, knex);
+socketIOConnection.router();
 
 // app.use("/", new ViewRouter().router());
 app.use('/', router);
