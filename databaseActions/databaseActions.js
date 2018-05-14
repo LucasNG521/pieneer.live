@@ -275,6 +275,7 @@ class DatabaseActions {
             });
     };
 
+    // Q&A Result only get ALL result and add 1 
     getQandAResults(req, res) {
         const poll = this.knex('q_a')
             .select()
@@ -302,35 +303,8 @@ class DatabaseActions {
                 res.status(500).send(err);
             });
     };
-    editQandAResults(req, res) {
-        const poll = this.knex('q_a')
-            .update({
-                presentation_id: req.body.presentation_id,
-                question: req.body.question,
-                visiter_name: req.body.visiter_name,
-                likes: req.body.likes
-            })
-            .where('id', req.params.q_aid)
-            .then((arr) => {
-                console.log(`edited`);
-                res.json(arr);
-            })
-            .catch(err => {
-                res.status(500).send(err);
-            });
-    };
-    removeQandAResults(req, res) {
-        const poll = this.knex('q_a')
-            .where('id', req.params.q_aid)
-            .delete()
-            .then(() => {
-                console.log(`deleted`);
-                res.status(200).end();
-            })
-            .catch(err => {
-                res.status(500).send(err);
-            });
-    };
+
+
 }
 
 // class LoginOperation extends DatabaseActions {
