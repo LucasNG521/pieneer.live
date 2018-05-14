@@ -4,7 +4,7 @@
 <head>
     <title>Pieneer - Live Presentation made Interactive and Easy</title>
     <!-- google login-->
-    <meta name="google-signin-client_id" content="976623563011-b70ot73gqn26b87jc02jacdg726tce7s.apps.googleusercontent.com">
+    <!-- <meta name="google-signin-client_id" content="976623563011-b70ot73gqn26b87jc02jacdg726tce7s.apps.googleusercontent.com"> -->
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
@@ -14,7 +14,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/">Pieneer</a>
+            <a class="navbar-brand" href="/html_mock-up/desktop/">Pieneer</a>
         </div>
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto">
@@ -28,7 +28,7 @@
                     <a class="nav-link" href="presentation.html">Play Presentation</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/?force=mobile">Mobile</a>
+                    <a class="nav-link" href="/html_mock-up/mobile/">Mobile</a>
                 </li>
             </ul>
         </div>
@@ -145,11 +145,12 @@
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 
 <script>
-    //google log-in
-    $('#login').on('shown.bs.modal', function () {
-        $('#myInput').trigger('focus')
-    })
-    //google log-out
+    // //google log-in
+    // $('#login').on('shown.bs.modal', function () {
+    //     $('#myInput').trigger('focus')
+    // })
+    
+    //google sign-out
     function signOut() {
         var auth2 = gapi.auth2.getAuthInstance();
         auth2.signOut().then(function () {
