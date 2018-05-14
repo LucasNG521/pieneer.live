@@ -115,9 +115,10 @@ class ApiRouter {
 
         // FIXME: Haven't finish changing the code
         // Slides operation
-        router.get("/slides/:slideid", (req, res) => {
+        // 
+        router.get("/slides/:presentationId", (req, res) => {
             this.databaseActions
-                .getSlides(req.params.slideid)
+                .getAllSlides(req.params.presentationId)
                 .then((arr) => {
                     res.json(arr);
                 })
@@ -284,9 +285,8 @@ class ApiRouter {
         });
 
         // http://www.ighsg/api/images/123/242/?pages=12
-        /* This section is to gain access to the image library*/
         router.get('/images/:userId/:presentationId/:md5', (req, res) => {
-            // /images/1/2/oshdfoi2j3o34134123?fileType=png
+
             this.imageActions.readImage(req.params.userId, req.params.presentationId, req.params.md5, req.query.types)
                 .then((imageData) => {
                     res.status(200).end(imageData);
@@ -313,7 +313,6 @@ class ApiRouter {
                 });
 
         });
-        // router.put('/images/:userid/:presentationid');
         router.delete('/images/:userid/:presentationid/:md5', (req, res) => {
             this.imageActions.removeImage(req.params.userid, req.params.presentationid, req.params.md5, req.query.types)
                 .then(() => {
