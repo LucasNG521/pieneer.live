@@ -308,6 +308,8 @@ $('.insert-ppt').click(function () {
         insertImage('/slides/' + img);
     }
     upload = [];
+    $('.dz-preview').remove();
+    $('.dropzone.dz-started .dz-message').show();
     $('#uploadPPTModal').modal('hide');
 });
 $('.insert-image').click(function () {
@@ -315,6 +317,8 @@ $('.insert-image').click(function () {
         insertImage('/slides/' + img);
     }
     upload = [];
+    $('.dz-preview').remove();
+    $('.dropzone.dz-started .dz-message').show();
     $('#uploadImageModal').modal('hide');
 });
 
