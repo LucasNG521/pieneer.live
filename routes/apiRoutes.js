@@ -98,18 +98,26 @@ class ApiRouter {
         });
 
 
-        // FIXME: Haven't finish changing the code
         // Slides operation
-        // 
         router.get("/slides/:presentationId", (req, res) => {
-            this.databaseActions
-                .getAllSlides(req.params.presentationId)
-                .then((arr) => {
-                    res.json(arr);
-                })
-                .catch(err => {
-                    res.status(500).send(err);
-                });
+            if (req.query.pages) {
+                this.databaseActions.getOneSlides(req.params.presentationId, req.query.pages)
+                    .then((arr) => {
+                        res.json(arr);
+                    })
+                    .catch(err => {
+                        res.status(500).send(err);
+                    });
+            } else {
+                this.databaseActions
+                    .getAllSlides(req.params.presentationId)
+                    .then((arr) => {
+                        res.json(arr);
+                    })
+                    .catch(err => {
+                        res.status(500).send(err);
+                    });
+            }
         });
 
 
@@ -187,6 +195,7 @@ class ApiRouter {
                 });
         });
 
+        // TODO: shit not done, at all
         //result
         router.get("/result/:resultid", (req, res) => {
             this.databaseActions
@@ -229,6 +238,7 @@ class ApiRouter {
                 });
         });
 
+        // TODO: shit not done anything yet
         //result
         router.get("/q_a/:q_aid", (req, res) => {
             this.databaseActions
@@ -271,6 +281,7 @@ class ApiRouter {
                 });
         });
 
+        // done
         // http://www.ighsg/api/images/123/242/?pages=12
         router.get('/images/:userId/:presentationId/:md5', (req, res) => {
 
@@ -291,8 +302,8 @@ class ApiRouter {
 
 
             this.imageActions.writeImage(userId, presentationId, md5Code, fileType, buffer)
-                .then(() => {
-                    console.log(req.files);
+                .then((fileName) => {
+                    this.databaseActions.addSlides
                     res.send("ok");
                 })
                 .catch((err) => {
@@ -310,7 +321,7 @@ class ApiRouter {
                 });
         });
 
-
+        // TODO: Need to fix this
         // Folder manipulation: User level
         router.get('/folders/:userid', (req, res) => {
             this.databaseActions

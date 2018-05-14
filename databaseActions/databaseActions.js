@@ -75,20 +75,32 @@ class DatabaseActions {
     // TODO: check to see what the page is about
     // Slides
     getAllSlides(presentationId) {
-        const slide = this.knex('slides')
+        const allSlides = this.knex('slides')
             .select()
             .where('presentation_id', presentationId);
-        return slide;
+        return allSlides;
     };
-    addSlides(id, type, order) {
-        const slide = this.knex('pages')
+
+    getOneSlides(presentationId, pageNum) {
+        const oneSlide = this.knex('slides')
+            .select()
+            .where({
+                'presentation_id': presentationId,
+                'order_index': pageNum
+            });
+        return oneSlide;
+    }
+
+    addSlides(id, url) {
+        const slide = this.knex('slides')
             .insert({
                 presentation_id: id,
-                page_type: type,
-                order: order
+                page_type: 'img',
+                img_url: url
             });
         return slide;
     };
+
     editSlides(slideId, id, type, order) {
         const slide = this.knex('pages')
             .update({
