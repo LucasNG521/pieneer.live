@@ -300,11 +300,19 @@ class ApiRouter {
             const userId = req.params.userid;
             const presentationId = req.params.presentationid;
 
+            const apiPath = path.join('http://localhost:8181', '/api', '/images', `/${userId}`, `/${presentationId}`, `/${md5Code}?types=${fileType}`)
+
 
             this.imageActions.writeImage(userId, presentationId, md5Code, fileType, buffer)
-                .then((fileName) => {
-                    this.databaseActions.addSlides
-                    res.send("ok");
+                .then(() => {
+                    this.databaseActions.addSlides(presentationId, apiPath)
+                        .then(() => {
+                            res.send(apiPath);
+                        })
+                        .catch(err => {
+                            res.send(err);
+                        })
+
                 })
                 .catch((err) => {
                     res.send(err);
