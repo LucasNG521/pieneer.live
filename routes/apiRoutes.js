@@ -192,9 +192,11 @@ class ApiRouter {
                     res.status(500).send(err);
                 });
         });
-        router.delete("/polls/:pollid", (req, res) => {
+
+        router.delete("/polls/:pollId", (req, res) => {
+            // NOTE: this can run, but have result dependency
             this.databaseActions
-                .removePollsInfo(req.params.presentationid)
+                .removePollsInfo(req.params.pollId)
                 .then(() => {
                     res.status(200).end();
                 })

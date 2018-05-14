@@ -165,17 +165,11 @@ class DatabaseActions {
             });
     };
     //FIXME: all that is needed to be replaced or changed.
-    removePollsInfo(req, res) {
-        const poll = this.knex('polls')
-            .where('id', req.params.pollid)
-            .delete()
-            .then(() => {
-                console.log(`deleted`);
-                res.status(200).end();
-            })
-            .catch(err => {
-                res.status(500).send(err);
-            });
+    removePollsInfo(pollId) {
+        return this.knex('polls')
+            .where('id', pollId)
+            .delete();
+        // return poll;
     };
 
     getPollResults(req, res) {
