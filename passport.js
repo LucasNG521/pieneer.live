@@ -21,7 +21,7 @@ module.exports = (app) => {
   passport.use('local-signup', new LocalStrategy(
     async (username, password, done) => {
       try {
-        let users = await knex('login').where({ username: username });
+        let users = await knex('users').where({ username: username });
         if (users.length > 0) {
           return done(null, false, { message: 'Email already taken' });
         }
@@ -30,7 +30,7 @@ module.exports = (app) => {
           username: username,
           password: hash
         };
-        let usersId = await knex('login').insert(newUser).returning('id');
+        let usersId = await knex('users').insert(newUser).returning('id');
         done(null, newUser);
       } catch (err) {
         done(err);
@@ -42,7 +42,7 @@ module.exports = (app) => {
   passport.use('local-login', new LocalStrategy(
     async (username, password, done) => {
       try {
-        let users = await knex('login').where({ username: username})
+        let users = await knex('users').where({ username: username})
         console.log(users);
         if (users.length == 0) {
           return done(null, false, { message: 'Incorrect credentials' });
@@ -139,7 +139,7 @@ module.exports = (app) => {
   });
 
   passport.deserializeUser(async (id, done) => {
-    let users = await knex('login').where({id:id});
+    let users = await knex('users').where({id:id});
     console.log(users);
     if (users.length == 0) {
         return done(new Error(`Wrong user id ${id}`));
