@@ -133,6 +133,7 @@ class DatabaseActions {
     }
 
 
+    // TODO: check to see what the page is about
     // Slides
     getSlides(id) {
         const slide = this.knex('pages')

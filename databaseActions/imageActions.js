@@ -30,6 +30,7 @@ class ImageActions {
 
     }
     writeImage(usId, presId, md5, fileType, buffer) {
+
         const userId = StringManipulation.sixPad(usId);
         const presentationId = StringManipulation.sixPad(presId);
 
@@ -40,15 +41,18 @@ class ImageActions {
             `/${userId}-${presentationId}-${md5}.${fileType}`)
 
         const file = new Promise((resolve, reject) => {
+            console.log(writingPath);
             fs.writeFile(writingPath, buffer, err => {
                 if (err) {
                     reject(err);
                 } else {
                     resolve();
                 }
-
             })
+
         })
+
+        return file;
 
         // if (!req.files) {
         //     return res.status(400).send('No files were uploaded.');

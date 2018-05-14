@@ -311,6 +311,7 @@ class ApiRouter {
 
             this.imageActions.writeImage(userId, presentationId, md5Code, fileType, buffer)
                 .then(() => {
+                    console.log(req.files);
                     res.send("ok");
                 })
                 .catch((err) => {
