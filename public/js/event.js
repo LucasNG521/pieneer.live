@@ -12,7 +12,7 @@ function init_event(data) {
     console.log(presentation);
     // TODO: dyn map
     // TODO: dyn vcf link
-    var html_info=`<p>Description: ${presentation.title}</p>
+    var html_info = `<p>Description: ${presentation.title}</p>
     <p>${presentation.date}</p>
     <p>📍 ${presentation.location}</p>
     <div class="text-center">
@@ -36,7 +36,27 @@ function init_event(data) {
         </a>
     </p>`;
     $('#info .container').html(html_info);
-    
+    for (var slide of presentation.slides) {
+        if (slide.type == 'q_a') {
+            for (var question of slide.questions) {
+                var like = (question.like > 0) ? `<i class="fas fa-thumbs-up fa-lg mr-2"> ${question.like}</i>` : '';
+                var html_question = `<li class="list-group-item">
+                    <div class="user">
+                        <i class="far fa-user"></i> ${question.name}
+                    </div>
+                    <div class="question d-flex align-items-center justify-content-center">
+                        ${question.question}
+                        <div class="ml-auto justify-content-end">
+                            <a href="#" alt="Like">
+                                ${like}
+                            </a>
+                        </div>
+                    </div>
+                </li>`;
+                $('ul.questions').append(html_question);
+            }
+        }
+    }
 }
 
 var name = (typeof $.cookie("name") == 'undefined') ? '' : $.cookie("name");
