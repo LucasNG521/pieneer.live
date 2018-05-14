@@ -135,10 +135,10 @@ class DatabaseActions {
 
     // TODO: check to see what the page is about
     // Slides
-    getSlides(id) {
-        const slide = this.knex('pages')
+    getAllSlides(presentationId) {
+        const slide = this.knex('slides')
             .select()
-            .where('id', id);
+            .where('presentation_id', presentationId);
         return slide;
     };
     addSlides(id, type, order) {

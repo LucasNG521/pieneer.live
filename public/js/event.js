@@ -1,4 +1,17 @@
 var presentation = {};
+var socket = io();
+
+$('.badge-pill').hide();
+socket.on("vote-start", id => {
+    $('.badge-pill').show();
+    $('#submit-poll').removeClass('disabled');
+});
+
+socket.on("vote-stop", id => {
+    $('.badge-pill').hide();
+    //$('#submit-poll').addClass('disabled');
+});
+
 $.ajax({
     dataType: "json",
     contentType: "application/json",
@@ -47,7 +60,7 @@ function init_event(data) {
                     <div class="question d-flex align-items-center justify-content-center">
                         ${question.question}
                         <div class="ml-auto justify-content-end">
-                            <a href="#" alt="Like">
+                            <a href="#" alt="Like" id="question-${question.id}">
                                 ${like}
                             </a>
                         </div>
@@ -57,13 +70,30 @@ function init_event(data) {
             }
         }
     }
+    for (var slide of presentation.slides) {
+        if (slide.type == 'poll') {
+            $('#poll_question').html(slide.question);
+            var i = 0;
+            for (var answer of slide.answers) {
+                var html_poll = `
+            <li class="list-group-item">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="customCheck${i}" name="vote" value="${i}">
+                    <label class="custom-control-label" for="customCheck${i}">${answer}</label>
+                </div>
+            </li>`;
+                $('ul.poll').append(html_poll);
+                i++;
+            }
+        }
+    }
 }
 
 var name = (typeof $.cookie("name") == 'undefined') ? '' : $.cookie("name");
-$('#myModal').on('show.bs.modal', function (e) {
+$('#editNameModal').on('show.bs.modal', function (e) {
     $('#name').val(name);
 });
-$('#myModal').on('hide.bs.modal', function (e) {
+$('#editNameModal').on('hide.bs.modal', function (e) {
     if (name == '') {
         e.preventDefault();
         e.stopImmediatePropagation();
@@ -79,18 +109,32 @@ $('.savename').click(function () {
     if ($('#name').val() != '') {
         name = $('#name').val();
         $.cookie("name", name, { expires: 365, path: '/' });
-        $('#myModal').modal('hide');
+        $('#editNameModal').modal('hide');
+    }
+});
+$('#send_vote').submit(function (e) {
+    e.preventDefault();
+    $('#submit-poll').click();
+    return false;
+});
+$('#submit-poll').click(function (e) {
+    e.preventDefault();
+    if (!$(this).hasClass('disabled')) {
+        var votes = $('#send_vote').serializeArray();
+        for (vote of votes) {
+            console.log('upvote' + vote.value);
+            socket.emit("upvote", vote.value);
+            $(this).addClass('disabled');
+        }
     }
 });
 $('.questions').on('click', '.fa-thumbs-up', function (e) {
     e.preventDefault();
     var thumbs_up = ($(this).text() == '') ? 0 : parseInt($(this).text());
-    if ($(this).hasClass('liked') && thumbs_up === 1) {
-        $(this).text('');
-    } else if ($(this).hasClass('liked')) {
-        $(this).text(thumbs_up - 1);
+    if ($(this).hasClass('liked')) {
+        socket.emit("unlike-question", { "id": $(this).parent().attr('id').replace('question-', ''), "like": thumbs_up });
     } else {
-        $(this).text(thumbs_up + 1);
+        socket.emit("like-question", { "id": $(this).parent().attr('id').replace('question-', ''), "like": thumbs_up });
     }
     $(this).toggleClass('liked');
 });
@@ -98,29 +142,41 @@ $('#send_question').submit(function (e) {
     e.preventDefault();
     var question = $('#question').val();
     if (question != '') {
-        var html_question = `<li class="list-group-item">
-                    <div class="user">
-                        <i class="far fa-user"></i> ${name}
-                    </div>
-                    <div class="question d-flex align-items-center justify-content-center">
-                        ${question}
-                        <div class="ml-auto justify-content-end">
-                            <a href="#" alt="Like">
-                                <i class="fas fa-thumbs-up fa-lg"></i>
-                            </a>
-                        </div>
-                    </div>
-                </li>`;
-        $('.questions').append(html_question);
+        socket.emit("send-question", { "name": name, "question": question });
         $('#question').val('');
-        scrollDown();
     }
+});
+socket.on("new-question", question => {
+    var html_question = `
+    <li class="list-group-item">
+        <div class="user">
+            <i class="far fa-user"></i> ${question.name}
+        </div>
+        <div class="question d-flex align-items-center justify-content-center">
+            ${question.question}
+            <div class="ml-auto justify-content-end">
+                <a href="#" alt="Like" id="question-${question.id}">
+                    <i class="fas fa-thumbs-up fa-lg"></i>
+                </a>
+            </div>
+        </div>
+    </li>`;
+    $('.questions').append(html_question);
+    scrollDown();
+});
+socket.on("update-like-question", question => {
+    console.log('update-like-question');
+    console.log(question);
+    var nb_like = (question.like == 0) ? '' : ' ' + question.like;
+    var html_like = ($('#question-' + question.id + ' i').hasClass('liked')) ? '<i class="fas fa-thumbs-up fa-lg liked">' + nb_like + '</i> ' : '<i class="fas fa-thumbs-up fa-lg">' + nb_like + '</i> ';
+    console.log(html_like);
+    $('#question-' + question.id).html(html_like);
 });
 function scrollDown() {
     $('html, body').animate({ scrollTop: $('.questions')[0].scrollHeight }, 0);
 }
 if (name == '')
-    $('#myModal').modal('show');
+    $('#editNameModal').modal('show');
 
 
 
