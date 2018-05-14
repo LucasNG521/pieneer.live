@@ -36,7 +36,7 @@ function init_event(data) {
         </a>
     </p>`;
     $('#info .container').html(html_info);
-
+    
 }
 
 var name = (typeof $.cookie("name") == 'undefined') ? '' : $.cookie("name");
