@@ -3,11 +3,12 @@ var upload = [];
 var graph_type = ['bar', 'pie', 'line'];
 var presentation = {};
 // get presentation data from the API
+var presentation_id = (document.location.search=='?new=true')?'':'_id';
 $.ajax({
     dataType: "json",
     contentType: "application/json",
     type: 'GET',
-    url: "/sample_api/presentation/get_id.json",
+    url: "/sample_api/presentation/get"+presentation_id+".json",
     success: init_slides
 });
 function init_slides(data) {
