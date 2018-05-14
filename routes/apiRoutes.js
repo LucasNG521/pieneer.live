@@ -301,7 +301,23 @@ class ApiRouter {
             }
 
         });
-        // router.post('/images/:userid/:presentationid', this.imageActions.writeImage);
+        router.post('/images/:userid/:presentationid', (req, res) => {
+            const fileType = req.files.file.name.split('.').pop();
+            const md5Code = req.files.file.md5;
+            const buffer = req.files.file.data;
+            const userId = req.params.userid;
+            const presentationId = req.params.presentationid;
+
+
+            this.imageActions.writeImage(userId, presentationId, md5Code, fileType, buffer)
+                .then(() => {
+                    res.send("ok");
+                })
+                .catch((err) => {
+                    res.send(err);
+                });
+
+        });
         // router.put('/images/:userid/:presentationid');
         router.delete('/images/:userid/:presentationid', (req, res) => {
             this.databaseActions

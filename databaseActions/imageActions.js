@@ -29,25 +29,40 @@ class ImageActions {
         }
 
     }
-    writeImage(req, res) {
-        const userId = StringManipulation.sixPad(req.params.userid);
-        const presentationId = StringManipulation.sixPad(req.params.presentationid);
-        const fileType = req.files.file.name.split('.').pop();
+    writeImage(usId, presId, md5, fileType, buffer) {
+        const userId = StringManipulation.sixPad(usId);
+        const presentationId = StringManipulation.sixPad(presId);
 
+        const writingPath = path.join(__dirname,
+            '/imageLibrary',
+            `/user-${userId}`,
+            `/presentation-${presentationId}`,
+            `/${userId}-${presentationId}-${md5}.${fileType}`)
 
-        if (!req.files) {
-            return res.status(400).send('No files were uploaded.');
-        } else {
-            req.files.file.mv(path.join(__dirname,
-                '/imageLibrary',
-                `/user-${userId}`,
-                `/presentation-${presentationId}`,
-                `/${userId}-${presentationId}-${req.query.pages}.${fileType}`), (err) => {
+        const file = new Promise((resolve, reject) => {
+            fs.writeFile(writingPath, buffer, err => {
                 if (err) {
-                    return res.status(500).send(err);
+                    reject(err);
+                } else {
+                    resolve();
                 }
+
             })
-        }
+        })
+
+        // if (!req.files) {
+        //     return res.status(400).send('No files were uploaded.');
+        // } else {
+        //     req.files.file.mv(path.join(__dirname,
+        //         '/imageLibrary',
+        //         `/user-${userId}`,
+        //         `/presentation-${presentationId}`,
+        //         `/${userId}-${presentationId}-${req.query.pages}.${fileType}`), (err) => {
+        //         if (err) {
+        //             return res.status(500).send(err);
+        //         }
+        //     })
+        // }
 
 
 
