@@ -6,11 +6,12 @@ const setupPassport = require("./passport")
 const bodyParser = require("body-parser");
 const app = express();
 const http = require("http").Server(app);
-const router = require('./routes/viewRoutes')(express);
 // var multer = require('multer'); 
 
 
+setupPassport(app);
 
+const router = require('./routes/viewRoutes')(express);
 
 const SocketIOConnection = require("./sockets/socket-connection");
 const socketIOConnection = new SocketIOConnection(http);
@@ -29,7 +30,6 @@ app.use(bodyParser.urlencoded({
 })); // for parsing application/x-www-form-urlencoded
 // app.use(multer()); // for parsing multipart/form-data
 
-setupPassport(app);
 
 app.use(device.capture());
 app.use(express.static(__dirname + "/public"));
@@ -48,4 +48,4 @@ app.use('/', router);
 app.use('/api', new ApiRouter(new ImageActions(), new FolderActions(), new DatabaseActions(knex)).router());
 
  
-http.listen(8181, () => console.log("App is running on 8181")); 
+http.listen(8181, () => console.log("App is running on 8181"));

@@ -21,7 +21,7 @@ class DatabaseActions {
         const user = this.knex("login")
             .update({
                 username: username,
-                password: req.body.password,
+                password: password,
                 social_login: JSON.stringify(socialLogin)
             })
             .where("id", userId);

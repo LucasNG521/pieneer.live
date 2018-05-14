@@ -39,7 +39,7 @@ class ApiRouter {
         });
         router.put("/login/:loginid", (req, res) => {
             this.databaseActions
-                .editUser(res.params.loginid, req.body.username, req.body.password, req.body.social_login)
+                .editUser(req.params.loginid, req.body.username, req.body.password, req.body['social_login'])
                 .then((result) => {
                     res.json(result);
                 })
