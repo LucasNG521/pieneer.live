@@ -73,6 +73,7 @@ app.post("/slides/upload-image", (req, res) => {
         res.send(md5_name);
     });
 });
+
 // dk api
 var user_id = 1;  //req.xxx.id
 app.post("/api_dk/presentation", (req, res) => {
@@ -178,6 +179,39 @@ END:VCARD`;
             res.setHeader('Content-Type', 'text/x-vcard');
             res.send(vcard);
         });
+});
+
+// dyn views
+app.get("/edit_presentation/:id", (req, res) => {  // add is user logged in
+    knex('dk_presentation')
+        .where('id', req.params.id)
+        .then((data) => {
+            if(data.length>0) {
+                res.sendFile(__dirname+'/views/edit_presentation.html');
+            } else {
+                res.redirect("/new_presentation/");
+            }
+        });
+});
+app.get("/new_presentation/", (req, res) => {  // add is user logged in
+    res.sendFile(__dirname+'/views/edit_presentation.html');
+});
+app.get("/presentation/:id", (req, res) => {
+    knex('dk_presentation')
+        .where('id', req.params.id)
+        .then((data) => {
+            if(data.length>0) {
+                res.sendFile(__dirname+'/views/presentation.html');
+            } else {
+                res.redirect("/dashboard/");
+            }
+        });
+});
+app.get("/dashboard/", (req, res) => {  // add is user logged in
+    res.sendFile(__dirname+'/views/dashboard.html');
+});
+app.get("/event/:id", (req, res) => {  // add is user logged in
+    res.sendFile(__dirname+'/views/event.html');
 });
 
 const config = require('./knexfile').development;
