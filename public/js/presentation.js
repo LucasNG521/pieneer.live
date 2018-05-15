@@ -18,7 +18,7 @@ var socket = io();
 // get presentation data from the API
 $.ajax({
     dataType: "json",
-    url: "/sample_api/presentation/get_id.json",
+    url: "/api_dk/presentation/" + 23,    // TODO : dyn ID
     success: init_slides
 });
 function init_slides(data) {
@@ -105,7 +105,7 @@ function update_slide() {
         if (slide.type == 'poll') {
             $.ajax({
                 dataType: "json",
-                url: "/sample_api/poll/get_id.json",
+                url: "/api_dk/poll/" + slide.id,
                 success: function (json) {
                     display_chart(slide.id, json.data);
                 }
@@ -113,12 +113,11 @@ function update_slide() {
         } else if (slide.type == 'q_a') {
             $.ajax({
                 dataType: "json",
-                contentType: "application/json",
                 type: 'GET',
-                url: "/sample_api/q_a/get_id.json",
+                url: "/api_dk/q_a/" + presentation.id,
                 success: function (q_a) {
                     var questions = '';
-                    for (const question of q_a.questions) {
+                    for (const question of q_a) {
                         var likes = (question.likes > 0) ? `<i class="fas fa-thumbs-up fa-lg mr-2"> ${question.likes}</i>` : '';
                         questions += `
                     <li class="list-group-item">
@@ -135,7 +134,7 @@ function update_slide() {
                     }
                     html_slide = `
                     <div class="q_a-container">
-                        <h1>${q_a.title}</h1>
+                        <h1>${slide.title}</h1>
                         <ul class="list-group mt-5">
                             ${questions}
                         </ul>

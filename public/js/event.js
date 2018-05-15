@@ -14,9 +14,8 @@ socket.on("vote-stop", id => {
 
 $.ajax({
     dataType: "json",
-    contentType: "application/json",
     type: 'GET',
-    url: "/sample_api/presentation/get_id.json",
+    url: "/api_dk/presentation/"+23,    // TODO : dyn ID
     success: init_event
 });
 
@@ -44,32 +43,11 @@ function init_event(data) {
         </a>
     </p>
     <p>
-        <a href="/presentation/${presentation.id}/contact.vcf">
+        <a href="/api_dk/vcard/${presentation.users_id}">
             <i class="fas fa-download fa-lg"></i> Add contact to my phone
         </a>
     </p>`;
     $('#info .container').html(html_info);
-    for (var slide of presentation.slides) {
-        if (slide.type == 'q_a') {
-            for (var question of slide.questions) {
-                var likes = (question.likes > 0) ? `<i class="fas fa-thumbs-up fa-lg mr-2"> ${question.likes}</i>` : '';
-                var html_question = `<li class="list-group-item">
-                    <div class="user">
-                        <i class="far fa-user"></i> ${question.name}
-                    </div>
-                    <div class="question d-flex align-items-center justify-content-center">
-                        ${question.question}
-                        <div class="ml-auto justify-content-end">
-                            <a href="#" alt="Like" id="question-${question.id}">
-                                ${likes}
-                            </a>
-                        </div>
-                    </div>
-                </li>`;
-                $('ul.questions').append(html_question);
-            }
-        }
-    }
     for (var slide of presentation.slides) {
         if (slide.type == 'poll') {
             poll_id = slide.id;
@@ -86,6 +64,31 @@ function init_event(data) {
                 $('ul.poll').append(html_poll);
                 i++;
             }
+        } else if (slide.type == 'q_a') {
+            $.ajax({
+                dataType: "json",
+                type: 'GET',
+                url: "/api_dk/q_a/"+presentation.id,
+                success: function (questions) {
+                    for (var question of questions) {
+                        var likes = (question.likes > 0) ? `<i class="fas fa-thumbs-up fa-lg mr-2"> ${question.likes}</i>` : '<i class="fas fa-thumbs-up fa-lg mr-2"> </i>';
+                        var html_question = `<li class="list-group-item">
+                            <div class="user">
+                                <i class="far fa-user"></i> ${question.name}
+                            </div>
+                            <div class="question d-flex align-items-center justify-content-center">
+                                ${question.question}
+                                <div class="ml-auto justify-content-end">
+                                    <a href="#" alt="Like" id="question-${question.id}">
+                                        ${likes}
+                                    </a>
+                                </div>
+                            </div>
+                        </li>`;
+                        $('ul.questions').append(html_question);
+                    }
+                }
+            });
         }
     }
 }

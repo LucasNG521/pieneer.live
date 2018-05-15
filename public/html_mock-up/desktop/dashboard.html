@@ -12,7 +12,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/html_mock-up/desktop/">Pieneer</a>
+            <a class="navbar-brand" href="/"><img src="/img/pieneer_logo.svg"> Pieneer</a>
         </div>
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto">
@@ -46,15 +46,15 @@
         dataType: "json",
         contentType: "application/json",
         type: 'GET',
-        url: "/sample_api/presentation/get_all.json",
-        success: function (json) {
+        url: "/api_dk/presentation/",
+        success: function (presentations) {
             var html_dashboard = '<div class="row">';
             var i = 1;
-            for (presentation of json.presentations) {
+            for (presentation of presentations) {
                 html_dashboard += `
             <div class="col-lg-3 col-md-6">
                 <div class="card">
-                    <img class="card-img-top" src="${presentation.slide}">
+                    <img class="card-img-top" src="${presentation.image_link}">
                     <div class="card-body">
                         <h5 class="card-title">${presentation.title}</h5>
                         <a href="edit_presentation.html" class="btn btn-primary">Edit</a>

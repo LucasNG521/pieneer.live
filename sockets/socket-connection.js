@@ -11,15 +11,10 @@ class SocketIOConnection {
         this.io.on("connection", socket => {
             console.log("a user connected to the socket");
             socket.on("upvote", (vote) => {
-                const create_vote = this.knex('vote')
-                .insert({"vote0":0, "vote1":0, "vote2":0, "vote3":0, "vote4":0, "vote5":0}).returning("id")
-                .then((ids) => {
-                    vote.id = ids.pop();
-                    const upvote = this.knex('vote').where('id', '=', vote.id).increment('vote' + vote.vote, 1).then(() => {
-                        console.log('db updated');
-                    });
+                const upvote = this.knex('dk_poll').where('id', '=', vote.id).increment('vote' + vote.vote, 1).then(() => {
+                    console.log('db updated');
                 });
-                console.log(create_vote);
+                console.log(upvote);
                 this.io.emit("upvote", vote.vote);
                 console.log('upvote : ');
                 console.log(vote);
@@ -41,7 +36,7 @@ class SocketIOConnection {
                 console.log(option);
             });
             socket.on("like-question", (question) => {
-                const likequestion = this.knex('questions')
+                const likequestion = this.knex('dk_q_a')
                     .where('id', '=', question.id)
                     .increment('likes', 1).returning("likes")
                     .then((likes) => {
@@ -52,7 +47,7 @@ class SocketIOConnection {
                     });
             });
             socket.on("unlike-question", (question) => {
-                const unlikequestion = this.knex('questions')
+                const unlikequestion = this.knex('dk_q_a')
                     .where('id', '=', question.id)
                     .decrement('likes', 1).returning("likes")
                     .then((likes) => {
@@ -64,7 +59,7 @@ class SocketIOConnection {
             });
             socket.on("send-question", (question) => {
                 question.likes = 0;
-                const add_question = this.knex('questions')
+                const add_question = this.knex('dk_q_a')
                     .insert(question).returning("id")
                     .then((ids) => {
                         question.id = ids.pop();
