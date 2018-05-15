@@ -3,12 +3,13 @@ var upload = [];
 var graph_type = ['bar', 'pie', 'line'];
 var presentation = {};
 // get presentation data from the API
-var presentation_id = (document.location.search=='?new=true')?'':'_id';
+var presentation_id = (document.location.search=='?new=true')?'':'1';
+var ajax_type = (document.location.search=='?new=true')?'POST':'GET';
 $.ajax({
     dataType: "json",
     contentType: "application/json",
-    type: 'GET',
-    url: "/sample_api/presentation/get"+presentation_id+".json",
+    type: ajax_type,
+    url: "/api_dk/presentation/"+presentation_id,
     success: init_slides
 });
 function init_slides(data) {
@@ -72,7 +73,7 @@ function previewSlide(slide_id) {
     console.log('prev' + slide_id);
     if ($('.slide').eq(slide_id).hasClass('slide-html')) {
         var slide_html = `
-        <form class="container mt-5" action="/api/presentation/${presentation.id}" method="POST" id="form-infos">
+        <form class="container mt-5" action="/api_dk/presentation/${presentation.id}" method="POST" id="form-infos">
             <h2><i class="fas fa-info-circle mr-2 mb-5"></i>Infos</h2>
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label" for="title">Title</label>
@@ -203,6 +204,13 @@ $('a#save-presentation').click(function (e) {
             var data_json = JSON.parse($(this).attr('data-json'));
             presentation.slides.push(data_json);
         }
+    });
+    $.ajax({
+        type: 'PUT',
+        url: '/api_dk/presentation/'+presentation.id,
+        data: presentation
+    }).then((data) => {
+        console.log('infos updated');
     });
     console.log(presentation);
     $(this).blur();
@@ -350,16 +358,7 @@ $('.preview').on('click', '.save-infos', function (e) {
     presentation.speaker = infos.speaker;
     presentation.email = infos.email;
     presentation.phone = infos.phone;
-    infos = JSON.stringify(infos);
-    $.ajax({
-        dataType: "json",
-        contentType: "application/json",
-        type: 'PUT',
-        url: $('#form-infos').attr('action'),
-        data: infos
-    }).then((data) => {
-        console.log('infos updated');
-    });
+    $('a#save-presentation').click();
 });
 
 $('.preview').on('click', '.add-answer', function (e) {

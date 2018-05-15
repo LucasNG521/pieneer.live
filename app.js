@@ -69,6 +69,50 @@ app.post("/slides/upload-image", (req, res) => {
         res.send(md5_name);
     });
 });
+// dk api
+var user_id = 1;  //req.xxx.id
+app.post("/api_dk/presentation", (req, res) => {
+    knex('dk_presentation')
+        .insert({ "users_id": user_id }).returning("id")
+        .then((id) => {
+            var id = id.pop();
+            var json = `{
+                "title": "",
+                "id": ${id},
+                "location": "",
+                "date": "",
+                "speaker":"",
+                "email":"",
+                "phone":"",
+                "slides": []
+            }`;
+            knex('dk_presentation')
+                .where('id', id)
+                .update('json', json)
+                .then(() => {
+                    res.json(JSON.parse(json));
+                });
+        });
+});
+app.get("/api_dk/presentation/:id", (req, res) => {
+    knex('dk_presentation')
+        .where('id', req.params.id)
+        .then((data) => {
+            data = data.pop();
+            res.json(JSON.parse(data.json));
+        });
+});
+app.put("/api_dk/presentation/:id", (req, res) => {
+    console.log(req.body);
+    var json=req.body;
+    knex('dk_presentation')
+        .where('id', req.params.id)
+        .update('title', json.title)
+        .update('json', JSON.stringify(json))
+        .then(() => {
+            res.send('ok');
+        });
+});
 
 const config = require('./knexfile').development;
 const knex = require('knex')(config);
@@ -81,5 +125,5 @@ socketIOConnection.router();
 app.use('/', router);
 app.use('/api', new ApiRouter(new ImageActions(), new FolderActions(), new DatabaseActions(knex)).router());
 
- 
+
 http.listen(8181, () => console.log("App is running on 8181"));

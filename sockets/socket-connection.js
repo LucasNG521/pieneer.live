@@ -14,14 +14,6 @@ class SocketIOConnection {
                 const upvote = this.knex('dk_poll').where('id', '=', vote.id).increment('vote' + vote.vote, 1).then(() => {
                     console.log('db updated');
                 });
-                // const create_vote = this.knex('dk_poll')
-                // .insert({"vote0":0, "vote1":0, "vote2":0, "vote3":0, "vote4":0, "vote5":0}).returning("id")
-                // .then((ids) => {
-                //     vote.id = ids.pop();
-                //     const upvote = this.knex('vote').where('id', '=', vote.id).increment('vote' + vote.vote, 1).then(() => {
-                //         console.log('db updated');
-                //     });
-                // });
                 console.log(create_vote);
                 this.io.emit("upvote", vote.vote);
                 console.log('upvote : ');
