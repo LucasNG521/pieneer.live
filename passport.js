@@ -70,21 +70,19 @@ module.exports = (app) => {
     clientSecret: '46f25ce454c6f67a62929f1fa4b6bce9',
     callbackURL: "https://pieneer.live/auth/facebook/callback"
   },
-    (accessToken, refreshToken, profile, done) => {
-      // User.findOrCreate({ socail_login: profile.id }, (err, user) => {
-      //   return done(err, user);
-      // });
-      let user = knex('users').where({ social_login: profile.id });
+   async (accessToken, refreshToken, profile, done) => {
+      let user = await knex('users').first().where('social_login', profile.id)
 
-
-      // }
-      // if (profile) {
-      //   user = profile;
-      return done(null, user);
-      // }
-      // else {
-      // return done(null, false);
-      // }
+      if (user) {
+        done(null, user);
+      } else {
+        let newUser = await knex('users').insert({
+          social_login: profile.id,
+          first_name: profile.name.givenName,
+          last_name: profile.name.familyName
+        }).returning(['id', 'first_name'])
+        done(null, newUser[0]);
+      }
     }
   ));
 
@@ -93,7 +91,7 @@ module.exports = (app) => {
     clientSecret: 'sJRiDC5hZ6LIwJYr16b-21g1',
     callbackURL: "http://localhost:8181/auth/google/callback"
   },
-  async (accessToken, refreshToken, profile, done) => {
+    async (accessToken, refreshToken, profile, done) => {
       // User.findOrCreate({ googleId: profile.id }, (err, user) => {
       //   return done(err, user);
       // });
@@ -104,32 +102,32 @@ module.exports = (app) => {
       //   else {
       //   return done(null, false);
       //   }
-      
+
       let user = await knex('users').first().where('social_login', profile.id)
-      
-      if (user){
+
+      if (user) {
         done(null, user);
       } else {
         let newUser = await knex('users').insert({
           social_login: profile.id,
-          first_name: profile.name.givenName, 
+          first_name: profile.name.givenName,
           last_name: profile.name.familyName
         }).returning(['id', 'first_name'])
-        done(null, newUser[0]); 
+        done(null, newUser[0]);
       }
 
-        // const newUser = {
-        //   usersname: usersname,
-        //   password: hash
-        // };
-        // knex('users').insert(newUser).returning('id');
-        // done(null, newUser);
+      // const newUser = {
+      //   usersname: usersname,
+      //   password: hash
+      // };
+      // knex('users').insert(newUser).returning('id');
+      // done(null, newUser);
 
-        // .then(() => {
-        //   console.log('ok!');
-        // }).catch(err => {
-        //   console.log(err);
-        // })
+      // .then(() => {
+      //   console.log('ok!');
+      // }).catch(err => {
+      //   console.log(err);
+      // })
 
     }));
 
@@ -139,16 +137,21 @@ module.exports = (app) => {
     callbackURL: "https://pieneer.live/auth/linkedin/callback",
     scope: ['r_emailaddress', 'r_basicprofile'],
   },
-    (token, tokenSecret, profile, done) => {
+   async (token, tokenSecret, profile, done) => {
       // User.findOrCreate({ linkedinId: profile.id }, (err, user) => {
       //   return done(err, user);
       // });
-      if (profile) {
-        user = profile;
-        return done(null, user);
-      }
-      else {
-        return done(null, false);
+      let user = await knex('users').first().where('social_login', profile.id)
+
+      if (user) {
+        done(null, user);
+      } else {
+        let newUser = await knex('users').insert({
+          social_login: profile.id,
+          first_name: profile.name.givenName,
+          last_name: profile.name.familyName
+        }).returning(['id', 'first_name'])
+        done(null, newUser[0]);
       }
     },
     function (accessToken, refreshToken, profile, done) {
