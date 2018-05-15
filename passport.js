@@ -23,7 +23,7 @@ module.exports = (app) => {
       try {
         let users = await knex('users').where({ usersname: usersname });
         if (users.length > 0) {
-          return done(null, false, { message: 'Email already taken' });
+          return done(null, false, { message: 'Username already taken' });
         }
         let hash = await bcrypt.hashPassword(password)
         const newUser = {

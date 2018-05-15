@@ -2,16 +2,20 @@
 
 const express = require("express");
 const device = require("express-device");
+const session = require('express-session');
 const setupPassport = require("./passport")
 const bodyParser = require("body-parser");
 const app = express();
 const http = require("http").Server(app);
 // var multer = require('multer'); 
 
+app.use(session({
+    secret: 'supersecret'
+}));
 
 setupPassport(app);
 
-const router = require('./routes/viewRoutes')(express);
+// const router = require('./routes/viewRoutes')(express);
 
 const ViewRouter = require("./routes/viewRoutes");
 const ApiRouter = require('./routes/apiRoutes');
@@ -78,8 +82,8 @@ const SocketIOConnection = require("./sockets/socket-connection");
 const socketIOConnection = new SocketIOConnection(http, knex);
 socketIOConnection.router();
 
-// app.use("/", new ViewRouter().router());
-app.use('/', router);
+app.use("/", new ViewRouter().router());
+// app.use('/', router);
 app.use('/api', new ApiRouter(new ImageActions(), new FolderActions(), new DatabaseActions(knex)).router());
 
  
