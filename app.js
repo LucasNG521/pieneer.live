@@ -32,7 +32,6 @@ app.use(express.static(__dirname + "/public"));
 
 // file upload
 const upload_path = './public/slides/';
-
 const fileUpload = require('express-fileupload');
 app.use(fileUpload());
 app.post("/slides/upload-ppt", (req, res) => {
