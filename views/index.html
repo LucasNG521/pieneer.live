@@ -14,7 +14,8 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/"><img src="/img/pieneer_logo.svg"> Pieneer</a>
+            <a class="navbar-brand" href="/">
+                <img src="/img/pieneer_logo.svg"> Pieneer</a>
         </div>
         <ul class="nav navbar-nav ml-auto">
             <button type="button" class="btn btn-primary login" data-toggle="modal" data-target="#loginModal">Login / Signup</button>
@@ -25,35 +26,60 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Login</h5>
+                    <h5 class="modal-title">Edit user infos</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="/login" method="post">
-                        <div>
-                            <label>username:</label>
-                            <input type="text" name="username" />
+                    <ul class="nav nav-tabs justify-content-center mt-3" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="login-tab" data-toggle="tab" href="#login" role="tab" aria-controls="login" aria-selected="true">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="signup-tab" data-toggle="tab" href="#signup" role="tab" aria-controls="signup" aria-selected="false">SignUp</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
+                            <form action="/login" method="post">
+                                <div>
+                                    <label>username:</label>
+                                    <input type="text" name="username" />
+                                </div>
+                                <div>
+                                    <label>Password:</label>
+                                    <input type="password" name="password" />
+                                </div>
+                                <div>
+                                    <a href="/auth/facebook">facebook login</a>
+                                </div>
+                                <div>
+                                    <a href="/auth/google">google login</a>
+                                </div>
+                                <div>
+                                    <a href="/auth/linkedin">linkedIn login</a>
+                                </div>
+                                <button type="submit" value="Log in" class="btn btn-primary">Log In</button>
+                            </form>
                         </div>
-                        <div>
-                            <label>Password:</label>
-                            <input type="password" name="password" />
+                        <div class="tab-pane fade" id="signup" role="tabpanel" aria-labelledby="signup-tab">
+                            <form action="/signup" method="post">
+                                <div>
+                                    <label>username:</label>
+                                    <input type="text" name="username" />
+                                </div>
+                                <div>
+                                    <label>Password:</label>
+                                    <input type="password" name="password" />
+                                </div>
+                                <button type="submit" value="sign up" class="btn btn-primary">sign up</button>
+                            </form>
                         </div>
-                        <div>
-                            <a href="/auth/facebook">facebook login</a>
-                        </div>
-                        <div>
-                            <a href="/auth/google">google login</a>
-                        </div>
-                        <div>
-                            <a href="/auth/linkedin">linkedIn login</a>
-                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" value="Log in" class="btn btn-primary">Log In</button>
-                    </form>
                 </div>
             </div>
         </div>
@@ -64,51 +90,5 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="https://apis.google.com/js/platform.js" async defer></script>
-
-<script>
-    // //google log-in
-    // $('#login').on('shown.bs.modal', function () {
-    //     $('#myInput').trigger('focus')
-    // })
-    
-    //google sign-out
-    function signOut() {
-        var auth2 = gapi.auth2.getAuthInstance();
-        auth2.signOut().then(function () {
-            console.log('User signed out.');
-        });
-    }
-    (function ($) {
-        $.fn.serializeFormJSON = function () {
-
-            var o = {};
-            var a = this.serializeArray();
-            $.each(a, function () {
-                if (o[this.name]) {
-                    if (!o[this.name].push) {
-                        o[this.name] = [o[this.name]];
-                    }
-                    o[this.name].push(this.value || '');
-                } else {
-                    o[this.name] = this.value || '';
-                }
-            });
-            return o;
-        };
-    })(jQuery);
-
-    $('.save-user').click(function (e) {
-        e.preventDefault();
-        $.ajax({
-            url: '/api/users/1', // id
-            type: 'PUT',
-            data: JSON.stringify($('#form-user').serializeFormJSON()),
-            dataType: "json",
-            contentType: "application/json"
-        }).then((data) => {
-            console.log('user infos updated');
-        });
-    });
-</script>
 
 </html>

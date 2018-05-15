@@ -81,37 +81,37 @@ function previewSlide(slide_id) {
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label" for="title">Title</label>
                 <div class="col-sm-10">
-                    <input class="form-control" type="text" name="title" value="${presentation.title}" id="title">
+                    <input class="form-control" type="text" name="title" value="${presentation.title}" id="">
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label" for="location">Location</label>
                 <div class="col-sm-10">
-                    <input class="form-control" type="text" name="location" value="${presentation.location}" id="location">
+                    <input class="form-control" type="text" name="location" value="${presentation.location}" id="">
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label" for="date">Date</label>
                 <div class="col-sm-10">
-                    <input class="form-control date" type="text" name="date" value="${presentation.date}" id="date">
+                    <input class="form-control date" type="text" name="date" value="${presentation.date}" id="">
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label" for="speaker">Speaker</label>
                 <div class="col-sm-10">
-                    <input class="form-control" type="text" name="speaker" value="${presentation.speaker}" id="speaker">
+                    <input class="form-control" type="text" name="speaker" value="${presentation.speaker}" id="">
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label" for="email">Email</label>
                 <div class="col-sm-10">
-                    <input class="form-control" type="text" name="email" value="${presentation.email}" id="email">
+                    <input class="form-control" type="text" name="email" value="${presentation.email}" id="">
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label" for="phone">Phone</label>
                 <div class="col-sm-10">
-                    <input class="form-control" type="text" name="phone" value="${presentation.phone}" id="phone">
+                    <input class="form-control" type="text" name="phone" value="${presentation.phone}" id="">
                 </div>
             </div>
             <div>
