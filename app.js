@@ -83,6 +83,7 @@ app.post("/api_dk/presentation", (req, res) => {
             var json = `{
                 "title": "",
                 "id": ${id},
+                "user_id": "${user_id}",
                 "location": "",
                 "date": "",
                 "speaker":"",
@@ -158,6 +159,24 @@ app.get("/api_dk/q_a/:presentation_id", (req, res) => {
         .orderBy('likes', 'desc')
         .then((data) => {
             res.json(data);
+        });
+});
+app.get("/api_dk/vcard/:user_id", (req, res) => {
+    knex('users')
+        .where('id', req.params.user_id)
+        .then((user) => {
+            var user = user.pop();
+            var vcard = `BEGIN:VCARD
+VERSION:3.0
+N:${user.last_name};${user.first_name};;;
+FN:${user.first_name} ${user.last_name}
+ORG:${user.company}
+TEL;TYPE=WORK:${user.phone}
+EMAIL:${user.email}
+REV:${user.updated_at}
+END:VCARD`;
+            res.setHeader('Content-Type', 'text/x-vcard');
+            res.send(vcard);
         });
 });
 
