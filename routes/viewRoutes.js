@@ -76,6 +76,16 @@ class ViewRouter {
             res.redirect('/');
         });
 
+        router.get('/uid', (req, res) => {
+            console.log(req.user.id);
+            res.send('' + req.user.id);
+        });
+
+        // router.get("/dashboard/", (req, res) => {  // TODO: user logged in
+        //     console.log(req.user.id);
+        //     res.sendFile('../views/dashboard.html');
+        // });
+
         return router;
     }
 

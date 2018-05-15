@@ -76,8 +76,8 @@ app.post("/slides/upload-image", (req, res) => {
 });
 
 // dk api
-var user_id = 2;  // TODO: change to session
 app.post("/api_dk/presentation", (req, res) => {
+    var user_id = (req.user.id) ? req.user.id : 2;  // TODO: secure !!!
     knex('dk_presentation')
         .insert({ "users_id": user_id }).returning("id")
         .then((id) => {
@@ -102,6 +102,7 @@ app.post("/api_dk/presentation", (req, res) => {
         });
 });
 app.get("/api_dk/presentation/", (req, res) => {
+    var user_id = (req.user.id) ? req.user.id : 2;  // TODO: secure !!!
     knex('dk_presentation')
         .where('users_id', user_id)
         .then((presentations) => {
@@ -230,7 +231,6 @@ const socketIOConnection = new SocketIOConnection(http, knex);
 socketIOConnection.router();
 
 app.use("/", new ViewRouter().router());
-// app.use('/', router);
 app.use('/api', new ApiRouter(new ImageActions(), new FolderActions(), new DatabaseActions(knex)).router());
 
 
