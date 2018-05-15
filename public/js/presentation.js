@@ -117,7 +117,7 @@ function update_slide() {
                 url: "/api_dk/q_a/" + presentation.id,
                 success: function (q_a) {
                     var questions = '';
-                    for (const question of q_a.questions) {
+                    for (const question of q_a) {
                         var likes = (question.likes > 0) ? `<i class="fas fa-thumbs-up fa-lg mr-2"> ${question.likes}</i>` : '';
                         questions += `
                     <li class="list-group-item">

@@ -144,12 +144,14 @@ app.get("/api_dk/poll/:id", (req, res) => {
     knex('dk_poll')
         .where('id', req.params.id)
         .then((data) => {
-            res.json(data);
+            var data = data.pop();
+            res.send({ data: [data.vote0, data.vote1, data.vote2, data.vote3, data.vote4, data.vote5] });
         });
 });
 app.get("/api_dk/q_a/:presentation_id", (req, res) => {
     knex('dk_q_a')
         .where('presentation_id', req.params.presentation_id)
+        .orderBy('likes', 'desc')
         .then((data) => {
             res.json(data);
         });
