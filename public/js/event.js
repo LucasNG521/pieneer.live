@@ -43,7 +43,7 @@ function init_event(data) {
         </a>
     </p>
     <p>
-        <a href="/api_dk/vcard/${presentation.users_id}">
+        <a href="/api_dk/vcard/${presentation.user_id}">
             <i class="fas fa-download fa-lg"></i> Add contact to my phone
         </a>
     </p>`;
