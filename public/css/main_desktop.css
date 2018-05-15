@@ -14,3 +14,7 @@ ul.navbar-nav {
     padding-top: 0;
     padding-bottom: 0;
 }
+
+.navbar-brand img {
+    width: 40px;
+}

@@ -134,7 +134,7 @@ function update_slide() {
                     }
                     html_slide = `
                     <div class="q_a-container">
-                        <h1>${q_a.title}</h1>
+                        <h1>${slide.title}</h1>
                         <ul class="list-group mt-5">
                             ${questions}
                         </ul>
