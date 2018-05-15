@@ -78,15 +78,15 @@ class ViewRouter {
       (req, res) => {
         res.redirect('/html_mock-up/desktop/dashboard.html');
       });
-
-    return router;
-
+      
+      router.get('/logout', (req, res) => {
+        req.logout();
+        res.redirect('/');
+      });
+      
+      return router;
+    }
     //logout
-    app.get('/logout', (req, res) => {
-      req.logout();
-      res.redirect('/');
-    });
-  }
 }
 
 module.exports = ViewRouter;

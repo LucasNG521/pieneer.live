@@ -19,24 +19,26 @@ class ApiRouter {
         });
 
         // User operations
-        router.get("/users/:userid", (req, res) => {
-            if (req.query.requesttype === 'login') {
-                this.databaseActions.getUserLoginInfo(req.params.userid).then((arr) => {
+        router.get("/users", (req, res) => {
+            console.log(req);
+            // if (req.query.requesttype === 'login') {
+            //     this.databaseActions.getUserLoginInfo(req.user.id).then((arr) => {
+            //         res.json(arr);
+            //     }).catch((err) => {
+            //         res.status(400).send(err);
+            //     })
+            // } else if (req.query.requesttype === 'general') {
+                this.databaseActions.getUserInfo(req.user.id).then((arr) => {
                     res.json(arr);
                 }).catch((err) => {
                     res.status(400).send(err);
                 })
-            } else if (req.query.requesttype === 'general') {
-                this.databaseActions.getUserInfo(req.params.userid).then((arr) => {
-                    res.json(arr);
-                }).catch((err) => {
-                    res.status(400).send(err);
-                })
-            } else {
-                res.status(400).send("Please state which information you need");
-            }
-        });
-        // TODO: Lucassss adding new user 
+            }); 
+            // else {
+            //     res.status(400).send("Please state which information you need");
+            // })
+        
+        // Lucassss adding new user 
         router.post("/users", (req, res) => {
             this.databaseActions.addNewUser(req.body.usersname, req.body.password).then(() => {
                     // res.json("Hello! you've successfully added a new user ");
@@ -46,11 +48,17 @@ class ApiRouter {
                     res.status(500).send(err);
                 })
         });
-        router.put("/users/:userid", (req, res) => {
-            // FIXME: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            req.user
-            this.databaseActions.editUserInfo(req.params.userid, req.body['first_name'], req.body['last_name'], req.body.email, req.body.phone, req.body.company).then(() => {
+        router.put("/users", (req, res) => {
+            console.log(req);
+            this.databaseActions.editUserInfo(req.user.id, req.body['first_name'], req.body['last_name'], req.body.email, req.body.phone, req.body.company).then((result, err) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send(err);                    
+                }
+                else {
+                    console.log('hi');
                     res.json("Well done, you've successfully edited your user info");
+                }
                 })
                 .catch(err => {
                     res.status(500).send(err);

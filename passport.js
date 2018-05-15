@@ -43,16 +43,16 @@ module.exports = (app) => {
     async (username, password, done) => {
       try {
         let users = await knex('users').where({ usersname: username })
-        console.log(users);
+        // console.log(users);
         if (users.length == 0) {
           return done(null, false, { message: 'Incorrect credentials' });
         }
         let user = users[0];
-        console.log(user);
-        console.log(password);
-        console.log(user.password);
+        // console.log(user);
+        // console.log(password);
+        // console.log(user.password);
         let result = await bcrypt.checkPassword(password, user.password);
-        console.log(result);
+        // console.log(result);
         if (result) {
           return done(null, user);
         } else {
@@ -92,17 +92,8 @@ module.exports = (app) => {
     callbackURL: "http://localhost:8181/auth/google/callback"
   },
     async (accessToken, refreshToken, profile, done) => {
-      // User.findOrCreate({ googleId: profile.id }, (err, user) => {
-      //   return done(err, user);
-      // });
-      // if (profile) {
-      //   user = profile;
-      //   return done(null, user);
-      //   }
-      //   else {
-      //   return done(null, false);
-      //   }
 
+      // console.log(profile);
       let user = await knex('users').first().where('social_login', profile.id)
 
       if (user) {
@@ -138,9 +129,7 @@ module.exports = (app) => {
     scope: ['r_emailaddress', 'r_basicprofile'],
   },
    async (token, tokenSecret, profile, done) => {
-      // User.findOrCreate({ linkedinId: profile.id }, (err, user) => {
-      //   return done(err, user);
-      // });
+
       let user = await knex('users').first().where('social_login', profile.id)
 
       if (user) {
@@ -172,12 +161,12 @@ module.exports = (app) => {
 
   passport.deserializeUser(async (id, done) => {
     let users = await knex('users').where({ id: id });
-    console.log(users);
+    // console.log(users);
     if (users.length == 0) {
       return done(new Error(`Wrong user id ${id}`));
     }
     let user = users[0];
-    console.log(user);
+    // console.log(user);
     return done(null, user);
   });
 };
