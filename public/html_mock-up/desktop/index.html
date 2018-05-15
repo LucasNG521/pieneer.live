@@ -37,13 +37,13 @@
                 <button type="button" class="btn btn-primary login" data-toggle="modal" data-target="#loginModal">Login / Signup</button>
             </li>
             <li>
-                <button type="button" class="btn btn-primary" alt="Edit User Name" data-toggle="modal" data-target="#editUserModal">
+                <button type="button" class="btn btn-primary edit-user" alt="Edit User Name" data-toggle="modal" data-target="#editUserModal">
                     Edit user infos
                 </button>
             </li>
             <li>
                 <button type="submit" value="Sign out" class="btn btn-primary signout">
-                    <a href="#" onclick="signOut();" action="/logout">Sign out</a>
+                    <a href="/logout" onclick="signOut();" action="/logout">Sign out</a>
                 </button>
             </li>
         </ul>
@@ -53,11 +53,25 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Login</h5>
+                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+
+                    <ul class="list-group questions">
+                    </ul>
+
+                    <ul class="nav nav-tabs justify-content-center mt-3" id="loginTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="login-tab" data-toggle="tab" href="#login" role="tab" aria-controls="login" aria-selected="true">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="signup-tab" data-toggle="tab" href="#signup" role="tab" aria-controls="sigunp" aria-selected="false">SignUp</a>
+                        </li>
+                    </ul>
+
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+
                 <div class="modal-body">
                     <form action="/login" method="post">
                         <div>
@@ -117,31 +131,31 @@
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label" for="first_name">Firstname</label>
                             <div class="col-sm-10">
-                                <input class="form-control" type="text" name="first_name" value="Firstname" id="firstname">
+                                <input class="form-control" type="text" name="first_name" id="firstname">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label" for="last_name">Lastname</label>
                             <div class="col-sm-10">
-                                <input class="form-control" type="text" name="last_name" value="Lastname" id="lastname">
+                                <input class="form-control" type="text" name="last_name" id="lastname">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label" for="email">Email</label>
                             <div class="col-sm-10">
-                                <input class="form-control" type="text" name="email" value="email@domain.com" id="email">
+                                <input class="form-control" type="text" name="email" id="email">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label" for="phone">Phone</label>
                             <div class="col-sm-10">
-                                <input class="form-control" type="text" name="phone" value="00000000" id="phone">
+                                <input class="form-control" type="text" name="phone" id="phone">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label" for="company">Company</label>
                             <div class="col-sm-10">
-                                <input class="form-control" type="text" name="company" value="Company name" id="company">
+                                <input class="form-control" type="text" name="company" id="company">
                             </div>
                         </div>
                     </form>
@@ -165,7 +179,7 @@
     $('#login').on('shown.bs.modal', function () {
         $('#myInput').trigger('focus')
     })
-    
+
     //google sign-out
     function signOut() {
         var auth2 = gapi.auth2.getAuthInstance();
@@ -192,10 +206,30 @@
         };
     })(jQuery);
 
+    $('#sign-up').on('hidden.bs.modal', function (e) {
+        // do something...
+    })
+
+    $('.edit-user').click((e) => {
+        e.preventDefault();
+        $.ajax({
+            url: '/api/users', // id
+            type: 'get'
+        }).then((data) => {
+            $('#firstname').val(data[0]['first_name']);
+            $('#lastname').val(data[0]['last_name']);
+            $('#email').val(data[0]['email']);
+            $('#phone').val(data[0]['phone']);
+            $('#company').val(data[0]['company']);
+            console.log('your user info is here');
+        });
+    })
+
+
     $('.save-user').click(function (e) {
         e.preventDefault();
         $.ajax({
-            url: '/api/users/1', // id
+            url: '/api/users', // id
             type: 'PUT',
             data: JSON.stringify($('#form-user').serializeFormJSON()),
             dataType: "json",
