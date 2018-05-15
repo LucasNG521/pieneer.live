@@ -75,7 +75,7 @@ app.post("/slides/upload-image", (req, res) => {
 });
 
 // dk api
-var user_id = 1;  //req.xxx.id
+var user_id = 1;  // TODO: change to session
 app.post("/api_dk/presentation", (req, res) => {
     knex('dk_presentation')
         .insert({ "users_id": user_id }).returning("id")
@@ -182,7 +182,7 @@ END:VCARD`;
 });
 
 // dyn views
-app.get("/edit_presentation/:id", (req, res) => {  // add is user logged in
+app.get("/edit_presentation/:id", (req, res) => {  // TODO: user logged in
     knex('dk_presentation')
         .where('id', req.params.id)
         .then((data) => {
@@ -193,7 +193,7 @@ app.get("/edit_presentation/:id", (req, res) => {  // add is user logged in
             }
         });
 });
-app.get("/new_presentation/", (req, res) => {  // add is user logged in
+app.get("/new_presentation/", (req, res) => {  // TODO: user logged in
     res.sendFile(__dirname+'/views/edit_presentation.html');
 });
 app.get("/presentation/:id", (req, res) => {
@@ -207,11 +207,14 @@ app.get("/presentation/:id", (req, res) => {
             }
         });
 });
-app.get("/dashboard/", (req, res) => {  // add is user logged in
+app.get("/dashboard/", (req, res) => {  // TODO: user logged in
     res.sendFile(__dirname+'/views/dashboard.html');
 });
-app.get("/event/:id", (req, res) => {  // add is user logged in
+app.get("/event/:id", (req, res) => {
     res.sendFile(__dirname+'/views/event.html');
+});
+app.get("/", (req, res) => {
+    res.sendFile(__dirname+'/views/index.html');
 });
 
 const config = require('./knexfile').development;
