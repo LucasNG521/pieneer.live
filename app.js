@@ -76,7 +76,7 @@ app.post("/slides/upload-image", (req, res) => {
 
 // dk api
 app.post("/api_dk/presentation", (req, res) => {
-    var user_id = (req.user.id) ? req.user.id : 2;  // TODO: secure !!!
+    var user_id = (req.isAuthenticated() && req.user.id) ? req.user.id : 2;  // TODO: secure !!!
     knex('dk_presentation')
         .insert({ "users_id": user_id }).returning("id")
         .then((id) => {
@@ -101,7 +101,7 @@ app.post("/api_dk/presentation", (req, res) => {
         });
 });
 app.get("/api_dk/presentation/", (req, res) => {
-    var user_id = (req.user.id) ? req.user.id : 2;  // TODO: secure !!!
+    var user_id = (req.isAuthenticated() && req.user.id) ? req.user.id : 2;  // TODO: secure !!!
     knex('dk_presentation')
         .where('users_id', user_id)
         .then((presentations) => {

@@ -4,7 +4,6 @@ var graph_type = ['bar', 'pie', 'line'];
 var presentation = {};
 // get presentation data from the API
 var presentation_id = (document.location.pathname == '/new_presentation/') ? '' : document.location.pathname.replace('/edit_presentation/', '');
-$('#play-presentation').attr('href', '/presentation/' + presentation_id);
 var ajax_type = (document.location.pathname == '/new_presentation/') ? 'POST' : 'GET';
 $.ajax({
     dataType: "json",
@@ -16,7 +15,7 @@ $.ajax({
 function init_slides(data) {
     presentation = data;
     console.log(presentation);
-
+    $('#play-presentation').attr('href', '/presentation/' + presentation.id);
     // init first slide
     $('.list').append(`
     <div class="slide slide-html active">

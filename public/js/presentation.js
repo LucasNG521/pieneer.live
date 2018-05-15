@@ -12,7 +12,7 @@ ctx.on("tool-changed", function (toolname) {
 });
 var presentation_id = document.location.pathname.replace('/presentation/', '');
 var presentation = '';
-var nb_slides = 0;
+var nb_slides = 1;
 var current_slide = 0;
 var socket = io();
 // get presentation data from the API
@@ -24,7 +24,7 @@ $.ajax({
 function init_slides(data) {
     presentation = data;
     console.log(presentation);
-    nb_slides = presentation.slides.length;
+    nb_slides = (presentation.slides) ? presentation.slides.length : 1;
 
     $('title').html(presentation.title + ' | powered by Pieneer - Live Presentation made Interactive and Easy');
 
