@@ -20,7 +20,6 @@ class ApiRouter {
 
         // User operations
         router.get("/users", (req, res) => {
-            console.log(req);
             // if (req.query.requesttype === 'login') {
             //     this.databaseActions.getUserLoginInfo(req.user.id).then((arr) => {
             //         res.json(arr);
@@ -49,7 +48,6 @@ class ApiRouter {
                 })
         });
         router.put("/users", (req, res) => {
-            console.log(req);
             this.databaseActions.editUserInfo(req.user.id, req.body['first_name'], req.body['last_name'], req.body.email, req.body.phone, req.body.company).then((result, err) => {
                 if (err) {
                     console.log(err);

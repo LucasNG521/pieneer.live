@@ -10,7 +10,8 @@ const http = require("http").Server(app);
 // var multer = require('multer'); 
 
 app.use(session({
-    secret: 'supersecret'
+    secret: 'supersecret',
+    cookie: { maxAge: 60000 }
 }));
 
 setupPassport(app);
