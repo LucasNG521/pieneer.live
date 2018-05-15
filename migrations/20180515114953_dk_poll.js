@@ -13,5 +13,5 @@ exports.up = function (knex, Promise) {
 };
 
 exports.down = function (knex, Promise) {
-  return knex.schema.deleteTable('dk_poll');
+  return knex.schema.dropTable('dk_poll');
 };
