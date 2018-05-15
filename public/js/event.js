@@ -11,11 +11,11 @@ socket.on("vote-stop", id => {
     $('.badge-pill').hide();
     //$('#submit-poll').addClass('disabled');
 });
-
+var presentation_id = document.location.pathname.replace('/event/', '');
 $.ajax({
     dataType: "json",
     type: 'GET',
-    url: "/api_dk/presentation/"+23,    // TODO : dyn ID
+    url: "/api_dk/presentation/" + presentation_id,
     success: init_event
 });
 
@@ -68,10 +68,10 @@ function init_event(data) {
             $.ajax({
                 dataType: "json",
                 type: 'GET',
-                url: "/api_dk/q_a/"+presentation.id,
+                url: "/api_dk/q_a/" + presentation.id,
                 success: function (questions) {
                     for (var question of questions) {
-                        var likes = (question.likes > 0) ? `<i class="fas fa-thumbs-up fa-lg mr-2"> ${question.likes}</i>` : '<i class="fas fa-thumbs-up fa-lg mr-2"> </i>';
+                        var likes = (question.likes > 0) ? `<i class="fas fa-thumbs-up fa-lg mr-2">${question.likes}</i>` : '<i class="fas fa-thumbs-up fa-lg mr-2"></i>';
                         var html_question = `<li class="list-group-item">
                             <div class="user">
                                 <i class="far fa-user"></i> ${question.name}
@@ -127,7 +127,7 @@ $('#submit-poll').click(function (e) {
         var votes = $('#send_vote').serializeArray();
         for (vote of votes) {
             console.log('upvote' + vote.value);
-            socket.emit("upvote", {"id":poll_id, "vote":vote.value});
+            socket.emit("upvote", { "id": poll_id, "vote": vote.value });
             $(this).addClass('disabled');
         }
     }
@@ -171,8 +171,8 @@ socket.on("new-question", question => {
 socket.on("update-like-question", question => {
     console.log('update-like-question');
     console.log(question);
-    var nb_likes = (question.likes == 0) ? '' : ' ' + question.likes;
-    var html_likes = ($('#question-' + question.id + ' i').hasClass('liked')) ? '<i class="fas fa-thumbs-up fa-lg liked">' + nb_likes + '</i> ' : '<i class="fas fa-thumbs-up fa-lg">' + nb_likes + '</i> ';
+    var nb_likes = (question.likes == 0) ? '' : '' + question.likes;
+    var html_likes = ($('#question-' + question.id + ' i').hasClass('liked')) ? '<i class="fas fa-thumbs-up fa-lg mr-2 liked">' + nb_likes + '</i> ' : '<i class="fas fa-thumbs-up fa-lg mr-2">' + nb_likes + '</i> ';
     console.log(html_likes);
     $('#question-' + question.id).html(html_likes);
 });

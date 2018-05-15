@@ -18,24 +18,15 @@ class ViewRouter {
     //passport-local
 
     router.post('/login', passport.authenticate('local-login', {
-      successRedirect: '/html_mock-up/desktop/dashboard.html',
-      // failureRedirect: '/error'
-    }));
-
-
-    router.post('/signup', passport.authenticate('local-signup', {
-      successRedirect: '/html_mock-up/desktop/dashboard.html',
+      successRedirect: '/dashboard/',
       failureRedirect: '/error'
     }));
 
 
-    router.get("/", (req, res) => {
-      if (req.param("force") == "mobile" || req.device.type != "desktop") {
-        res.redirect("html_mock-up/mobile/");
-      } else {
-        res.redirect("html_mock-up/desktop/");
-      }
-    });
+    router.post('/signup', passport.authenticate('local-signup', {
+      successRedirect: '/dashboard/',
+      failureRedirect: '/error'
+    }));
 
     router.get('/test', (req, res) => {
       if (req.param("force") == "mobile" || req.device.type != "desktop") {
@@ -52,7 +43,7 @@ class ViewRouter {
     router.get('/auth/facebook/callback',
       passport.authenticate('facebook', { failureRedirect: '/login' }),
       (req, res) => {
-        res.redirect('/html_mock-up/desktop/dashboard.html');
+        res.redirect('/dashboard/');
       });
 
     //passport-google
@@ -76,16 +67,16 @@ class ViewRouter {
     router.get('/auth/linkedin/callback',
       passport.authenticate('linkedin', { failureRedirect: '/login' }),
       (req, res) => {
-        res.redirect('/html_mock-up/desktop/dashboard.html');
+        res.redirect('/dashboard/');
       });
 
-    return router;
-
     //logout
-    app.get('/logout', (req, res) => {
+    router.get('/logout', (req, res) => {
       req.logout();
       res.redirect('/');
     });
+
+    return router;
   }
 }
 

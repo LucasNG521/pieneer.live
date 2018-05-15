@@ -62,3 +62,7 @@ ul.navbar-nav {
 .poll .list-group-item:nth-child(6) {
     background: #ffe6ad80;
 }
+
+.navbar-brand img {
+    width: 27px;
+}

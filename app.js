@@ -75,7 +75,7 @@ app.post("/slides/upload-image", (req, res) => {
 });
 
 // dk api
-var user_id = 1;  // TODO: change to session
+var user_id = 2;  // TODO: change to session
 app.post("/api_dk/presentation", (req, res) => {
     knex('dk_presentation')
         .insert({ "users_id": user_id }).returning("id")
@@ -105,7 +105,7 @@ app.get("/api_dk/presentation/", (req, res) => {
         .where('users_id', user_id)
         .then((presentations) => {
             for (presentation of presentations) {
-                presentation.image_link = '/slides/sample.jpg';
+                presentation.image_link = '/img/sample.png';
                 var json = JSON.parse(presentation.json);
                 if (json.slides) {
                     for (slide of json.slides) {
@@ -186,35 +186,39 @@ app.get("/edit_presentation/:id", (req, res) => {  // TODO: user logged in
     knex('dk_presentation')
         .where('id', req.params.id)
         .then((data) => {
-            if(data.length>0) {
-                res.sendFile(__dirname+'/views/edit_presentation.html');
+            if (data.length > 0) {
+                res.sendFile(__dirname + '/views/edit_presentation.html');
             } else {
                 res.redirect("/new_presentation/");
             }
         });
 });
 app.get("/new_presentation/", (req, res) => {  // TODO: user logged in
-    res.sendFile(__dirname+'/views/edit_presentation.html');
+    res.sendFile(__dirname + '/views/edit_presentation.html');
 });
 app.get("/presentation/:id", (req, res) => {
     knex('dk_presentation')
         .where('id', req.params.id)
         .then((data) => {
-            if(data.length>0) {
-                res.sendFile(__dirname+'/views/presentation.html');
+            if (data.length > 0) {
+                res.sendFile(__dirname + '/views/presentation.html');
             } else {
                 res.redirect("/dashboard/");
             }
         });
 });
 app.get("/dashboard/", (req, res) => {  // TODO: user logged in
-    res.sendFile(__dirname+'/views/dashboard.html');
+    res.sendFile(__dirname + '/views/dashboard.html');
 });
 app.get("/event/:id", (req, res) => {
-    res.sendFile(__dirname+'/views/event.html');
+    res.sendFile(__dirname + '/views/event.html');
 });
 app.get("/", (req, res) => {
-    res.sendFile(__dirname+'/views/index.html');
+    if (req.param("force") == "mobile" || req.device.type != "desktop") {
+        res.sendFile(__dirname + '/views/index_mobile.html');
+    } else {
+        res.sendFile(__dirname + '/views/index.html');
+    }
 });
 
 const config = require('./knexfile').development;

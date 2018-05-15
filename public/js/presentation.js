@@ -10,7 +10,7 @@ ctx.on("tool-changed", function (toolname) {
         $('.tools a.select').addClass('selected');
     }
 });
-
+var presentation_id = document.location.pathname.replace('/presentation/', '');
 var presentation = '';
 var nb_slides = 0;
 var current_slide = 0;
@@ -18,7 +18,7 @@ var socket = io();
 // get presentation data from the API
 $.ajax({
     dataType: "json",
-    url: "/api_dk/presentation/" + 23,    // TODO : dyn ID
+    url: "/api_dk/presentation/" + presentation_id,
     success: init_slides
 });
 function init_slides(data) {
@@ -38,7 +38,7 @@ function init_slides(data) {
         <div class="mt-5" id="qrcode"></div>
     </div>`);
 
-    var mobile_url = document.location.protocol + '//' + document.location.host + '/html_mock-up/mobile/event.html';
+    var mobile_url = document.location.protocol + '//' + document.location.host + '/event/' + presentation_id;
 
     $('#url').html(mobile_url);
 
@@ -116,6 +116,7 @@ function update_slide() {
                 type: 'GET',
                 url: "/api_dk/q_a/" + presentation.id,
                 success: function (q_a) {
+                    console.log(q_a);
                     var questions = '';
                     for (const question of q_a) {
                         var likes = (question.likes > 0) ? `<i class="fas fa-thumbs-up fa-lg mr-2"> ${question.likes}</i>` : '';
@@ -139,7 +140,7 @@ function update_slide() {
                             ${questions}
                         </ul>
                     </div>`;
-                    $('.slide-' + slide.id).html(html_slide);
+                    $('.slide-' + current_slide).html(html_slide);
                 }
             });
         }

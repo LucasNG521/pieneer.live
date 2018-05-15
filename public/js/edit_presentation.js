@@ -3,8 +3,9 @@ var upload = [];
 var graph_type = ['bar', 'pie', 'line'];
 var presentation = {};
 // get presentation data from the API
-var presentation_id = (document.location.search == '?new=true') ? '' : '23';
-var ajax_type = (document.location.search == '?new=true') ? 'POST' : 'GET';
+var presentation_id = (document.location.pathname == '/new_presentation/') ? '' : document.location.pathname.replace('/edit_presentation/', '');
+$('#play-presentation').attr('href', '/presentation/' + presentation_id);
+var ajax_type = (document.location.pathname == '/new_presentation/') ? 'POST' : 'GET';
 $.ajax({
     dataType: "json",
     contentType: "application/json",
@@ -24,29 +25,31 @@ function init_slides(data) {
         </div>
     </div>`);
 
-    for (slide of presentation.slides) {
-        var html_slide = "";
-        if (slide.type == "image") {
-            html_slide = `
-            <div class="slide slide-${slide.type}" data-json='` + JSON.stringify(slide) + `'>
-                <img src="${slide.link}">
-            </div>`;
-        } else if (slide.type == "poll") {
-            html_slide = `
-            <div class="slide slide-poll" data-json='`+ JSON.stringify(slide) + `'>
-                <div>
-                    <i class="fas fa-chart-bar fa-2x mr-2"></i>Poll
-                </div>
-            </div>`;
-        } else if (slide.type == "q_a") {
-            html_slide = `
-            <div class="slide slide-q_a" data-json='`+ JSON.stringify(slide) + `'>
-                <div>
-                    <i class="fas fa-question-circle fa-2x mr-2"></i>Q&A
-                </div>
-            </div>`;
+    if (presentation.slides) {
+        for (slide of presentation.slides) {
+            var html_slide = "";
+            if (slide.type == "image") {
+                html_slide = `
+                <div class="slide slide-${slide.type}" data-json='` + JSON.stringify(slide) + `'>
+                    <img src="${slide.link}">
+                </div>`;
+            } else if (slide.type == "poll") {
+                html_slide = `
+                <div class="slide slide-poll" data-json='`+ JSON.stringify(slide) + `'>
+                    <div>
+                        <i class="fas fa-chart-bar fa-2x mr-2"></i>Poll
+                    </div>
+                </div>`;
+            } else if (slide.type == "q_a") {
+                html_slide = `
+                <div class="slide slide-q_a" data-json='`+ JSON.stringify(slide) + `'>
+                    <div>
+                        <i class="fas fa-question-circle fa-2x mr-2"></i>Q&A
+                    </div>
+                </div>`;
+            }
+            $('.list').append(html_slide);
         }
-        $('.list').append(html_slide);
     }
     // init actions
     actionPos(0);
@@ -383,16 +386,6 @@ $('.preview').on('click', '.save-poll', function (e) {
     data_json.graph_type = poll.graph_type;
     data_json.answers = poll.answers;
     $('.slide.active').attr('data-json', JSON.stringify(data_json));
-    // poll = JSON.stringify(poll);
-    // $.ajax({
-    //     dataType: "json",
-    //     contentType: "application/json",
-    //     type: 'PUT',
-    //     url: $('#form-poll').attr('action'),
-    //     data: poll
-    // }).then((data) => {
-    //     console.log('poll updated');
-    // });
     $('a#save-presentation').click();
 });
 
@@ -403,15 +396,5 @@ $('.preview').on('click', '.save-q_a', function (e) {
     console.log(data_json);
     data_json.title = q_a.title;
     $('.slide.active').attr('data-json', JSON.stringify(data_json));
-    // q_a = JSON.stringify(q_a);
-    // $.ajax({
-    //     dataType: "json",
-    //     contentType: "application/json",
-    //     type: 'PUT',
-    //     url: $('#form-q_a').attr('action'),
-    //     data: q_a
-    // }).then((data) => {
-    //     console.log('q_a updated');
-    // });
     $('a#save-presentation').click();
 });
