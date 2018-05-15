@@ -89,7 +89,7 @@ module.exports = (app) => {
   passport.use('google', new GoogleStrategy({
     clientID: '976623563011-b70ot73gqn26b87jc02jacdg726tce7s.apps.googleusercontent.com',
     clientSecret: 'sJRiDC5hZ6LIwJYr16b-21g1',
-    callbackURL: "http://localhost:8181/auth/google/callback"
+    callbackURL: "https://pieneer.live/auth/google/callback"
   },
     async (accessToken, refreshToken, profile, done) => {
 
