@@ -1,18 +1,18 @@
 const passport = require('passport');
 
-// class ViewRouter {
-//   constructor() { }
+class ViewRouter {
+  constructor() { }
 
-//   router() {
-  module.exports = (express) => {
-    // const router = require("express").Router();
-    const router = express.Router();
+  router(express) {
+  // module.exports = (express) => {
+    const router = require("express").Router();
+    // const router = express.Router();
 
     function isLoggedIn(req, res, next) {
       if (req.isAuthenticated()) {
         return next();
       }
-      res.redirect('/login');
+      res.redirect('/');
     }
 
     //passport-local
@@ -25,7 +25,7 @@ const passport = require('passport');
 
     router.post('/signup', passport.authenticate('local-signup', {
       successRedirect: '/html_mock-up/desktop/dashboard.html',
-      // failureRedirect: '/error'
+      failureRedirect: '/error'
     }));
 
 
@@ -64,7 +64,7 @@ const passport = require('passport');
     router.get('/auth/google/callback',
       passport.authenticate('google', { failureRedirect: '/login' }),
       (req, res) => {
-        res.redirect('/html_mock-up/desktop/dashboard.html');
+        res.redirect('/');
       });
 
     // passport-linkedin
@@ -87,6 +87,6 @@ const passport = require('passport');
       res.redirect('/');
     });
   }
-// }
+}
 
-// module.exports = ViewRouter;
+module.exports = ViewRouter;

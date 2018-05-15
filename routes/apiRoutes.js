@@ -39,13 +39,16 @@ class ApiRouter {
         // TODO: Lucassss adding new user 
         router.post("/users", (req, res) => {
             this.databaseActions.addNewUser(req.body.usersname, req.body.password).then(() => {
-                    res.json("Hello! you've successfully added a new user ");
+                    // res.json("Hello! you've successfully added a new user ");
+                res.redirect('/html_mock-up/desktop/dashboard.html')
                 })
                 .catch(err => {
                     res.status(500).send(err);
                 })
         });
         router.put("/users/:userid", (req, res) => {
+            // FIXME: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            req.user
             this.databaseActions.editUserInfo(req.params.userid, req.body['first_name'], req.body['last_name'], req.body.email, req.body.phone, req.body.company).then(() => {
                     res.json("Well done, you've successfully edited your user info");
                 })
