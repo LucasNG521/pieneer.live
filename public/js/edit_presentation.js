@@ -3,13 +3,13 @@ var upload = [];
 var graph_type = ['bar', 'pie', 'line'];
 var presentation = {};
 // get presentation data from the API
-var presentation_id = (document.location.search=='?new=true')?'':'1';
-var ajax_type = (document.location.search=='?new=true')?'POST':'GET';
+var presentation_id = (document.location.search == '?new=true') ? '' : '23';
+var ajax_type = (document.location.search == '?new=true') ? 'POST' : 'GET';
 $.ajax({
     dataType: "json",
     contentType: "application/json",
     type: ajax_type,
-    url: "/api_dk/presentation/"+presentation_id,
+    url: "/api_dk/presentation/" + presentation_id,
     success: init_slides
 });
 function init_slides(data) {
@@ -184,7 +184,7 @@ function previewSlide(slide_id) {
 }
 function insertImage(link) {
     $('.slide').eq(hover_slide).after(`
-        <div class="slide slide-image">
+        <div class="slide slide-image" data-json='{"type":"image","link":"${link}"}'>
             <img src="${link}">
         </div>`);
     hover_slide++;
@@ -207,7 +207,7 @@ $('a#save-presentation').click(function (e) {
     });
     $.ajax({
         type: 'PUT',
-        url: '/api_dk/presentation/'+presentation.id,
+        url: '/api_dk/presentation/' + presentation.id,
         data: presentation
     }).then((data) => {
         console.log('infos updated');
@@ -239,8 +239,8 @@ $('.presentation .actions').on('click', 'button', function (e) {
             });
         } else {
             $.ajax({
-                type: 'GET',   // TODO: replace to POST
-                url: '/sample_api/poll/post',   // TODO: replace to /api/poll/
+                type: 'POST',
+                url: '/api_dk/poll',
             }).then((id) => {
                 $('.slide').eq(hover_slide).after(`
                 <div class="slide slide-poll" data-json='{"type":"poll","id":${id},"question":"","graph_type":"bar","answers":["",""]}'>
@@ -258,18 +258,13 @@ $('.presentation .actions').on('click', 'button', function (e) {
                 $(".alert-warning").hide('close');
             });
         } else {
-            $.ajax({
-                type: 'GET',   // TODO: replace to POST
-                url: '/sample_api/q_a/post',   // TODO: replace to /api/q_a/
-            }).then((id) => {
-                $('.slide').eq(hover_slide).after(`
-        <div class="slide slide-q_a" data-json='{"type":"q_a","id":${id},"title":"","questions":[]}'>
+            $('.slide').eq(hover_slide).after(`
+        <div class="slide slide-q_a" data-json='{"type":"q_a","title":"","questions":[]}'>
             <div>
                 <i class="fas fa-question-circle fa-2x mr-2"></i>Q&A
             </div>
         </div>`);
-                $('.slide').eq(1 + hover_slide).click();
-            });
+            $('.slide').eq(1 + hover_slide).click();
         }
     } else if ($(this).attr('id') == 'delete-slide') {
         $('.slide').eq(hover_slide).remove();
@@ -388,16 +383,17 @@ $('.preview').on('click', '.save-poll', function (e) {
     data_json.graph_type = poll.graph_type;
     data_json.answers = poll.answers;
     $('.slide.active').attr('data-json', JSON.stringify(data_json));
-    poll = JSON.stringify(poll);
-    $.ajax({
-        dataType: "json",
-        contentType: "application/json",
-        type: 'PUT',
-        url: $('#form-poll').attr('action'),
-        data: poll
-    }).then((data) => {
-        console.log('poll updated');
-    });
+    // poll = JSON.stringify(poll);
+    // $.ajax({
+    //     dataType: "json",
+    //     contentType: "application/json",
+    //     type: 'PUT',
+    //     url: $('#form-poll').attr('action'),
+    //     data: poll
+    // }).then((data) => {
+    //     console.log('poll updated');
+    // });
+    $('a#save-presentation').click();
 });
 
 $('.preview').on('click', '.save-q_a', function (e) {
@@ -407,14 +403,15 @@ $('.preview').on('click', '.save-q_a', function (e) {
     console.log(data_json);
     data_json.title = q_a.title;
     $('.slide.active').attr('data-json', JSON.stringify(data_json));
-    q_a = JSON.stringify(q_a);
-    $.ajax({
-        dataType: "json",
-        contentType: "application/json",
-        type: 'PUT',
-        url: $('#form-q_a').attr('action'),
-        data: q_a
-    }).then((data) => {
-        console.log('q_a updated');
-    });
+    // q_a = JSON.stringify(q_a);
+    // $.ajax({
+    //     dataType: "json",
+    //     contentType: "application/json",
+    //     type: 'PUT',
+    //     url: $('#form-q_a').attr('action'),
+    //     data: q_a
+    // }).then((data) => {
+    //     console.log('q_a updated');
+    // });
+    $('a#save-presentation').click();
 });

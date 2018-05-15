@@ -94,6 +94,26 @@ app.post("/api_dk/presentation", (req, res) => {
                 });
         });
 });
+app.get("/api_dk/presentation/", (req, res) => {
+    knex('dk_presentation')
+        .where('users_id', user_id)
+        .then((presentations) => {
+            for (presentation of presentations) {
+                presentation.image_link = '/slides/sample.jpg';
+                var json = JSON.parse(presentation.json);
+                if (json.slides) {
+                    for (slide of json.slides) {
+                        if (slide.type == 'image') {
+                            presentation.image_link = slide.link;    // get first image as cover
+                            break;
+                        }
+                    }
+                }
+                delete presentation.json;
+            }
+            res.json(presentations);
+        });
+});
 app.get("/api_dk/presentation/:id", (req, res) => {
     knex('dk_presentation')
         .where('id', req.params.id)
@@ -103,14 +123,35 @@ app.get("/api_dk/presentation/:id", (req, res) => {
         });
 });
 app.put("/api_dk/presentation/:id", (req, res) => {
-    console.log(req.body);
-    var json=req.body;
+    var json = req.body;
     knex('dk_presentation')
         .where('id', req.params.id)
         .update('title', json.title)
         .update('json', JSON.stringify(json))
         .then(() => {
-            res.send('ok');
+            res.send('presentation saved');
+        });
+});
+app.post("/api_dk/poll", (req, res) => {
+    knex('dk_poll')
+        .insert({ "vote0": 0, "vote1": 0, "vote2": 0, "vote3": 0, "vote4": 0, "vote5": 0 }).returning("id")
+        .then((id) => {
+            var id = id.pop();
+            res.send('' + id);
+        });
+});
+app.get("/api_dk/poll/:id", (req, res) => {
+    knex('dk_poll')
+        .where('id', req.params.id)
+        .then((data) => {
+            res.json(data);
+        });
+});
+app.get("/api_dk/q_a/:presentation_id", (req, res) => {
+    knex('dk_q_a')
+        .where('presentation_id', req.params.presentation_id)
+        .then((data) => {
+            res.json(data);
         });
 });
 

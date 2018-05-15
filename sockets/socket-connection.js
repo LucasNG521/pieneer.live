@@ -14,7 +14,7 @@ class SocketIOConnection {
                 const upvote = this.knex('dk_poll').where('id', '=', vote.id).increment('vote' + vote.vote, 1).then(() => {
                     console.log('db updated');
                 });
-                console.log(create_vote);
+                console.log(upvote);
                 this.io.emit("upvote", vote.vote);
                 console.log('upvote : ');
                 console.log(vote);

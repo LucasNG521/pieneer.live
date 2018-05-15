@@ -18,7 +18,7 @@ var socket = io();
 // get presentation data from the API
 $.ajax({
     dataType: "json",
-    url: "/sample_api/presentation/get_id.json",
+    url: "/api_dk/presentation/" + 23,    // TODO : dyn ID
     success: init_slides
 });
 function init_slides(data) {
@@ -105,7 +105,7 @@ function update_slide() {
         if (slide.type == 'poll') {
             $.ajax({
                 dataType: "json",
-                url: "/sample_api/poll/get_id.json",
+                url: "/api_dk/poll/" + slide.id,
                 success: function (json) {
                     display_chart(slide.id, json.data);
                 }
@@ -113,9 +113,8 @@ function update_slide() {
         } else if (slide.type == 'q_a') {
             $.ajax({
                 dataType: "json",
-                contentType: "application/json",
                 type: 'GET',
-                url: "/sample_api/q_a/get_id.json",
+                url: "/api_dk/q_a/" + presentation.id,
                 success: function (q_a) {
                     var questions = '';
                     for (const question of q_a.questions) {
