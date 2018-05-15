@@ -8,9 +8,9 @@ const bcrypt = require('./bcrypt');
 const knex = require('knex')({
   client: 'postgresql',
   connection: {
-      database: process.env.DEVELOPMENT_DB_NAME,
-      user: process.env.DEVELOPMENT_DB_USER,
-      password: process.env.DEVELOPMENT_DB_PASSWORD
+    database: process.env.DEVELOPMENT_DB_NAME,
+    user: process.env.DEVELOPMENT_DB_USER,
+    password: process.env.DEVELOPMENT_DB_PASSWORD
   }
 });
 
@@ -30,8 +30,8 @@ module.exports = (app) => {
           usersname: usersname,
           password: hash
         };
-        let usersId = await knex('users').insert(newUser).returning('id');
-        done(null, newUser);
+        let user = await knex('users').insert(newUser).returning(['id', 'usersname']);
+        done(null, user[0]);
       } catch (err) {
         done(err);
       }
@@ -42,7 +42,7 @@ module.exports = (app) => {
   passport.use('local-login', new LocalStrategy(
     async (username, password, done) => {
       try {
-        let users = await knex('users').where({ usersname: username})
+        let users = await knex('users').where({ usersname: username })
         console.log(users);
         if (users.length == 0) {
           return done(null, false, { message: 'Incorrect credentials' });
@@ -71,38 +71,67 @@ module.exports = (app) => {
     callbackURL: "https://pieneer.live/auth/facebook/callback"
   },
     (accessToken, refreshToken, profile, done) => {
-    //   User.findOrCreate({ facebookId: profile.id }, (err, user) => {
-    //     return done(err, user);
-    //   });
-    // }
-    if (profile) {
-      user = profile;
+      // User.findOrCreate({ socail_login: profile.id }, (err, user) => {
+      //   return done(err, user);
+      // });
+      let user = knex('users').where({ social_login: profile.id });
+
+
+      // }
+      // if (profile) {
+      //   user = profile;
       return done(null, user);
-      }
-      else {
-      return done(null, false);
-      }
+      // }
+      // else {
+      // return done(null, false);
+      // }
     }
   ));
 
   passport.use('google', new GoogleStrategy({
     clientID: '976623563011-b70ot73gqn26b87jc02jacdg726tce7s.apps.googleusercontent.com',
     clientSecret: 'sJRiDC5hZ6LIwJYr16b-21g1',
-    callbackURL: "https://pieneer.live/auth/google/callback"
+    callbackURL: "http://localhost:8181/auth/google/callback"
   },
-    (accessToken, refreshToken, profile, done) => {
+  async (accessToken, refreshToken, profile, done) => {
       // User.findOrCreate({ googleId: profile.id }, (err, user) => {
       //   return done(err, user);
       // });
-      if (profile) {
-        user = profile;
-        return done(null, user);
-        }
-        else {
-        return done(null, false);
-        }
-    }
-  ));
+      // if (profile) {
+      //   user = profile;
+      //   return done(null, user);
+      //   }
+      //   else {
+      //   return done(null, false);
+      //   }
+      
+      let user = await knex('users').first().where('social_login', profile.id)
+      
+      if (user){
+        done(null, user);
+      } else {
+        let newUser = await knex('users').insert({
+          social_login: profile.id,
+          first_name: profile.name.givenName, 
+          last_name: profile.name.familyName
+        }).returning(['id', 'first_name'])
+        done(null, newUser[0]); 
+      }
+
+        // const newUser = {
+        //   usersname: usersname,
+        //   password: hash
+        // };
+        // knex('users').insert(newUser).returning('id');
+        // done(null, newUser);
+
+        // .then(() => {
+        //   console.log('ok!');
+        // }).catch(err => {
+        //   console.log(err);
+        // })
+
+    }));
 
   passport.use('linkedin', new LinkedInStrategy({
     clientID: '81ek2wlffsjab8',
@@ -117,12 +146,12 @@ module.exports = (app) => {
       if (profile) {
         user = profile;
         return done(null, user);
-        }
-        else {
+      }
+      else {
         return done(null, false);
-        }
+      }
     },
-    function(accessToken, refreshToken, profile, done) {
+    function (accessToken, refreshToken, profile, done) {
       // asynchronous verification, for effect...
       process.nextTick(function () {
         // To keep the example simple, the user's LinkedIn profile is returned to
@@ -132,21 +161,20 @@ module.exports = (app) => {
         return done(null, profile);
       });
     }
-    ));
+  ));
 
   passport.serializeUser((user, done) => {
     done(null, user.id);
   });
 
   passport.deserializeUser(async (id, done) => {
-    let users = await knex('users').where({id:id});
+    let users = await knex('users').where({ id: id });
     console.log(users);
     if (users.length == 0) {
-        return done(new Error(`Wrong user id ${id}`));
-    } 
+      return done(new Error(`Wrong user id ${id}`));
+    }
     let user = users[0];
     console.log(user);
     return done(null, user);
-});
-
+  });
 };

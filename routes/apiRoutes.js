@@ -47,6 +47,8 @@ class ApiRouter {
                 })
         });
         router.put("/users/:userid", (req, res) => {
+            // FIXME: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            req.user
             this.databaseActions.editUserInfo(req.params.userid, req.body['first_name'], req.body['last_name'], req.body.email, req.body.phone, req.body.company).then(() => {
                     res.json("Well done, you've successfully edited your user info");
                 })

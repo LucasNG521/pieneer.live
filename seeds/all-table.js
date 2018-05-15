@@ -8,7 +8,6 @@ exports.seed = function (knex, Promise) {
             return knex('users').del().then(() => {
               // Inserts seed entries
               return knex('users').insert([{
-                  id: 1,
                   usersname: 'lucas',
                   //password: '1234'
                   password: '$2b$10$QqMdlv5fuhiIqiTfhjdBwuqdG9vicydgs.o83dTvdvamyb18rc1/u',
@@ -20,7 +19,6 @@ exports.seed = function (knex, Promise) {
                   company: 'lucas.co'
                 },
                 {
-                  id: 2,
                   usersname: 'ivan',
                   //password: '1234'
                   password: '$2b$10$QqMdlv5fuhiIqiTfhjdBwuqdG9vicydgs.o83dTvdvamyb18rc1/u',
@@ -32,7 +30,6 @@ exports.seed = function (knex, Promise) {
                   company: 'ivan.co',
                 },
                 {
-                  id: 3,
                   usersname: 'didier',
                   password: '$2b$10$QqMdlv5fuhiIqiTfhjdBwuqdG9vicydgs.o83dTvdvamyb18rc1/u',
                   social_login: JSON.stringify('google'),

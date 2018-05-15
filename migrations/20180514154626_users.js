@@ -4,7 +4,7 @@ exports.up = function(knex,Promise){
     table.increments();
     table.string('usersname', 50);
     table.string('password', 100);
-    table.json('social_login');
+    table.string('social_login');
     table.string('first_name', 50);
     table.string('last_name', 50);
     table.string('email', 100);
