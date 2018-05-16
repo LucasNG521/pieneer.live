@@ -147,7 +147,7 @@ div.colors {
 }
 
 .question-container {
-    height: 40vh;
+    height: 25vh;
     padding: 50px;
 }
 
@@ -163,7 +163,7 @@ div.colors {
 }
 
 .chart-container {
-    height: 60vh;
+    height: 75vh;
     padding: 0 100px 50px 100px;
 }
 
