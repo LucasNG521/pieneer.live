@@ -63,9 +63,6 @@ function init_slides(data) {
             <div class="slide slide-${i} slide-${slide.type}" data-json='` + JSON.stringify(slide) + `'>
                 <div class="question-container">
                     <h1>${slide.question}</h1>
-                    <ul class="list-group">
-                        ${responses}
-                    </ul>
                 </div>
                 <div class="chart-container">
                     <canvas id="myChart-${slide.id}"></canvas>
