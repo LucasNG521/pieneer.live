@@ -55,7 +55,7 @@ class ViewRouter {
         router.get('/auth/google/callback',
             passport.authenticate('google', { failureRedirect: '/login' }),
             (req, res) => {
-                res.redirect('/');
+                res.redirect('/dashboard/');
             });
 
         // passport-linkedin
