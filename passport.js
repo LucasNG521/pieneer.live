@@ -70,7 +70,8 @@ module.exports = (app) => {
     clientSecret: '46f25ce454c6f67a62929f1fa4b6bce9',
     callbackURL: "https://pieneer.live/auth/facebook/callback"
   },
-   async (accessToken, refreshToken, profile, done) => {
+  async (accessToken, refreshToken, profile, done) => {
+    // console.log(profile);
       let user = await knex('users').first().where('social_login', profile.id)
 
       if (user) {
@@ -78,8 +79,9 @@ module.exports = (app) => {
       } else {
         let newUser = await knex('users').insert({
           social_login: profile.id,
-          first_name: profile.name.givenName,
-          last_name: profile.name.familyName
+          first_name: profile.user.first_name,
+          last_name: profile.user.last_name,
+          email: profile.user.email
         }).returning(['id', 'first_name'])
         done(null, newUser[0]);
       }
@@ -102,7 +104,8 @@ module.exports = (app) => {
         let newUser = await knex('users').insert({
           social_login: profile.id,
           first_name: profile.name.givenName,
-          last_name: profile.name.familyName
+          last_name: profile.name.familyName,
+          email: profile.emails.value
         }).returning(['id', 'first_name'])
         done(null, newUser[0]);
       }
@@ -137,8 +140,9 @@ module.exports = (app) => {
       } else {
         let newUser = await knex('users').insert({
           social_login: profile.id,
-          first_name: profile.name.givenName,
-          last_name: profile.name.familyName
+          first_name: profile.r_basicprofile.first-name,
+          last_name: profile.r_basicprofile.last-name,
+          email: profile.r_emailaddress.email
         }).returning(['id', 'first_name'])
         done(null, newUser[0]);
       }
