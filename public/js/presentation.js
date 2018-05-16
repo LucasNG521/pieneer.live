@@ -16,6 +16,7 @@ var nb_slides = 1;
 var current_slide = 0;
 var socket = io();
 // get presentation data from the API
+// [REVIEW] might not be a good idea to just AJAX without DOM ready
 $.ajax({
     dataType: "json",
     url: "/api_dk/presentation/" + presentation_id,
@@ -30,6 +31,9 @@ function init_slides(data) {
 
     // init first slide
     // var event_date = formatDate(presentation.date);
+
+    // [REVIEW] XSS
+    // what if the `presentation.title` is <script>alert('hi');</script>
     $('#presentation').append(`
     <div class="slide slide-0 slide-html active">
         <h1 class="pt-5">${presentation.title}</h1>
@@ -323,6 +327,7 @@ function toggleFullScreen() {
     }
 }
 
+// [REVIEW] use moment.js (optional)... if you consider timezone
 function formatDate(d) {
     d = new Date(d * 1000);
     return d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes();

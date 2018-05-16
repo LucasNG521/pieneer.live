@@ -14,6 +14,59 @@ class ApiRouter {
     router() {
         const router = require("express").Router();
 
+        // [REVIEW] better to put all those callbacks ((req,res) => {}) into instance methods
+
+        /*
+
+        suggested way:
+
+            UserRouter.js
+              
+                class UserRouter {
+                    constructor(......actions) {
+                        ....this.xxaction = xxaction;
+                    }
+
+                    router() {
+                        const router = express.router();
+                        router.get('/', this.getUsers.bind(this));
+                        router.get('/', this.getUserById);
+                        return router;
+                    }
+
+                    getUsers(req, res) {
+                        res.json([]);
+                    }
+
+                    getUserById = (req,res) => {
+                        res.json([]);
+                    }
+                }
+
+            PollRouter.js
+
+            QnaRouter.js
+
+            UserRouter.spec.js
+
+                describe('UserRouter', () => {
+                    const userRouter = new UserRouter(.....actions);
+
+                    it('return users', (done) => {
+                        userRouter.getUsers({}, {
+                            json: (result) => {
+                                expect(result).toEqual([]);
+                                done();
+                            }
+                        })
+                    })
+                })
+
+
+
+
+        */
+
         router.get("/", (req, res) => {
             res.redirect('/html_mock-up/api/index.html');
         });
@@ -41,6 +94,7 @@ class ApiRouter {
         router.post("/users", (req, res) => {
             this.databaseActions.addNewUser(req.body.usersname, req.body.password).then(() => {
                     // res.json("Hello! you've successfully added a new user ");
+                    // [REVIEW] if it is an API call, seldom we do redirection to some HTML pages
                 res.redirect('/html_mock-up/desktop/dashboard.html')
                 })
                 .catch(err => {
@@ -48,6 +102,7 @@ class ApiRouter {
                 })
         });
         router.put("/users", (req, res) => {
+            // [REVIEW] underscores do not require [''] object syntax
             this.databaseActions.editUserInfo(req.user.id, req.body['first_name'], req.body['last_name'], req.body.email, req.body.phone, req.body.company).then((result, err) => {
                 if (err) {
                     console.log(err);
@@ -86,6 +141,7 @@ class ApiRouter {
             this.databaseActions
                 .addPresentation(req.body.userId, req.body.title, req.body.location, Date.now())
                 .then(() => {
+                    // [REVIEW] Consistency is more important
                     res.json("Good job");
                 })
                 .catch((err) => {
@@ -115,6 +171,8 @@ class ApiRouter {
 
 
         // Slides operation
+        // [REVIEW] Above routes use presentation'i'd but here you use presentation'I'd
+        // [REVIEW] suggested route: /presentations/:presentationId/slides
         router.get("/slides/:presentationId", (req, res) => {
             if (req.query.pages) {
                 this.databaseActions.getOneSlides(req.params.presentationId, req.query.pages)
@@ -137,6 +195,7 @@ class ApiRouter {
         });
 
 
+        // [REVIEW] suggested route: /presentations/:presentationId/slides
         router.post("/slides", (req, res) => {
             this.databaseActions
                 .addSlides(req.body.presentation_id, req.body.page_type, req.body.order)
@@ -169,7 +228,7 @@ class ApiRouter {
         });
 
         // Polls operations
-
+        // [REVIEW] These things can be grouped to PollRouter.js
         router.get("/polls/:pollId", (req, res) => {
             this.databaseActions
                 .getPollInfo(req.params.pollId)
@@ -193,6 +252,7 @@ class ApiRouter {
         // FIXME: OMG
         router.put("/polls/:pollid", (req, res) => {
             this.databaseActions
+            // [REVIEW] BUGSSSSSSs ------------- vvvvvvvvvvv
                 .removePresentation(req.params.presentationid)
                 .then(() => {
                     res.status(200).end();

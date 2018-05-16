@@ -11,6 +11,7 @@ class SocketIOConnection {
         this.io.on("connection", socket => {
             console.log("a user connected to the socket");
             socket.on("upvote", (vote) => {
+                // [REVIEW] quite dangerous accepting user input in the column name
                 const upvote = this.knex('dk_poll').where('id', '=', vote.id).increment('vote' + vote.vote, 1).then(() => {
                     console.log('db updated');
                 });

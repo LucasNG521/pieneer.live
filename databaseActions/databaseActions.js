@@ -166,6 +166,7 @@ class DatabaseActions {
     };
     //FIXME: all that is needed to be replaced or changed.
     removePollsInfo(pollId) {
+        // [REVIEW] delete all its votes as well OR add another "removePollsInfoForce(pollId)"
         return this.knex('polls')
             .where('id', pollId)
             .delete();

@@ -20,6 +20,7 @@ module.exports = (app) => {
 
   passport.use('local-signup', new LocalStrategy(
     async (usersname, password, done) => {
+        // [REVIEW] should use transaction
       try {
         let users = await knex('users').where({ usersname: usersname });
         if (users.length > 0) {
@@ -72,6 +73,8 @@ module.exports = (app) => {
   },
   async (accessToken, refreshToken, profile, done) => {
     // console.log(profile);
+
+    // [REVIEW] use transaction
       let user = await knex('users').first().where('social_login', profile.id)
 
       if (user) {

@@ -40,6 +40,8 @@ const upload_path = './public/slides/';
 const fileUpload = require('express-fileupload');
 app.use(fileUpload());
 app.post("/slides/upload-ppt", (req, res) => {
+
+    // [REVIEW] node.js 'path' module can extract the extension 
     var ext = req.files.file.name.split('.').pop();
     var md5_name = req.files.file.md5 + '.' + ext;
     if (!req.files) {
@@ -82,6 +84,7 @@ app.post("/api_dk/presentation", (req, res) => {
         .insert({ "users_id": user_id }).returning("id")
         .then((id) => {
             var id = id.pop();
+            // [REVIEW] DO NOT HANDCRAFT JSON
             var json = `{
                 "title": "",
                 "id": ${id},
@@ -153,6 +156,7 @@ app.get("/api_dk/poll/:id", (req, res) => {
         .where('id', req.params.id)
         .then((data) => {
             var data = data.pop();
+            // [REVIEW] res.json?
             res.send({ data: [data.vote0, data.vote1, data.vote2, data.vote3, data.vote4, data.vote5] });
         });
 });

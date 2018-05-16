@@ -48,6 +48,7 @@ function init_event(data) {
         </a>
     </p>`;
     $('#info .container').html(html_info);
+    // [REVIEW] use `let` instead `var` esp in for-loop
     for (var slide of presentation.slides) {
         if (slide.type == 'poll') {
             poll_id = slide.id;
@@ -125,6 +126,7 @@ $('#submit-poll').click(function (e) {
     e.preventDefault();
     if (!$(this).hasClass('disabled')) {
         var votes = $('#send_vote').serializeArray();
+        // [REVIEW] variable declaration!! `let`
         for (vote of votes) {
             console.log('upvote' + vote.value);
             socket.emit("upvote", { "id": poll_id, "vote": vote.value });

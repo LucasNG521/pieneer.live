@@ -1,3 +1,4 @@
+// [REVIEW] Put all these utils stuff in a separate file
 (function ($) {
     $.fn.serializeFormJSON = function () {
 
@@ -32,8 +33,10 @@ $('#editUserModal').on('show.bs.modal', function (e) {
     });
 });
 
+// [REVIEW] to disable the .save-user button once it is clicked to avoid double submission
 $('.save-user').click(function (e) {
     e.preventDefault();
+    // disable the button here
     $.ajax({
         url: '/api/users',
         type: 'PUT',
@@ -41,6 +44,7 @@ $('.save-user').click(function (e) {
         dataType: "json",
         contentType: "application/json"
     }).then((data) => {
+        // re-enable the button here
         console.log('user infos updated');
         $('#editUserModal').modal('hide');
     });

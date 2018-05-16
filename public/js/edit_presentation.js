@@ -12,6 +12,39 @@ $.ajax({
     url: "/api_dk/presentation/" + presentation_id,
     success: init_slides
 });
+
+// [REVIEW] Use class to implement Image Slide, Poll Slide, Qna Slide
+/*
+
+  class Slide {
+      initSlide() {
+
+      }
+
+      previewSlide() {
+
+      }
+
+      insertSlide () {
+
+      }
+  }
+
+  class ImageSlide extends Slide {
+
+  }
+
+  Usage:
+
+    if (presentation.slides) {
+        for (slide of presentation.slides) {
+            slide.initSlide();
+        }
+    }
+
+
+ */
+
 function init_slides(data) {
     presentation = data;
     console.log(presentation);
@@ -28,6 +61,7 @@ function init_slides(data) {
         for (slide of presentation.slides) {
             var html_slide = "";
             if (slide.type == "image") {
+                // [REVIEW] NOT SAFE~ slide might contain single quote (')
                 html_slide = `
                 <div class="slide slide-${slide.type}" data-json='` + JSON.stringify(slide) + `'>
                     <img src="${slide.link}">
@@ -60,6 +94,7 @@ function actionPos(new_hover = -1) {
         var hover_slide_dom = $('.slide').eq(new_hover);
         var offset = hover_slide_dom.position();
         hover_slide = new_hover;
+        // [REVIEW] comment on the magical number
         var left = (hover_slide == 0) ? 37 : 16;
         $('div.actions').css({ top: offset.top + $('.list')[0].scrollTop + hover_slide_dom.height() + 6, left: left });
         if (hover_slide == 0) {
@@ -198,7 +233,7 @@ $('.list').on('click', 'div.slide', function (e) {
     previewSlide($(".slide").index($(this)));
 });
 $('a#save-presentation').click(function (e) {
-    e.preventDefault;
+    e.preventDefault; // [REVIEW] forgot to run ...nothing has done here 
     console.log('save-presentation');
     presentation.slides = [];
     $('.slide').each(function () {
@@ -216,7 +251,7 @@ $('a#save-presentation').click(function (e) {
     });
     console.log(presentation);
     $(this).blur();
-    return false;
+    return false; // [REVIEW] this is the old way of e.preventDefault(), not necessary any more
 });
 $('.slide:last-child').mouseenter();
 $(function () {
