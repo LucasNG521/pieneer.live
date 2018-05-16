@@ -149,7 +149,7 @@ function display_chart(id, data) {
 
     var labels = ["A", "B", "C", "D", "E", "F"];
     labels = labels.slice(0, slide.answers.length);
-
+    labels = slide.answers; // label as answers
     var myChart = new Chart(ctx, {
         type: slide.graph_type,
         data: {
